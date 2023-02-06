@@ -23,15 +23,15 @@ Yosu is an android application to download video/audio from Youtube, Soundcloud 
 
 ## Screenshots
 
-<img src="https://github.com/jerry08/Yosu/blob/master/.assets/Screenshot_01.jpg?raw=true" style="width: 23%;margin:16px;" />&nbsp;&nbsp;
-<img src="https://github.com/jerry08/Yosu/blob/master/.assets/Screenshot_02.jpg?raw=true" style="width: 23%;margin:16px;" />&nbsp;&nbsp;
-<img src="https://github.com/jerry08/Yosu/blob/master/.assets/Screenshot_03.jpg?raw=true" style="width: 23%;margin:16px;" />&nbsp;&nbsp;
-<img src="https://github.com/jerry08/Yosu/blob/master/.assets/Screenshot_04.jpg?raw=true" style="width: 23%;margin:16px;" />
+<img src="https://github.com/jerry08/Yosu/blob/master/.assets/Screenshot_01.png?raw=true" style="width: 23%;margin:16px;" />&nbsp;&nbsp;
+<img src="https://github.com/jerry08/Yosu/blob/master/.assets/Screenshot_02.png?raw=true" style="width: 23%;margin:16px;" />&nbsp;&nbsp;
+<img src="https://github.com/jerry08/Yosu/blob/master/.assets/Screenshot_03.png?raw=true" style="width: 23%;margin:16px;" />&nbsp;&nbsp;
+<img src="https://github.com/jerry08/Yosu/blob/master/.assets/Screenshot_04.png?raw=true" style="width: 23%;margin:16px;" />
 
 <br>
 
-<img src="https://github.com/jerry08/Yosu/blob/master/.assets/Screenshot_05.jpg?raw=true" style="width: 23%;margin:16px;" />&nbsp;&nbsp;
-<img src="https://github.com/jerry08/Yosu/blob/master/.assets/Screenshot_06.jpg?raw=true" style="width: 23%;margin:16px;" />
+<img src="https://github.com/jerry08/Yosu/blob/master/.assets/Screenshot_05.png?raw=true" style="width: 23%;margin:16px;" />&nbsp;&nbsp;
+<img src="https://github.com/jerry08/Yosu/blob/master/.assets/Screenshot_06.png?raw=true" style="width: 23%;margin:16px;" />
 
 ## Description
 
