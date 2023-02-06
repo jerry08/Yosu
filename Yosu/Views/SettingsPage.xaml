@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Yosu.Views.Settings.SettingsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:app="clr-namespace:Yosu"
+    xmlns:fi="clr-namespace:Yosu.FontIcons"
+    xmlns:materialDesign="clr-namespace:MaterialDesign"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:viewmodels="clr-namespace:Yosu.ViewModels.Settings"
+    xmlns:xct="clr-namespace:Plugin.MauiTouchEffect.Effects;assembly=Plugin.MauiTouchEffect"
+    x:DataType="viewmodels:SettingsViewModel"
+    NavigationPage.HasNavigationBar="False"
+    Shell.TabBarIsVisible="False">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <Grid IgnoreSafeArea="{OnPlatform Android=False, iOS=True}" RowDefinitions="auto,*,auto">
+        <Grid
+            Grid.Row="0"
+            Margin="24,10,24,10"
+            HeightRequest="40"
+            IgnoreSafeArea="{OnPlatform Android=False,
+                                        iOS=True}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <!--  Back button  -->
+            <ImageButton
+                x:Name="BackButton"
+                Grid.Column="0"
+                Margin="0,0,20,0"
+                Style="{StaticResource ImageButton.Back}" />
+
+            <!--  Title  -->
+            <Label
+                Grid.Column="1"
+                FontAttributes="Bold"
+                FontFamily="LatoBold"
+                FontSize="20"
+                HeightRequest="30"
+                HorizontalOptions="Start"
+                LineBreakMode="TailTruncation"
+                Text="Settings"
+                VerticalOptions="Center" />
+        </Grid>
+
+        <ScrollView
+            Grid.Row="1"
+            HorizontalScrollBarVisibility="Always"
+            Orientation="Vertical"
+            VerticalScrollBarVisibility="Always">
+            <Grid Margin="20">
+                <VerticalStackLayout Spacing="10">
+                    <Frame
+                        Margin="0,20"
+                        Padding="0,5,0,5"
+                        CornerRadius="10"
+                        HasShadow="False">
+                        <VerticalStackLayout
+                            Margin="0,5,0,20"
+                            Padding="20,10"
+                            Spacing="5">
+                            <Label Margin="0,0,0,15" Text="Theme" />
+
+                            <Frame Margin="0,0,0,20">
+                                <Picker
+                                    x:Name="ThemePicker"
+                                    Title="Themes"
+                                    SelectedIndex="{Binding Preference.AppTheme}">
+                                    <Picker.ItemsSource>
+                                        <x:Array Type="{x:Type x:String}">
+                                            <x:String>Default</x:String>
+                                            <x:String>Light</x:String>
+                                            <x:String>Dark</x:String>
+                                        </x:Array>
+                                    </Picker.ItemsSource>
+                                    <Picker.Behaviors>
+                                        <toolkit:EventToCommandBehavior
+                                            Command="{Binding ThemeSelectedCommand}"
+                                            CommandParameter="{Binding Source={x:Reference ThemePicker}, Path=SelectedIndex}"
+                                            EventName="SelectedIndexChanged" />
+                                    </Picker.Behaviors>
+                                </Picker>
+                            </Frame>
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <Button
+                        BackgroundColor="{AppThemeBinding Light={StaticResource Gray100},
+                                                          Dark={StaticResource Gray600}}"
+                        Command="{Binding GithubCommand}"
+                        FontFamily="SoraBold"
+                        Text="Github"
+                        TextColor="{AppThemeBinding Light={StaticResource Gray900},
+                                                    Dark={StaticResource White}}" />
+                    <Button
+                        BackgroundColor="{AppThemeBinding Light={StaticResource Gray100},
+                                                          Dark={StaticResource Gray600}}"
+                        Command="{Binding DiscordCommand}"
+                        FontFamily="SoraBold"
+                        Text="Discord"
+                        TextColor="{AppThemeBinding Light={StaticResource Gray900},
+                                                    Dark={StaticResource White}}" />
+                    <Label
+                        FontFamily="SoraBold"
+                        HorizontalOptions="Center"
+                        Text="© Jerry08" />
+                </VerticalStackLayout>
+            </Grid>
+        </ScrollView>
+    </Grid>
+</ContentPage>

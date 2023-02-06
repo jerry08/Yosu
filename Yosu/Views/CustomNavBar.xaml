@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="Yosu.Views.CustomNavBar"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:fi="clr-namespace:Yosu.FontIcons"
+    xmlns:materialDesign="clr-namespace:MaterialDesign"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:views="clr-namespace:Yosu.Views"
+    xmlns:xct="clr-namespace:Plugin.MauiTouchEffect.Effects;assembly=Plugin.MauiTouchEffect"
+    x:Name="this"
+    Margin="24,20,24,20">
+    <Grid IgnoreSafeArea="{OnPlatform Android=False, iOS=True}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <ImageButton
+            x:Name="BackButton"
+            Grid.Column="0"
+            Clicked="BackButton_Clicked"
+            HeightRequest="35"
+            HorizontalOptions="Start"
+            IsVisible="{Binding ShowBackButton, Source={x:Reference this}}"
+            VerticalOptions="Center"
+            WidthRequest="35">
+            <ImageButton.Source>
+                <FontImageSource
+                    FontFamily="Material"
+                    Glyph="{x:Static materialDesign:MaterialDesignIcons.ArrowBack}"
+                    Size="Large"
+                    Color="{AppThemeBinding Light={StaticResource Gray400},
+                                            Dark={StaticResource White}}" />
+            </ImageButton.Source>
+            <ImageButton.Triggers>
+                <DataTrigger
+                    Binding="{Binding ShowTitleLabel}"
+                    TargetType="ImageButton"
+                    Value="False">
+                    <Setter Property="Margin" Value="0" />
+                </DataTrigger>
+            </ImageButton.Triggers>
+        </ImageButton>
+
+        <Label
+            x:Name="TitleLabel"
+            Grid.Column="1"
+            FontAttributes="Bold"
+            FontFamily="LatoBold"
+            FontSize="20"
+            HeightRequest="30"
+            HorizontalOptions="Start"
+            IsVisible="{Binding ShowTitleLabel, Source={x:Reference this}}"
+            Text="{Binding Title, Source={x:Reference this}}"
+            VerticalOptions="Center" />
+    </Grid>
+</ContentView>

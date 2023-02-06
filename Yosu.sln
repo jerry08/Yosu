@@ -1,0 +1,63 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31611.283
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yosu", "Yosu\Yosu.csproj", "{9B77A1DC-D34E-4917-956A-23C4E14CAF71}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B7E1CFCA-B8AD-4558-8AB0-DD0211A82484}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Build.props = Directory.Build.props
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plugin.MauiTouchEffect", "Plugin.MauiTouchEffect\Plugin.MauiTouchEffect.csproj", "{1FF73E62-7998-4B1D-B060-F4943E05E09B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yosu.Youtube.Core", "Yosu.Youtube.Core\Yosu.Youtube.Core.csproj", "{F6ABF93B-2180-4EC1-9879-B797734AB87A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yosu.Soundcloud.Core", "Yosu.Soundcloud.Core\Yosu.Soundcloud.Core.csproj", "{8DA8A176-3790-4A99-9C6F-440F5EF7CD60}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yosu.Youtube.Converter", "Yosu.Youtube.Converter\Yosu.Youtube.Converter.csproj", "{A3817EDD-DBFF-46A2-A895-FBAC2CC66615}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yosu.Spotify.Core", "Yosu.Spotify.Core\Yosu.Spotify.Core.csproj", "{A6988CB9-7ECA-42D0-A495-AE8925783BF7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9B77A1DC-D34E-4917-956A-23C4E14CAF71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B77A1DC-D34E-4917-956A-23C4E14CAF71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B77A1DC-D34E-4917-956A-23C4E14CAF71}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{9B77A1DC-D34E-4917-956A-23C4E14CAF71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B77A1DC-D34E-4917-956A-23C4E14CAF71}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B77A1DC-D34E-4917-956A-23C4E14CAF71}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{1FF73E62-7998-4B1D-B060-F4943E05E09B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1FF73E62-7998-4B1D-B060-F4943E05E09B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1FF73E62-7998-4B1D-B060-F4943E05E09B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1FF73E62-7998-4B1D-B060-F4943E05E09B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6ABF93B-2180-4EC1-9879-B797734AB87A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6ABF93B-2180-4EC1-9879-B797734AB87A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6ABF93B-2180-4EC1-9879-B797734AB87A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6ABF93B-2180-4EC1-9879-B797734AB87A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DA8A176-3790-4A99-9C6F-440F5EF7CD60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DA8A176-3790-4A99-9C6F-440F5EF7CD60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DA8A176-3790-4A99-9C6F-440F5EF7CD60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DA8A176-3790-4A99-9C6F-440F5EF7CD60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3817EDD-DBFF-46A2-A895-FBAC2CC66615}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3817EDD-DBFF-46A2-A895-FBAC2CC66615}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3817EDD-DBFF-46A2-A895-FBAC2CC66615}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3817EDD-DBFF-46A2-A895-FBAC2CC66615}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6988CB9-7ECA-42D0-A495-AE8925783BF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6988CB9-7ECA-42D0-A495-AE8925783BF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6988CB9-7ECA-42D0-A495-AE8925783BF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6988CB9-7ECA-42D0-A495-AE8925783BF7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {61F7FB11-1E47-470C-91E2-47F8143E1572}
+	EndGlobalSection
+EndGlobal

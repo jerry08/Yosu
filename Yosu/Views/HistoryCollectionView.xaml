@@ -1,0 +1,273 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Yosu.Views.HistoryCollectionView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:cm="https://github.com/jerry08/Plugin.ContextMenuContainer"
+    xmlns:controls="clr-namespace:Microsoft.Maui.Controls"
+    xmlns:converters="clr-namespace:Yosu.Converters"
+    xmlns:fi="clr-namespace:Yosu.FontIcons"
+    xmlns:local="clr-namespace:Yosu.Views"
+    xmlns:materialDesign="clr-namespace:MaterialDesign"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:viewmodels="clr-namespace:Yosu.ViewModels"
+    xmlns:views="clr-namespace:Yosu.Views"
+    xmlns:xct="clr-namespace:Plugin.MauiTouchEffect.Effects;assembly=Plugin.MauiTouchEffect"
+    xmlns:yt="clr-namespace:YoutubeExplode.Videos;assembly=YoutubeExplode"
+    x:Name="this"
+    x:DataType="viewmodels:HistoryCollectionViewModel">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+
+            <DataTemplate x:Key="YoutubeVideoDataTemplate">
+                <views:YoutubeVideoItemView />
+            </DataTemplate>
+
+            <DataTemplate x:Key="SoundcloudTrackDataTemplate">
+                <views:SoundcloudTrackItemView />
+            </DataTemplate>
+
+            <DataTemplate x:Key="SpotifyTrackDataTemplate">
+                <views:SpotiyTrackItemView />
+            </DataTemplate>
+
+            <local:MainDataTemplateSelector
+                x:Key="mainDataTemplateSelector"
+                SoundcloudDataTemplate="{StaticResource SoundcloudTrackDataTemplate}"
+                SpotifyDataTemplate="{StaticResource SpotifyTrackDataTemplate}"
+                YoutubeVideoDataTemplate="{StaticResource YoutubeVideoDataTemplate}" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <AbsoluteLayout HorizontalOptions="FillAndExpand">
+        <Grid
+            AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
+            AbsoluteLayout.LayoutFlags="All"
+            RowDefinitions="auto,auto,*">
+            <Grid Grid.Row="0" ColumnDefinitions="auto,*,auto">
+                <views:CustomNavBar
+                    Grid.Column="0"
+                    Margin="24,20,0,20"
+                    ShowBackButton="False"
+                    ShowTitleLabel="False" />
+
+                <Label
+                    Grid.Column="1"
+                    FontAttributes="Bold"
+                    FontSize="20"
+                    HorizontalOptions="Center"
+                    LineBreakMode="TailTruncation"
+                    Text="{Binding Title}"
+                    VerticalOptions="Center" />
+
+                <cm:ContextMenuContainer
+                    x:Name="ActionsInlineMenu"
+                    Grid.Column="2"
+                    Margin="0,0,24,0"
+                    HeightRequest="30"
+                    HorizontalOptions="EndAndExpand"
+                    VerticalOptions="Center"
+                    WidthRequest="30">
+                    <cm:ContextMenuContainer.MenuItems>
+                        <cm:ContextMenuItem Command="{Binding ClearSelectedCommand}" Text="Clear Selected" />
+                        <cm:ContextMenuItem Command="{Binding ClearAllCommand}" Text="Clear All" />
+                    </cm:ContextMenuContainer.MenuItems>
+                    <cm:ContextMenuContainer.Content>
+                        <ImageButton
+                            xct:TouchEffect.Command="{Binding BindingContext.ShowContextMenuCommand, Source={RelativeSource AncestorType={x:Type views:HistoryCollectionView}}}"
+                            xct:TouchEffect.CommandParameter="{Binding ., Source={x:Reference ActionsInlineMenu}}"
+                            xct:TouchEffect.NativeAnimation="True"
+                            HeightRequest="30"
+                            HorizontalOptions="EndAndExpand"
+                            VerticalOptions="Center"
+                            WidthRequest="30">
+                            <ImageButton.Source>
+                                <FontImageSource
+                                    FontFamily="Material"
+                                    Glyph="{x:Static materialDesign:MaterialDesignIcons.MoreVert}"
+                                    Size="30"
+                                    Color="{AppThemeBinding Light={StaticResource Gray400},
+                                                            Dark={StaticResource White}}" />
+                            </ImageButton.Source>
+                        </ImageButton>
+                    </cm:ContextMenuContainer.Content>
+                </cm:ContextMenuContainer>
+            </Grid>
+
+            <!--  SEARCH  -->
+            <Grid
+                Grid.Row="1"
+                Margin="10"
+                Padding="5,0">
+                <Grid.Triggers>
+                    <DataTrigger
+                        Binding="{Binding BindingContext.SelectionMode, Source={RelativeSource AncestorType={x:Type views:HistoryCollectionView}}}"
+                        TargetType="Grid"
+                        Value="Multiple">
+                        <Setter Property="IsVisible" Value="False" />
+                    </DataTrigger>
+                </Grid.Triggers>
+                <Border Style="{StaticResource EntrySearchBorderStyle}">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="25" />
+                    </Border.StrokeShape>
+                    <Grid ColumnDefinitions="auto,*" ColumnSpacing="2">
+                        <Image Style="{StaticResource EntrySearchImageStyle}" />
+                        <Entry
+                            HeightRequest="45"
+                            Placeholder="Search"
+                            Style="{StaticResource EntrySearchStyle}"
+                            Text="{Binding Query}">
+                            <Entry.Behaviors>
+                                <toolkit:EventToCommandBehavior Command="{Binding QueryChangedCommand}" EventName="TextChanged" />
+                            </Entry.Behaviors>
+                        </Entry>
+                    </Grid>
+                </Border>
+            </Grid>
+
+            <!--  SELECT ALL  -->
+            <Grid
+                Grid.Row="1"
+                Margin="10"
+                Padding="5,0"
+                IsVisible="False">
+                <Grid.Triggers>
+                    <DataTrigger
+                        Binding="{Binding BindingContext.SelectionMode, Source={RelativeSource AncestorType={x:Type views:HistoryCollectionView}}}"
+                        TargetType="Grid"
+                        Value="Multiple">
+                        <Setter Property="IsVisible" Value="True" />
+                    </DataTrigger>
+                </Grid.Triggers>
+                <HorizontalStackLayout
+                    HeightRequest="45"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center">
+                    <CheckBox IsChecked="{Binding IsSelectAllChecked}">
+                        <CheckBox.Behaviors>
+                            <toolkit:EventToCommandBehavior Command="{Binding SelectOrUnselectAllCommand}" EventName="CheckedChanged" />
+                        </CheckBox.Behaviors>
+                    </CheckBox>
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        Text="Select all"
+                        VerticalTextAlignment="Center" />
+                </HorizontalStackLayout>
+            </Grid>
+
+            <Grid
+                Grid.Row="2"
+                HorizontalOptions="CenterAndExpand"
+                IsVisible="{Binding IsBusy}"
+                VerticalOptions="CenterAndExpand"
+                ZIndex="1000">
+                <ActivityIndicator
+                    HeightRequest="{OnPlatform Default=60,
+                                               WinUI=100}"
+                    HorizontalOptions="CenterAndExpand"
+                    IsRunning="True"
+                    VerticalOptions="CenterAndExpand"
+                    WidthRequest="{OnPlatform Default=60,
+                                              WinUI=100}">
+                    <ActivityIndicator.Triggers>
+                        <DataTrigger
+                            Binding="{Binding IsLoading}"
+                            TargetType="ActivityIndicator"
+                            Value="True">
+                            <Setter Property="IsRunning" Value="False" />
+                            <Setter Property="BackgroundColor" Value="Transparent" />
+                        </DataTrigger>
+                    </ActivityIndicator.Triggers>
+                </ActivityIndicator>
+            </Grid>
+
+            <RefreshView
+                Grid.Row="2"
+                Margin="12,0,12,0"
+                Command="{Binding RefreshCommand}"
+                IsRefreshing="{Binding IsRefreshing}"
+                ZIndex="-1">
+                <CollectionView
+                    IsGrouped="True"
+                    IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
+                    ItemTemplate="{StaticResource mainDataTemplateSelector}"
+                    ItemsSource="{Binding Entities}"
+                    RemainingItemsThreshold="1"
+                    RemainingItemsThresholdReachedCommand="{Binding LoadMoreCommand}"
+                    SelectedItem="{Binding SelectedEntity}"
+                    SelectedItems="{Binding SelectedEntities}"
+                    SelectionChangedCommand="{Binding SelectionChangedCommand}"
+                    SelectionMode="{Binding SelectionMode}">
+                    <CollectionView.GroupHeaderTemplate>
+                        <DataTemplate x:DataType="{x:Null}">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="18"
+                                HorizontalTextAlignment="Center"
+                                Text="{Binding Name}" />
+                        </DataTemplate>
+                    </CollectionView.GroupHeaderTemplate>
+
+                    <CollectionView.GroupFooterTemplate>
+                        <DataTemplate x:DataType="{x:Null}">
+                            <Label Margin="10,0,0,10" Text="{Binding Count, StringFormat='Total records: {0:D}'}" />
+                        </DataTemplate>
+                    </CollectionView.GroupFooterTemplate>
+
+                    <CollectionView.Footer>
+                        <StackLayout>
+                            <ActivityIndicator
+                                HeightRequest="{OnPlatform Default=60,
+                                                           WinUI=100}"
+                                HorizontalOptions="CenterAndExpand"
+                                IsRunning="{Binding IsLoading}"
+                                IsVisible="{Binding IsLoading}"
+                                VerticalOptions="CenterAndExpand"
+                                WidthRequest="{OnPlatform Default=60,
+                                                          WinUI=100}" />
+                        </StackLayout>
+                    </CollectionView.Footer>
+
+                    <CollectionView.EmptyView>
+                        <Grid
+                            HorizontalOptions="FillAndExpand"
+                            IsVisible="False"
+                            VerticalOptions="FillAndExpand">
+                            <Grid.Triggers>
+                                <DataTrigger
+                                    Binding="{Binding IsBusy}"
+                                    TargetType="Grid"
+                                    Value="False">
+                                    <Setter Property="IsVisible" Value="True" />
+                                </DataTrigger>
+                            </Grid.Triggers>
+                            <Label
+                                FontSize="16"
+                                HorizontalOptions="Center"
+                                Text="Empty"
+                                VerticalOptions="Center" />
+                        </Grid>
+                    </CollectionView.EmptyView>
+                </CollectionView>
+            </RefreshView>
+        </Grid>
+
+        <!--<Border
+            xct:TouchEffect.Command="{Binding DownloadSelectedCommand}"
+            xct:TouchEffect.NativeAnimation="True"
+            IsVisible="False"
+            Style="{StaticResource AbsoluteBorder.DownloadButton}">
+            <Border.Triggers>
+                <DataTrigger
+                    Binding="{Binding BindingContext.SelectionMode, Source={RelativeSource AncestorType={x:Type views:HistoryCollectionView}}}"
+                    TargetType="Border"
+                    Value="Multiple">
+                    <Setter Property="IsVisible" Value="True" />
+                </DataTrigger>
+            </Border.Triggers>
+        </Border>-->
+    </AbsoluteLayout>
+</ContentPage>

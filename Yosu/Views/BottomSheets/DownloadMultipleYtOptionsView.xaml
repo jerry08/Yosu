@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Grid
+    x:Class="Yosu.Views.BottomSheets.DownloadMultipleYtOptionsView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converters="clr-namespace:Yosu.Converters.Youtube"
+    xmlns:core="clr-namespace:Yosu.Youtube.Core.Downloading;assembly=Yosu.Youtube.Core"
+    xmlns:local="clr-namespace:Yosu.Views.BottomSheets"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:viewmodels="clr-namespace:Yosu.ViewModels"
+    xmlns:xct="clr-namespace:Plugin.MauiTouchEffect.Effects;assembly=Plugin.MauiTouchEffect"
+    xmlns:yt="clr-namespace:YoutubeExplode.Videos;assembly=YoutubeExplode"
+    xmlns:yts="clr-namespace:YoutubeExplode.Videos.Streams;assembly=YoutubeExplode"
+    x:DataType="viewmodels:YoutubeViewModel">
+    <Grid.Resources>
+        <ResourceDictionary>
+            <converters:VideoQualityPreferenceToStringConverter x:Key="VideoQualityPreferenceToStringConverter" />
+        </ResourceDictionary>
+    </Grid.Resources>
+    <StackLayout Spacing="8">
+        <Label
+            FontAttributes="Bold"
+            FontSize="18"
+            HeightRequest="60"
+            HorizontalOptions="CenterAndExpand"
+            HorizontalTextAlignment="Center"
+            Text="Select Container"
+            VerticalTextAlignment="Center" />
+
+        <BoxView Style="{StaticResource SeparatorBoxView}" />
+
+        <Label
+            Margin="20,0"
+            FontAttributes="Bold"
+            FontSize="20"
+            HeightRequest="30"
+            Text="Audio" />
+
+        <StackLayout BindableLayout.ItemsSource="{Binding AvailableContainers}">
+            <BindableLayout.ItemTemplate>
+                <DataTemplate x:DataType="{x:Type yts:Container}">
+                    <!--xct:TouchEffect.Command="{Binding BindingContext.DownloadCommand, Source={RelativeSource AncestorType={x:Type local:DownloadMultipleYtOptionsView}}}"-->
+                    <StackLayout
+                        xct:TouchEffect.Command="{Binding DownloadCommand, Source={RelativeSource AncestorType={x:Type local:DownloadMultipleYtOptionsView}}}"
+                        xct:TouchEffect.CommandParameter="{Binding .}"
+                        xct:TouchEffect.NativeAnimation="True"
+                        BackgroundColor="Transparent"
+                        Orientation="Vertical">
+                        <Label
+                            Margin="20,10"
+                            FontSize="18"
+                            HorizontalOptions="FillAndExpand"
+                            Text="{Binding Name}"
+                            VerticalOptions="Center" />
+                        <!--<BoxView Style="{StaticResource SeparatorBoxView}" />-->
+                    </StackLayout>
+                </DataTemplate>
+            </BindableLayout.ItemTemplate>
+        </StackLayout>
+
+        <Label
+            Margin="20,0"
+            FontAttributes="Bold"
+            FontSize="20"
+            HeightRequest="30"
+            Text="Video" />
+
+        <StackLayout Margin="0,10,0,0" BindableLayout.ItemsSource="{Binding AvailableVideoQualityPreferences}">
+            <BindableLayout.ItemTemplate>
+                <DataTemplate x:DataType="{x:Type core:VideoQualityPreference}">
+                    <!--xct:TouchEffect.Command="{Binding BindingContext.DownloadCommand, Source={RelativeSource AncestorType={x:Type local:DownloadMultipleYtOptionsView}}}"-->
+                    <StackLayout
+                        xct:TouchEffect.Command="{Binding DownloadCommand, Source={RelativeSource AncestorType={x:Type local:DownloadMultipleYtOptionsView}}}"
+                        xct:TouchEffect.CommandParameter="{Binding .}"
+                        xct:TouchEffect.NativeAnimation="True"
+                        BackgroundColor="Transparent"
+                        Orientation="Vertical">
+                        <Label
+                            Margin="20,10"
+                            FontSize="18"
+                            HorizontalOptions="FillAndExpand"
+                            Text="{Binding Converter={StaticResource VideoQualityPreferenceToStringConverter}}"
+                            VerticalOptions="Center" />
+                        <!--<BoxView Style="{StaticResource SeparatorBoxView}" />-->
+                    </StackLayout>
+                </DataTemplate>
+            </BindableLayout.ItemTemplate>
+        </StackLayout>
+    </StackLayout>
+</Grid>

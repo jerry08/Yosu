@@ -1,0 +1,298 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Grid
+    x:Class="Yosu.Views.YoutubeVideoItemView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:cm="https://github.com/jerry08/Plugin.ContextMenuContainer"
+    xmlns:components="clr-namespace:Yosu.ViewModels.Components"
+    xmlns:contextMenus="clr-namespace:Yosu.Views.ContextMenus"
+    xmlns:controls="clr-namespace:Microsoft.Maui.Controls"
+    xmlns:converters="clr-namespace:Yosu.Converters"
+    xmlns:fi="clr-namespace:Yosu.FontIcons"
+    xmlns:local="clr-namespace:Yosu.Views"
+    xmlns:materialDesign="clr-namespace:MaterialDesign"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:viewmodels="clr-namespace:Yosu.ViewModels"
+    xmlns:views="clr-namespace:Yosu.Views"
+    xmlns:xct="clr-namespace:Plugin.MauiTouchEffect.Effects;assembly=Plugin.MauiTouchEffect"
+    xmlns:yc="clr-namespace:Yosu.Controls"
+    xmlns:yt="clr-namespace:YoutubeExplode.Videos;assembly=YoutubeExplode"
+    xmlns:ytconverters="clr-namespace:Yosu.Converters.Youtube"
+    x:Name="this"
+    x:DataType="components:YoutubeDownloadViewModel">
+    <Grid.Resources>
+        <ResourceDictionary>
+            <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+            <converters:DownloadStatusToIsVisibileConverter x:Key="DownloadStatusToIsVisibileConverter" />
+            <converters:DownloadStatusToProgressColorConverter x:Key="DownloadStatusToProgressColorConverter" />
+            <converters:TimeSpanToHumanReadableFormatConverter x:Key="TimeSpanToHumanReadableFormatConverter" />
+            <ytconverters:VideoToHighestQualityThumbnailUrlConverter x:Key="VideoToHighestQualityThumbnailUrlConverter" />
+        </ResourceDictionary>
+    </Grid.Resources>
+    <Frame
+        Margin="0"
+        Padding="0"
+        xct:TouchEffect.Command="{Binding BindingContext.OpenUrlCommand, Source={RelativeSource AncestorType={x:Type local:MainPage}}}"
+        xct:TouchEffect.CommandParameter="{Binding .}"
+        xct:TouchEffect.LongPressCommand="{Binding BindingContext.EnableMultiSelectWithParameterCommand, Source={RelativeSource AncestorType={x:Type local:MainPage}}}"
+        xct:TouchEffect.LongPressCommandParameter="{Binding .}"
+        xct:TouchEffect.NativeAnimation="True"
+        BackgroundColor="Transparent"
+        CornerRadius="0"
+        Style="{StaticResource CollectionItem.Frame}">
+        <Grid
+            Margin="8,6"
+            BackgroundColor="Transparent"
+            ColumnDefinitions="auto,*,auto"
+            HeightRequest="86"
+            RowDefinitions="*,auto"
+            RowSpacing="0">
+            <!--  https://www.google.com/search?q=youtube+thumbnail+height+and+width&spell=1&sa=X&ved=2ahUKEwjL5aSe-5X8AhWKQzABHXlwBXwQBSgAegQIEhAB&biw=1490&bih=734&dpr=1.25  -->
+            <!--  1280x720  -->
+            <!--<Frame
+                Margin="0"
+                HeightRequest="79"
+                WidthRequest="140"
+                Padding="0"
+                Grid.Column="0"
+                Style="{StaticResource CollectionItem.Frame}"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="FillAndExpand">
+                <ImageButton
+                    Aspect="AspectFill"
+                    BackgroundColor="Transparent"
+                    Source="{Binding Converter={x:Static ytconverters:VideoToHighestQualityThumbnailUrlConverter.Instance}}" />
+            </Frame>-->
+
+            <Border
+                Grid.Column="0"
+                Margin="0"
+                Padding="0"
+                BackgroundColor="Transparent"
+                HeightRequest="79"
+                HorizontalOptions="FillAndExpand"
+                StrokeThickness="0"
+                VerticalOptions="FillAndExpand"
+                WidthRequest="140">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="8" />
+                </Border.StrokeShape>
+                <AbsoluteLayout HorizontalOptions="FillAndExpand">
+                    <Image
+                        AbsoluteLayout.LayoutBounds="0,0,1,1"
+                        AbsoluteLayout.LayoutFlags="All"
+                        Aspect="AspectFill"
+                        BackgroundColor="Transparent"
+                        Source="{Binding Video, Converter={StaticResource VideoToHighestQualityThumbnailUrlConverter}}">
+                        <!--  Source="{Binding Converter={x:Static ytconverters:VideoToHighestQualityThumbnailUrlConverter.Instance}}"  -->
+                        <!--<Image.Source>
+                        <UriImageSource
+                            Uri="{Binding Thumbnails[0].Url}"
+                            CacheValidity="0"
+                            CachingEnabled="False" />
+                    </Image.Source>-->
+                    </Image>
+                    <Label
+                        Margin="6,3"
+                        Padding="4,0"
+                        AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
+                        AbsoluteLayout.LayoutFlags="All"
+                        BackgroundColor="#9E000000"
+                        FontSize="11"
+                        HorizontalOptions="End"
+                        LineBreakMode="TailTruncation"
+                        MaxLines="1"
+                        Text="{Binding Video.Duration, TargetNullValue=Live, Converter={StaticResource TimeSpanToHumanReadableFormatConverter}}"
+                        TextColor="White"
+                        VerticalOptions="End" />
+                </AbsoluteLayout>
+            </Border>
+
+            <StackLayout
+                Grid.Column="1"
+                Margin="12,0,0,0"
+                Orientation="Vertical">
+                <Label
+                    FontAttributes="Bold"
+                    LineBreakMode="TailTruncation"
+                    MaxLines="2"
+                    Text="{Binding Video.Title}" />
+                <Label
+                    LineBreakMode="TailTruncation"
+                    MaxLines="1"
+                    Text="{Binding Video.Author}" />
+                <!--<Label
+                    LineBreakMode="TailTruncation"
+                    MaxLines="1"
+                    Text="{Binding Video.Duration, TargetNullValue=Live}" />-->
+            </StackLayout>
+
+            <!--  Only show when DownloadStatus is None, Canceled or Completed  -->
+            <contextMenus:InitialContextMenu
+                BindingContext="{Binding .}"
+                IsVisible="{Binding CanShowInitialContextMenu}"
+                Tag="{Binding Parent.BindingContext, Source={x:Reference this}}" />
+
+            <!--  Only show while downloading (DownloadStatus is Started or Enqueued)  -->
+            <contextMenus:DownloadingContextMenu
+                BindingContext="{Binding .}"
+                IsVisible="{Binding CanShowDownloadingContextMenu}"
+                Tag="{Binding Parent.BindingContext, Source={x:Reference this}}" />
+
+            <!--  Only show when download failed (DownloadStatus is Failed)  -->
+            <contextMenus:DownloadFailedContextMenu
+                BindingContext="{Binding .}"
+                IsVisible="{Binding CanShowDownloadFailedContextMenu}"
+                Tag="{Binding Parent.BindingContext, Source={x:Reference this}}" />
+
+            <!--<cm:ContextMenuContainer
+                x:Name="ActionsInlineMenu"
+                Grid.Column="2"
+                Margin="0"
+                Padding="0"
+                xct:TouchEffect.NativeAnimation="True"
+                BackgroundColor="Transparent"
+                HeightRequest="44"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="Start"
+                WidthRequest="44">
+                <cm:ContextMenuContainer.MenuItems>
+                    <cm:ContextMenuItem
+                        Command="{Binding Parent.BindingContext.OpenUrlCommand, Source={x:Reference this}}"
+                        CommandParameter="{Binding .}"
+                        Text="Open" />
+                    <cm:ContextMenuItem
+                        Command="{Binding Parent.BindingContext.CopyUrlCommand, Source={x:Reference this}}"
+                        CommandParameter="{Binding .}"
+                        Text="Copy url" />
+                    <cm:ContextMenuItem
+                        Command="{Binding Parent.BindingContext.DownloadCommand, Source={x:Reference this}}"
+                        CommandParameter="{Binding .}"
+                        Text="Download" />
+                    <cm:ContextMenuItem
+                        Command="{Binding Parent.BindingContext.CancelDownloadCommand, Source={x:Reference this}}"
+                        CommandParameter="{Binding .}"
+                        Text="Cancel"
+                        IsEnabled="{Binding CanCancel}" />
+                </cm:ContextMenuContainer.MenuItems>
+                <cm:ContextMenuContainer.Content>
+                    <Border
+                        Grid.Column="2"
+                        Margin="0"
+                        Padding="0"
+                        xct:TouchEffect.Command="{Binding BindingContext.ShowContextMenuCommand, Source={RelativeSource AncestorType={x:Type views:MainPage}}}"
+                        xct:TouchEffect.CommandParameter="{Binding ., Source={x:Reference ActionsInlineMenu}}"
+                        xct:TouchEffect.NativeAnimation="True"
+                        BackgroundColor="Transparent"
+                        HeightRequest="44"
+                        HorizontalOptions="FillAndExpand"
+                        StrokeThickness="0"
+                        VerticalOptions="Start"
+                        WidthRequest="44">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="22" />
+                        </Border.StrokeShape>
+                        <Image HeightRequest="25">
+                            <Image.Triggers>
+                                <DataTrigger
+                                    Binding="{Binding BindingContext.SelectionMode, Source={RelativeSource AncestorType={x:Type views:MainPage}}}"
+                                    TargetType="Image"
+                                    Value="Multiple">
+                                    <Setter Property="IsVisible" Value="False" />
+                                </DataTrigger>
+                            </Image.Triggers>
+                            <Image.Source>
+                                <FontImageSource
+                                    FontFamily="Material"
+                                    Glyph="{x:Static materialDesign:MaterialDesignIcons.MoreVert}"
+                                    Size="Large"
+                                    Color="{AppThemeBinding Light={StaticResource Gray400},
+                                                            Dark={StaticResource White}}" />
+                            </Image.Source>
+                        </Image>
+                    </Border>
+                </cm:ContextMenuContainer.Content>
+            </cm:ContextMenuContainer>-->
+
+            <!--<ProgressBar x:Name="bufferProgressBar" Grid.Row="1" Grid.ColumnSpan="3" HeightRequest="5">
+                <ProgressBar.Behaviors>
+                    <toolkit:ProgressBarAnimationBehavior
+                    x:Name="ProgressBarAnimationBehavior"
+                    Progress="0.01"
+                    Length="250"/>
+                </ProgressBar.Behaviors>
+            </ProgressBar>-->
+
+            <!--  MAUI issue with multiple triggers. Use converters instead  -->
+            <!--<yc:ProgressBar
+                x:Name="AnimatedProgressBar"
+                Grid.Row="1"
+                Grid.ColumnSpan="3"
+                GradientColor="Green"
+                HeightRequest="3"
+                IsIntermediate="{Binding IsProgressIndeterminate}"
+                Progress="{Binding Progress.Current.Fraction}"
+                ProgressColor="Blue"
+                UseGradient="True">
+                <yc:ProgressBar.Triggers>
+                    <DataTrigger
+                        Binding="{Binding Status}"
+                        TargetType="yc:ProgressBar"
+                        Value="{x:Static components:DownloadStatus.None}">
+                        <Setter Property="IsVisible" Value="False" />
+                    </DataTrigger>
+                    <DataTrigger
+                        Binding="{Binding Status}"
+                        TargetType="yc:ProgressBar"
+                        Value="{x:Static components:DownloadStatus.Canceled}">
+                        <Setter Property="IsVisible" Value="False" />
+                    </DataTrigger>
+                    <DataTrigger
+                        Binding="{Binding Status}"
+                        TargetType="yc:ProgressBar"
+                        Value="{x:Static components:DownloadStatus.Failed}">
+                        <Setter Property="IsVisible" Value="True" />
+                        <Setter Property="IsIntermediate" Value="False" />
+                        <Setter Property="ProgressColor" Value="Red" />
+                    </DataTrigger>
+                    <DataTrigger
+                        Binding="{Binding Status}"
+                        TargetType="yc:ProgressBar"
+                        Value="{x:Static components:DownloadStatus.Started}">
+                        <Setter Property="IsVisible" Value="True" />
+                    </DataTrigger>
+                    <DataTrigger
+                        Binding="{Binding Status}"
+                        TargetType="yc:ProgressBar"
+                        Value="{x:Static components:DownloadStatus.Enqueued}">
+                        <Setter Property="IsVisible" Value="True" />
+                    </DataTrigger>
+                </yc:ProgressBar.Triggers>
+            </yc:ProgressBar>-->
+
+            <!--  (Likely) Tree expression in binding crashing in release mode  -->
+            <!--  Progress="{Binding Progress.Current.Fraction}"  -->
+
+            <yc:ProgressBar
+                x:Name="AnimatedProgressBar"
+                Grid.Row="1"
+                Grid.ColumnSpan="3"
+                HeightRequest="3"
+                IsIntermediate="{Binding IsProgressIndeterminate}"
+                IsVisible="{Binding Status, Converter={StaticResource DownloadStatusToIsVisibileConverter}}"
+                Progress="{Binding PercentageProgress.Fraction}"
+                ProgressColor="{Binding Status, Converter={StaticResource DownloadStatusToProgressColorConverter}}"
+                UseGradient="False" />
+        </Grid>
+    </Frame>
+    <VisualStateManager.VisualStateGroups>
+        <VisualStateGroup Name="CommonStates">
+            <VisualState Name="Normal" />
+            <VisualState Name="Selected">
+                <VisualState.Setters>
+                    <Setter Property="BackgroundColor" Value="LightSkyBlue" />
+                </VisualState.Setters>
+            </VisualState>
+        </VisualStateGroup>
+    </VisualStateManager.VisualStateGroups>
+</Grid>

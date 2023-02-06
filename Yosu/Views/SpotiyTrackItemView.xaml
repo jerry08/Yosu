@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Grid
+    x:Class="Yosu.Views.SpotiyTrackItemView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:cm="https://github.com/jerry08/Plugin.ContextMenuContainer"
+    xmlns:components="clr-namespace:Yosu.ViewModels.Components"
+    xmlns:contextMenus="clr-namespace:Yosu.Views.ContextMenus"
+    xmlns:controls="clr-namespace:Microsoft.Maui.Controls"
+    xmlns:converters="clr-namespace:Yosu.Converters"
+    xmlns:fi="clr-namespace:Yosu.FontIcons"
+    xmlns:local="clr-namespace:Yosu.Views"
+    xmlns:materialDesign="clr-namespace:MaterialDesign"
+    xmlns:spconverters="clr-namespace:Yosu.Converters.Spotify"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:viewmodels="clr-namespace:Yosu.ViewModels"
+    xmlns:views="clr-namespace:Yosu.Views"
+    xmlns:xct="clr-namespace:Plugin.MauiTouchEffect.Effects;assembly=Plugin.MauiTouchEffect"
+    xmlns:yc="clr-namespace:Yosu.Controls"
+    x:Name="this"
+    x:DataType="components:SpotifyDownloadViewModel">
+    <Grid.Resources>
+        <ResourceDictionary>
+            <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+            <converters:DownloadStatusToIsVisibileConverter x:Key="DownloadStatusToIsVisibileConverter" />
+            <converters:DownloadStatusToProgressColorConverter x:Key="DownloadStatusToProgressColorConverter" />
+            <converters:IntToKiloFormatConverter x:Key="IntToKiloFormatConverter" />
+            <converters:MillisecondsToHumanReadableFormatConverter x:Key="MillisecondsToHumanReadableFormatConverter" />
+            <converters:TimeSinceFormatConverter x:Key="TimeSinceFormatConverter" />
+            <spconverters:TrackToHighestQualityArtworkUrlConverter x:Key="TrackToHighestQualityArtworkUrlConverter" />
+        </ResourceDictionary>
+    </Grid.Resources>
+    <Frame
+        Margin="0"
+        Padding="0"
+        xct:TouchEffect.Command="{Binding BindingContext.OpenUrlCommand, Source={RelativeSource AncestorType={x:Type local:MainPage}}}"
+        xct:TouchEffect.CommandParameter="{Binding .}"
+        xct:TouchEffect.LongPressCommand="{Binding BindingContext.EnableMultiSelectWithParameterCommand, Source={RelativeSource AncestorType={x:Type local:MainPage}}}"
+        xct:TouchEffect.LongPressCommandParameter="{Binding .}"
+        xct:TouchEffect.NativeAnimation="True"
+        BackgroundColor="Transparent"
+        CornerRadius="0"
+        Style="{StaticResource CollectionItem.Frame}">
+        <Grid
+            Margin="10"
+            BackgroundColor="Transparent"
+            ColumnDefinitions="auto,*,auto"
+            HeightRequest="90"
+            RowDefinitions="*,auto"
+            RowSpacing="0">
+            <Border
+                Grid.Column="0"
+                Margin="0"
+                Padding="0"
+                BackgroundColor="Transparent"
+                HeightRequest="100"
+                HorizontalOptions="FillAndExpand"
+                StrokeThickness="0"
+                VerticalOptions="FillAndExpand"
+                WidthRequest="100">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="4" />
+                </Border.StrokeShape>
+                <Image
+                    Aspect="AspectFill"
+                    BackgroundColor="Transparent"
+                    Source="{Binding Track, Converter={StaticResource TrackToHighestQualityArtworkUrlConverter}}" />
+            </Border>
+
+            <StackLayout
+                Grid.Column="1"
+                Margin="12,0,0,0"
+                Orientation="Vertical">
+                <Label
+                    FontAttributes="Bold"
+                    MaxLines="2"
+                    Text="{Binding Track.Title}" />
+                <Label Text="{Binding Track.Artists[0].Name}" />
+                <HorizontalStackLayout>
+                    <Label Text="{Binding Track.DurationMs, Converter={StaticResource MillisecondsToHumanReadableFormatConverter}}" />
+                </HorizontalStackLayout>
+            </StackLayout>
+
+            <!--  Only show when DownloadStatus is None, Canceled or Completed  -->
+            <contextMenus:InitialContextMenu
+                BindingContext="{Binding .}"
+                IsVisible="{Binding CanShowInitialContextMenu}"
+                Tag="{Binding Parent.BindingContext, Source={x:Reference this}}" />
+
+            <!--  Only show while downloading (DownloadStatus is Started or Enqueued)  -->
+            <contextMenus:DownloadingContextMenu
+                BindingContext="{Binding .}"
+                IsVisible="{Binding CanShowDownloadingContextMenu}"
+                Tag="{Binding Parent.BindingContext, Source={x:Reference this}}" />
+
+            <!--  Only show when download failed (DownloadStatus is Failed)  -->
+            <contextMenus:DownloadFailedContextMenu
+                BindingContext="{Binding .}"
+                IsVisible="{Binding CanShowDownloadFailedContextMenu}"
+                Tag="{Binding Parent.BindingContext, Source={x:Reference this}}" />
+
+            <yc:ProgressBar
+                x:Name="AnimatedProgressBar"
+                Grid.Row="1"
+                Grid.ColumnSpan="3"
+                HeightRequest="3"
+                IsIntermediate="{Binding IsProgressIndeterminate}"
+                IsVisible="{Binding Status, Converter={StaticResource DownloadStatusToIsVisibileConverter}}"
+                Progress="{Binding PercentageProgress.Fraction}"
+                ProgressColor="{Binding Status, Converter={StaticResource DownloadStatusToProgressColorConverter}}"
+                UseGradient="False" />
+        </Grid>
+    </Frame>
+    <VisualStateManager.VisualStateGroups>
+        <VisualStateGroup Name="CommonStates">
+            <VisualState Name="Normal" />
+            <VisualState Name="Selected">
+                <VisualState.Setters>
+                    <Setter Property="BackgroundColor" Value="#1DB954" />
+                </VisualState.Setters>
+            </VisualState>
+        </VisualStateGroup>
+    </VisualStateManager.VisualStateGroups>
+</Grid>

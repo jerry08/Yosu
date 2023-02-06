@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net7.0-android;net7.0-ios;net7.0-maccatalyst</TargetFrameworks>
+    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net7.0-windows10.0.19041.0</TargetFrameworks>
+
+    <!--https://github.com/dotnet/maui/issues/12100-->
+    <PublishReadyToRun>false</PublishReadyToRun>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Gress" Version="2.0.1" />
+    <PackageReference Include="Httpz" Version="1.0.2" />
+    <PackageReference Include="SpotifyExplode" Version="1.0.5" />
+    <PackageReference Include="Y2mateApi" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Yosu.Youtube.Core\Yosu.Youtube.Core.csproj" />
+  </ItemGroup>
+
+</Project>

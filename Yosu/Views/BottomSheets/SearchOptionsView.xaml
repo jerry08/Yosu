@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ScrollView
+    x:Class="Yosu.Views.BottomSheets.SearchOptionsView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:components="clr-namespace:Yosu.ViewModels.Components"
+    xmlns:converters="clr-namespace:Yosu.Converters"
+    xmlns:local="clr-namespace:Yosu.Views.BottomSheets"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:viewmodels="clr-namespace:Yosu.ViewModels"
+    xmlns:xct="clr-namespace:Plugin.MauiTouchEffect.Effects;assembly=Plugin.MauiTouchEffect"
+    x:DataType="viewmodels:MainCollectionViewModel">
+    <StackLayout Spacing="8" Margin="0,0,0,10">
+        <Label
+            FontAttributes="Bold"
+            FontSize="20"
+            HeightRequest="60"
+            HorizontalOptions="CenterAndExpand"
+            HorizontalTextAlignment="Center"
+            Text="Select search source"
+            VerticalTextAlignment="Center" />
+
+        <BoxView Style="{StaticResource SeparatorBoxView}" />
+
+        <StackLayout
+            Margin="12,8"
+            Orientation="Vertical"
+            RadioButtonGroup.GroupName="SourceTypeRadio"
+            RadioButtonGroup.SelectedValue="{Binding SearchSourceType}"
+            Spacing="10">
+            <!--  Content doesn't work [bug #6614, #9633]  -->
+            <!--<RadioButton>
+                <RadioButton.Content>
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="18"
+                        Text="Soundcloud"
+                        VerticalOptions="Center" />
+                </RadioButton.Content>
+            </RadioButton>-->
+
+            <RadioButton
+                Content="Youtube"
+                FontAttributes="Bold"
+                FontSize="18"
+                Value="{x:Static components:SourceType.Youtube}"
+                TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+
+            <RadioButton
+                Content="Soundcloud"
+                FontAttributes="Bold"
+                FontSize="18"
+                Value="{x:Static components:SourceType.Soundcloud}"
+                TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+
+            <RadioButton
+                Content="Spotify"
+                FontAttributes="Bold"
+                FontSize="18"
+                Value="{x:Static components:SourceType.Spotify}"
+                TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+        </StackLayout>
+    </StackLayout>
+</ScrollView>

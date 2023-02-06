@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!-- colorPrimary is used for the default action bar background -->
+  <color name="colorPrimary">#d74c4c</color>
+
+  <!-- colorPrimaryDark is used for the status bar -->
+  <color name="colorPrimaryDark">#d74c4c</color>
+
+  <!-- colorAccent is used as the default value for colorControlActivated
+        which is used to tint widgets -->
+  <color name="colorAccent">#d74c4c</color>
+
+  <color name="colorActionMenuTextColor">#d74c4c</color>
+
+  <color name="maui_splash_color">@color/colorPrimary</color>
+
+  <color name="bottomSheetBg">#fff</color>
+  <color name="textColor">#000</color>
+  <color name="colorSurface">@color/bottomSheetBg</color>
+
+  <color name="blue1">#0048FF</color>
+  <color name="blue2">#487CFF</color>
+
+  <color name="purple1">#9500FF</color>
+  <color name="purple2">#AD3AFF</color>
+  <color name="purple3">#C169FF</color>
+  <color name="purple4">#D8A1FF</color>
+  <color name="purple5">#E6C2FF</color>
+  <color name="purple6">#F3E1FF</color>
+</resources>
