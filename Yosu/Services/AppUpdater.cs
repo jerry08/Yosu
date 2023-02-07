@@ -41,10 +41,10 @@ public class AppUpdater
             if (latestRelease is null)
                 return;
 
-            var latestVersionName = new Version(latestRelease.Name);
-            var currentVersionName = AppInfo.Current.Version;
+            var latestVersion = new Version(latestRelease.Name);
+            var currentVersion = AppInfo.Current.Version;
 
-            if (currentVersionName < latestVersionName)
+            if (currentVersion < latestVersion)
             {
                 var update = await App.AlertSvc.ShowConfirmationAsync(
                     "Update available",

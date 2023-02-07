@@ -16,7 +16,7 @@
 		<ApplicationIdGuid>47d295d3-a6c6-4a0b-b863-abcdf653f0fc</ApplicationIdGuid>
 
 		<!-- Versions -->
-		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+		<ApplicationDisplayVersion>1.0.1</ApplicationDisplayVersion>
 		<ApplicationVersion>1</ApplicationVersion>
 
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">11.0</SupportedOSPlatformVersion>
@@ -25,6 +25,15 @@
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
 		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
+	</PropertyGroup>
+
+	<!--<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0-android|AnyCPU'">-->
+  <PropertyGroup Condition="$(TargetFramework.Contains('-android')) and '$(Configuration)' == 'Release'">
+	  <AndroidKeyStore>True</AndroidKeyStore>
+    <AndroidSigningKeyStore>..\key.keystore</AndroidSigningKeyStore>
+	  <AndroidSigningStorePass>YosuJer20</AndroidSigningStorePass>
+	  <AndroidSigningKeyAlias>YosuAlias</AndroidSigningKeyAlias>
+	  <AndroidSigningKeyPass>YosuJer20</AndroidSigningKeyPass>
 	</PropertyGroup>
 
 	<ItemGroup>
