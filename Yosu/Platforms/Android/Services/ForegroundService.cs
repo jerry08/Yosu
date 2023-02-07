@@ -182,12 +182,14 @@ public class ForegroundService : LifecycleService
         string textTitle,
         string textContent)
     {
+        var flags = PendingIntentFlags.UpdateCurrent | PendingIntentFlags.Immutable;
+
         var intent = new Intent(service, typeof(MainActivity));
         var pendingIntent = PendingIntent.GetActivity(
             service,
             0,
             intent,
-            PendingIntentFlags.Immutable
+            flags
         );
 
         var cancelIntent = new Intent(service, typeof(ForegroundService));
@@ -196,7 +198,7 @@ public class ForegroundService : LifecycleService
             service,
             3462,
             cancelIntent,
-            PendingIntentFlags.UpdateCurrent
+            flags
         );
 
         var channelId = $"{service.PackageName}.general";
@@ -221,8 +223,15 @@ public class ForegroundService : LifecycleService
         string textTitle,
         string textContent)
     {
+        var flags = PendingIntentFlags.UpdateCurrent | PendingIntentFlags.Immutable;
+
         var intent = new Intent(service, typeof(MainActivity));
-        var pendingIntent = PendingIntent.GetActivity(service, 0, intent, PendingIntentFlags.Immutable);
+        var pendingIntent = PendingIntent.GetActivity(
+            service,
+            0,
+            intent,
+            flags
+        );
 
         var channelId = $"{service.PackageName}.general";
 
