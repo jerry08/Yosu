@@ -29,15 +29,6 @@ public partial class App : Application
         AlertSvc = Services.GetService<IAlertService>()!;
 
         ApplyTheme();
-
-        if (IsOnline())
-            CheckForUpdate();
-
-        Connectivity.Current.ConnectivityChanged += (s, e) =>
-        {
-            if (IsOnline())
-                CheckForUpdate();
-        };
     }
 
     public static bool IsOnline(bool showSnackbar = true)
@@ -96,7 +87,7 @@ public partial class App : Application
 
         var intent = new Android.Content.Intent(
             activity,
-            typeof(Yosu.Platforms.Services.ForegroundService)
+            typeof(Platforms.Services.ForegroundService)
         );
 
         //intent.PutExtra("fileName", fileName);
@@ -111,7 +102,7 @@ public partial class App : Application
 
         var intent = new Android.Content.Intent(
             activity,
-            typeof(Yosu.Platforms.Services.ForegroundService)
+            typeof(Platforms.Services.ForegroundService)
         );
 
         intent.SetAction("kill");

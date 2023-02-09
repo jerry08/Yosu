@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using Microsoft.Maui.Controls;
+using Microsoft.Maui.Networking;
 using Yosu.ViewModels;
 using Yosu.ViewModels.Framework;
 using Yosu.Views;
@@ -39,6 +40,15 @@ public partial class AppShell : Shell
                 //viewModel.Entities = new(viewModel.Entities.ToList());
                 viewModel.RefreshDownloadingItems();
             }
+
+            if (App.IsOnline(false))
+                App.CheckForUpdate();
+
+            Connectivity.Current.ConnectivityChanged += (s, e) =>
+            {
+                if (App.IsOnline())
+                    App.CheckForUpdate();
+            };
         };
     }
 

@@ -156,6 +156,17 @@ public class YoutubeViewModel
                 download.ErrorMessage = ex is YoutubeExplodeException
                     ? ex.Message
                     : ex.ToString();
+
+                try
+                {
+                    // Delete file
+                    if (!string.IsNullOrEmpty(download.FilePath))
+                        File.Delete(download.FilePath);
+                }
+                catch
+                {
+                    // Ignore
+                }
             }
             finally
             {
@@ -163,17 +174,6 @@ public class YoutubeViewModel
                 {
                     // Delete temporary downloaded file
                     File.Delete(download.TempFilePath!);
-                }
-                catch
-                {
-                    // Ignore
-                }
-
-                try
-                {
-                    // Delete file
-                    if (!string.IsNullOrEmpty(download.FilePath))
-                        File.Delete(download.FilePath);
                 }
                 catch
                 {
@@ -193,16 +193,6 @@ public class YoutubeViewModel
 
     public async void ShowOptions(List<YoutubeDownloadViewModel> downloads)
     {
-        // Remove downloads that weren't enqueued (due to pressing back when the bottom sheet is shown)
-        //var downloadKeys = downloads.Select(x => x.Key);
-
-        //Downloads.RemoveAll(x => x.Status == DownloadStatus.None);
-        //Downloads.RemoveAll(x => downloadKeys.Contains(x.Key));
-        //Downloads.AddRange(downloads);
-
-        //var page = new DownloadMultipleYtOptionsView(this);
-        //await Shell.Current.Navigation.PushModalAsyncSingle(page);
-
         await Task.Run(async () =>
         {
             try
@@ -218,7 +208,7 @@ public class YoutubeViewModel
                     var video = downloads.Single().Video!;
 
                     AvailableDownloadOptions = await _videoDownloader.GetDownloadOptionsAsync(video.Id);
-                    
+
                     // Nobody really use the other formats
                     AvailableDownloadOptions = AvailableDownloadOptions
                         .Where(x => x.Container == Container.Mp4

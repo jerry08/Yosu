@@ -135,6 +135,17 @@ public class SoundcloudViewModel
                 download.ErrorMessage = ex is SoundcloudExplodeException
                     ? ex.Message
                     : ex.ToString();
+
+                try
+                {
+                    // Delete file
+                    if (!string.IsNullOrEmpty(download.FilePath))
+                        File.Delete(download.FilePath);
+                }
+                catch
+                {
+                    // Ignore
+                }
             }
             finally
             {
@@ -142,17 +153,6 @@ public class SoundcloudViewModel
                 {
                     // Delete temporary downloaded file
                     File.Delete(download.TempFilePath!);
-                }
-                catch
-                {
-                    // Ignore
-                }
-
-                try
-                {
-                    // Delete file
-                    if (!string.IsNullOrEmpty(download.FilePath))
-                        File.Delete(download.FilePath);
                 }
                 catch
                 {

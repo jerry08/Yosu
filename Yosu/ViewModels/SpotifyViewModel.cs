@@ -127,6 +127,17 @@ public class SpotifyViewModel
                 download.ErrorMessage = ex is SpotifyExplodeException
                     ? ex.Message
                     : ex.ToString();
+
+                try
+                {
+                    // Delete file
+                    if (!string.IsNullOrEmpty(download.FilePath))
+                        File.Delete(download.FilePath);
+                }
+                catch
+                {
+                    // Ignore
+                }
             }
             finally
             {
@@ -134,17 +145,6 @@ public class SpotifyViewModel
                 {
                     // Delete temporary downloaded file
                     File.Delete(download.TempFilePath!);
-                }
-                catch
-                {
-                    // Ignore
-                }
-
-                try
-                {
-                    // Delete file
-                    if (!string.IsNullOrEmpty(download.FilePath))
-                        File.Delete(download.FilePath);
                 }
                 catch
                 {
