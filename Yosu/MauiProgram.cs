@@ -1,28 +1,25 @@
-﻿using CommunityToolkit.Maui;
+﻿using System.Linq;
+using CommunityToolkit.Maui;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Controls.Compatibility.Hosting;
 using Microsoft.Maui.Controls.Hosting;
-using Microsoft.Maui.Graphics;
 using Microsoft.Maui.Hosting;
 using Microsoft.Maui.LifecycleEvents;
 using Plugin.ContextMenuContainer;
+using Plugin.MauiTouchEffect.Effects;
+using SkiaSharp.Views.Maui.Controls.Hosting;
+using Woka;
+using Yosu.Handlers;
 using Yosu.Services;
 using Yosu.Services.AlertDialog;
 using Yosu.Utils;
-using Yosu.ViewModels.Settings;
-using Yosu.Views.Settings;
 using Yosu.ViewModels;
+using Yosu.ViewModels.Settings;
 using Yosu.Views;
-using System.Collections.Generic;
-using Woka;
-using SkiaSharp.Views.Maui.Controls.Hosting;
-using Plugin.MauiTouchEffect.Effects;
-using System.Linq;
-using Android.Media.Effect;
-using Yosu.Handlers;
+using Yosu.Views.Settings;
 
 namespace Yosu;
 
@@ -48,40 +45,22 @@ public static class MauiProgram
                 fonts.AddFont("MaterialIconsOutlined-Regular.otf", "Material");
                 fonts.AddFont("fa-solid-900.ttf", "FaSolid");
             })
-            //.UseMaterialComponents(new List<string>
-            //{
-            //    //generally, we needs add 6 types of font families
-            //    "Roboto-Regular.ttf",
-            //    "Roboto-Italic.ttf",
-            //    "Roboto-Medium.ttf",
-            //    "Roboto-MediumItalic.ttf",
-            //    "Roboto-Bold.ttf",
-            //    "Roboto-BoldItalic.ttf",
-            //})
             .UseSkiaSharp()
             .UseMauiCompatibility()
             .ConfigureMauiHandlers(handlers =>
             {
-                // Register ALL handlers in the Xamarin Community Toolkit assembly
-                handlers.AddCompatibilityRenderers(typeof(Plugin.MauiTouchEffect.Effects.TouchEffect).Assembly);
+                // Register ALL handlers in the assembly
+                handlers.AddCompatibilityRenderers(typeof(TouchEffect).Assembly);
 
                 handlers.AddHandler<CheckBox, MaterialCheckBoxHandler>();
                 handlers.AddHandler<Switch, MaterialSwitchHandler>();
 
                 handlers.AddHandler(typeof(ContextMenuContainer), typeof(ContextMenuContainerRenderer));
-                //handlers.AddCompatibilityRenderers(typeof(PullToRefreshLayout).Assembly);
-                //handlers.AddCompatibilityRenderer(typeof(PullToRefreshLayout), typeof(PullToRefreshLayoutRenderer));
-
-#if ANDROID
-                //Workarounds
-                //handlers.AddHandler<Entry, Handlers.EntryHandler>();
-                //handlers.AddHandler<RefreshView, Handlers.CustomRefreshViewHandler>();
-#endif
             })
             .ConfigureEffects(effects =>
             {
-                effects.AddCompatibilityEffects(typeof(Plugin.MauiTouchEffect.Effects.TouchEffect).Assembly);
-                effects.Add(typeof(Plugin.MauiTouchEffect.Effects.TouchEffect), typeof(Plugin.MauiTouchEffect.Effects.PlatformTouchEffect));
+                effects.AddCompatibilityEffects(typeof(TouchEffect).Assembly);
+                effects.Add(typeof(TouchEffect), typeof(PlatformTouchEffect));
             })
             .ConfigureWorkarounds()
             .ConfigureLifecycleEvents(events =>
@@ -107,11 +86,6 @@ public static class MauiProgram
 #if DEBUG
         builder.Logging.AddDebug();
 #endif
-
-        //Microsoft.Maui.Handlers.RefreshViewHandler.Mapper.AppendToMapping("Test", (handler, v) =>
-        //{
-        //
-        //});
 
         // Workaround for TouchEffect being lost when navigating multiple times or
         // when closing the app (with OnBackButtonPressed()) and reopening the cached view.
@@ -148,17 +122,6 @@ public static class MauiProgram
         builder.Services.AddSingleton<SettingsService>();
 
         builder.Services.AddSingleton<IStatusBarStyleManager, StatusBarStyleManager>();
-
-        //Laerdal.FFmpeg.Android.Config.IgnoreSignal(Laerdal.FFmpeg.Android.Signal.Sigxcpu);
-        //
-        //var f1 = "/data/user/0/com.berry.yosu/cache/638102374309888262.tmp.stream-0.tmp";
-        //var gg = System.IO.File.Exists(f1);
-        //System.IO.File.Create(f1);
-        //var gg2 = System.IO.File.Exists(f1);
-        //
-        ////var arguments = "-i /data/user/0/com.berry.yosu/cache/638102320032679702.tmp.stream-0.tmp -i /data/user/0/com.berry.yosu/cache/638102320032679702.tmp.stream-1.tmp -f mp4 -map 0 -map 1 -c:a copy -c:v copy -nostdin -y /data/user/0/com.berry.yosu/cache/638102320032679702.tmp";
-        //var arguments = "-i /data/user/0/com.berry.yosu/cache/638102374309888262.tmp.stream-0.tmp -f mp3 -map 0 -b:a 165k -threads 8 -nostdin -y /data/user/0/com.berry.yosu/cache/638102370181029302.tmp";
-        //var exitCode = Laerdal.FFmpeg.Android.FFmpeg.Execute(arguments);
 
 #if DEBUG
         builder.Logging.AddDebug();
