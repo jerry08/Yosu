@@ -1,17 +1,14 @@
-﻿using Microsoft.Maui.Platform;
-using Microsoft.Maui.ApplicationModel;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
 using Android.App;
-using AndroidX.Lifecycle;
+using Android.Content;
 using Android.OS;
 using Android.Runtime;
-using Android.Content;
 using Android.Util;
 using AndroidX.Core.App;
-using System.Threading.Tasks;
-using System;
-using System.Diagnostics.CodeAnalysis;
+using AndroidX.Lifecycle;
 using Yosu.ViewModels;
-using Laerdal.FFmpeg.Android;
 
 namespace Yosu.Platforms.Services;
 
@@ -62,22 +59,6 @@ public class ForegroundService : LifecycleService
 
         if (intent?.Action == "kill")
             KillService();
-
-        //ForegroundService.SendNotification(this, 2872, "test", "test");
-        //Toast.Make("Foreground Service Started", CommunityToolkit.Maui.Core.ToastDuration.Short).Show();
-
-        //StartForeground(NotificationId, );
-        //SendNotification(this, "Downloading", "Downloading...");
-
-        //Task.Run(async () =>
-        //{
-        //    for (int i = 0; i < 20; i++)
-        //    {
-        //        await Task.Delay(1000);
-        //        SendNotification(this, $"test{i}", $"test{i}");
-        //        //Toast.Make("ss", CommunityToolkit.Maui.Core.ToastDuration.Short).Show();
-        //    }
-        //});
 
         // Wake locks and misc tasks from here :
         if (IsServiceStarted)

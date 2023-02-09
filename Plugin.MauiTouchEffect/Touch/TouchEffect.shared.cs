@@ -1197,7 +1197,7 @@ public class TouchEffect : RoutingEffect
 
     void SetChildrenInputTransparent(bool value)
     {
-        if (Element is not Microsoft.Maui.Controls.Layout layout)
+        if (Element is not Layout layout)
             return;
 
         layout.ChildAdded -= OnLayoutChildAdded;

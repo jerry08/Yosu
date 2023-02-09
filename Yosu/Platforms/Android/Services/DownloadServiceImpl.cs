@@ -1,14 +1,11 @@
-﻿using Android.App;
-using Android.Content;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Android.App;
 using Android.Webkit;
 using CommunityToolkit.Maui.Alerts;
 using Microsoft.Maui.ApplicationModel;
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Yosu.Utils;
 
 namespace Yosu.Services;
