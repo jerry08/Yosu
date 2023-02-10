@@ -34,7 +34,8 @@ public class AndroidStoragePermission
         {
             // since sdk 30; stricter permissions requires special 'manage storage permission'
             // requires to go to system settings
-            hasPermissions = Android.OS.Environment.IsExternalStorageManager;
+            hasPermissions = Android.OS.Environment.IsExternalStorageManager
+                && activity.PackageManager.CheckPermission(Manifest.Permission.ManageExternalStorage, activity.PackageName) == Permission.Granted;
         }
         else if (SDK > BuildVersionCodes.M)
         {
