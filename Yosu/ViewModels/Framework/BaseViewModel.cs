@@ -54,14 +54,16 @@ public partial class BaseViewModel : ObservableObject
         menu.Show();
     }
 
-    public async Task<bool> IsOnline()
+    public async Task<bool> IsOnline(bool showAlert = true)
     {
         var isOnline = Connectivity.Current.NetworkAccess == NetworkAccess.Internet;
         if (!isOnline)
         {
             IsBusy = false;
             IsRefreshing = false;
-            await ShowNoInternetAlert();
+
+            if (showAlert)
+                await ShowNoInternetAlert();
         }
 
         return isOnline;

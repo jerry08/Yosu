@@ -90,6 +90,8 @@ public partial class MainCollectionViewModel : CollectionViewModel<object>
             return;
         }
 
+        if (!await IsOnline()) return;
+
         if (!IsRefreshing)
             IsBusy = true;
 
@@ -130,6 +132,8 @@ public partial class MainCollectionViewModel : CollectionViewModel<object>
     [RelayCommand]
     async void Download(DownloadViewModelBase entity)
     {
+        if (!await IsOnline()) return;
+
         var status = await StoragePermissionUtil.CheckAndRequestStoragePermission();
         if (status == PermissionStatus.Denied)
         {
@@ -167,6 +171,8 @@ public partial class MainCollectionViewModel : CollectionViewModel<object>
     [RelayCommand]
     async void DownloadSelected()
     {
+        if (!await IsOnline()) return;
+
         var status = await StoragePermissionUtil.CheckAndRequestStoragePermission();
         if (status == PermissionStatus.Denied)
         {
@@ -211,8 +217,10 @@ public partial class MainCollectionViewModel : CollectionViewModel<object>
     }
 
     [RelayCommand]
-    void RestartDownload(DownloadViewModelBase entity)
+    async void RestartDownload(DownloadViewModelBase entity)
     {
+        if (!await IsOnline()) return;
+
         switch (entity)
         {
             case YoutubeDownloadViewModel download:
