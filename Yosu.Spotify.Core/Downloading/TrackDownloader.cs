@@ -120,10 +120,10 @@ public class TrackDownloader
         //var downloadUrl = await _spotify.Tracks.GetSpotifymateUrlAsync(track.Url, cancellationToken);
 
         var videoId = await _spotify.Tracks.GetYoutubeIdAsync(track.Id, cancellationToken);
-        var test1 = await y2mate.AnalyzeAsync(videoId!);
+        var test1 = await y2mate.AnalyzeAsync(videoId!, cancellationToken: cancellationToken);
 
         var audio = test1.Where(x => x.FileType == FileType.Mp3).FirstOrDefault();
-        var downloadUrl = await y2mate.ConvertAsync(audio!.Id, videoId!);
+        var downloadUrl = await y2mate.ConvertAsync(audio!.Id, videoId!, cancellationToken: cancellationToken);
 
         //var tt = new WebClient();
         //tt.DownloadFile(downloadUrl, filePath);

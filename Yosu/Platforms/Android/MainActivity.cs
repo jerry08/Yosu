@@ -4,21 +4,42 @@ using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
-using AndroidX.AppCompat.App;
 using AndroidX.Core.App;
 using AndroidX.Core.Content;
 using Microsoft.Maui;
 using Yosu.Utils;
+using Yosu.ViewModels;
 
 namespace Yosu;
 
-[Activity(Theme = "@style/Maui.SplashTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize | ConfigChanges.Density)]
-//[Activity(MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize | ConfigChanges.Density)]
+[IntentFilter(
+    actions: new[] { Intent.ActionView },
+    Label = "Download in Yosu",
+    Categories = new[] { Intent.CategoryDefault, Intent.CategoryBrowsable },
+    DataSchemes = new[] { "http", "https" },
+    DataHosts = new[] { "youtube.com", "youtu.be", "on.soundcloud.com" },
+    DataPathPatterns = new[] { "/.*" }
+)]
+[IntentFilter(
+    actions: new[] { Intent.ActionView },
+    Label = "Download in Yosu",
+    Categories = new[] { Intent.CategoryDefault, Intent.CategoryBrowsable },
+    DataSchemes = new[] { "http", "https" },
+    DataHosts = new[] { "soundcloud.com", "www.soundcloud.com", "m.soundcloud.com" },
+    DataPathPatterns = new[] { "/.*/.*" }
+)]
+//[IntentFilter(
+//    actions: new[] { Intent.ActionSend },
+//    Label = "Download in Yosu",
+//    Categories = new[] { Intent.CategoryDefault },
+//    DataMimeTypes = new[] { "text/plain" }
+//)]
+[Activity(Exported = true, Theme = "@style/Maui.SplashTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize | ConfigChanges.Density)]
 public class MainActivity : MauiAppCompatActivity
 {
     public AndroidStoragePermission? AndroidStoragePermission;
 
-    static int PostNotificationsRequestCode = 1006;
+    private const int PostNotificationsRequestCode = 1006;
 
     protected override void OnCreate(Bundle? savedInstanceState)
     {
@@ -27,9 +48,6 @@ public class MainActivity : MauiAppCompatActivity
         base.OnCreate(savedInstanceState);
 
         UserDialogs.Init(this);
-
-        //AppCompatDelegate.DefaultNightMode = (int)UiNightMode.Yes;
-        //AppCompatDelegate.DefaultNightMode = AppCompatDelegate.ModeNightYes;
 
         if (Build.VERSION.SdkInt > BuildVersionCodes.S)
         {
@@ -44,6 +62,11 @@ public class MainActivity : MauiAppCompatActivity
         }
 
         CreateNotificationChannelIfNeeded();
+
+        if (Intent?.Data is Android.Net.Uri uri)
+        {
+            MainCollectionViewModel.IntentUrl = uri.ToString();
+        }
     }
 
     private void CreateNotificationChannelIfNeeded()

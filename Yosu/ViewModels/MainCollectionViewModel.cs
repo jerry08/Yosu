@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -47,6 +48,8 @@ public partial class MainCollectionViewModel : CollectionViewModel<object>
 
     private IBottomSheetController? BottomSheetController { get; set; }
 
+    public static string? IntentUrl { get; set; }
+
     public MainCollectionViewModel(
         PreferenceService preference,
         YoutubeViewModel youtubeViewModel,
@@ -70,6 +73,8 @@ public partial class MainCollectionViewModel : CollectionViewModel<object>
             if (e.PropertyName == nameof(SearchSourceType))
                 SearchSourceTypeChanged();
         };
+
+        Query = IntentUrl;
     }
 
     protected override void LoadCore()
@@ -81,6 +86,12 @@ public partial class MainCollectionViewModel : CollectionViewModel<object>
     [RelayCommand]
     async void ProcessQuery()
     {
+        if (!string.IsNullOrWhiteSpace(IntentUrl))
+        {
+            Query = IntentUrl;
+            IntentUrl = null;
+        }
+
         KeyboardHelper.HideKeyboard();
 
         if (string.IsNullOrWhiteSpace(Query))
@@ -97,7 +108,7 @@ public partial class MainCollectionViewModel : CollectionViewModel<object>
 
         try
         {
-            var result = await _queryResolver.ResolveAsync(Query, SearchSourceType);
+            var result = await Task.Run(() => _queryResolver.ResolveAsync(Query, SearchSourceType));
 
             Entities.Clear();
 
@@ -153,12 +164,10 @@ public partial class MainCollectionViewModel : CollectionViewModel<object>
 
                 case SoundcloudDownloadViewModel download:
                     _soundcloudViewModel.EnqueueDownloads(new[] { download });
-                    //await Snackbar.Make("Download started").Show();
                     break;
 
                 case SpotifyDownloadViewModel download:
                     _spotifyViewModel.EnqueueDownloads(new[] { download });
-                    //await Snackbar.Make("Download started").Show();
                     break;
             }
         }
