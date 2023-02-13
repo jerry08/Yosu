@@ -49,6 +49,12 @@
 
   <style name="CustomBottomSheetDialogTheme" parent="@style/ThemeOverlay.Material3.BottomSheetDialog">
     <item name="bottomSheetStyle">@style/Yosu.BottomSheetDialog</item>
+    
+    <item name="android:windowIsFloating">false</item>
+    <item name="android:navigationBarColor">@color/bottomSheetBg</item>
+    <item name="android:windowLightStatusBar">false</item>
+    <item name="android:windowLightNavigationBar">true</item>
+    <!--<item name="android:statusBarColor">@android:color/transparent</item>-->
   </style>
 
   <style name="Yosu.BottomSheetDialog" parent="Widget.Material3.BottomSheet.Modal">
