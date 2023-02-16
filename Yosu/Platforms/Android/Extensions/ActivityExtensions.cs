@@ -1,17 +1,47 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using Android.Media;
-using Android.Webkit;
 using Android.Content;
+using Android.Media;
+using Android.OS;
 using Android.Provider;
+using Android.Webkit;
 
 namespace Yosu.Extensions;
 
 internal static class ActivityExtensions
 {
-    public static async Task CopyFileUsingMediaStore(
+    public static async Task CopyFileAsync(
+        this Context context,
+        string filePath,
+        string newFilePath,
+        CancellationToken cancellationToken = default)
+    {
+        if (Build.VERSION.SdkInt >= BuildVersionCodes.Q)
+        {
+            await CopyFileUsingMediaStore(context, filePath, newFilePath, cancellationToken);
+        }
+        else
+        {
+            File.Copy(filePath, newFilePath, true);
+
+            var ext = Path.GetExtension(newFilePath).Replace(".", "");
+            var mime = MimeTypeMap.Singleton!;
+            var mimeType = mime.GetMimeTypeFromExtension(ext);
+
+            if (!string.IsNullOrEmpty(mimeType))
+            {
+                MediaScannerConnection.ScanFile(
+                    context,
+                    new[] { newFilePath },
+                    new[] { mimeType },
+                    null
+                );
+            }
+        }
+    }
+
+    private static async Task CopyFileUsingMediaStore(
         this Context context,
         string filePath,
         string newFilePath,
@@ -27,7 +57,7 @@ internal static class ActivityExtensions
         var mime = MimeTypeMap.Singleton!;
         var mimeType = mime.GetMimeTypeFromExtension(ext);
 
-        if (mimeType is null)
+        if (string.IsNullOrEmpty(mimeType))
             return;
 
         var fileInfo = new FileInfo(filePath);

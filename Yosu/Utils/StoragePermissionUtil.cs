@@ -21,8 +21,9 @@ internal class StoragePermissionUtil
     private static async Task<PermissionStatus> CheckAndRequestStorageReadPermission()
     {
         var status = await Permissions.CheckStatusAsync<Permissions.StorageRead>();
+        var storageWriteStatus = await Permissions.CheckStatusAsync<Permissions.StorageWrite>();
 
-        if (status == PermissionStatus.Granted)
+        if (status == PermissionStatus.Granted && storageWriteStatus == PermissionStatus.Granted)
             return status;
 
 #if ANDROID
@@ -45,6 +46,12 @@ internal class StoragePermissionUtil
 #endif
 
         status = await Permissions.RequestAsync<Permissions.StorageRead>();
+        if (status != PermissionStatus.Granted)
+            return status;
+
+        status = await Permissions.RequestAsync<Permissions.StorageWrite>();
+        if (status != PermissionStatus.Granted)
+            return status;
 
         return status;
     }

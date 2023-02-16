@@ -108,10 +108,11 @@ public class SpotifyViewModel
 
                 if (Platform.CurrentActivity is not null)
                 {
-                    await Platform.CurrentActivity.CopyFileUsingMediaStore(
+                    await Platform.CurrentActivity.CopyFileAsync(
                         download.TempFilePath,
                         download.FilePath!,
-                        download.CancellationToken);
+                        download.CancellationToken
+                    );
                 }
 #endif
             }

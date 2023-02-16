@@ -135,10 +135,11 @@ public class YoutubeViewModel
 #if ANDROID
                 if (Platform.CurrentActivity is not null)
                 {
-                    await Platform.CurrentActivity.CopyFileUsingMediaStore(
+                    await Platform.CurrentActivity.CopyFileAsync(
                         download.TempFilePath!,
                         download.FilePath!,
-                        download.CancellationToken);
+                        download.CancellationToken
+                    );
                 }
 #endif
 
