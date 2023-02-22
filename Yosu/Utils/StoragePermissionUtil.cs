@@ -23,8 +23,11 @@ internal class StoragePermissionUtil
         var status = await Permissions.CheckStatusAsync<Permissions.StorageRead>();
         var storageWriteStatus = await Permissions.CheckStatusAsync<Permissions.StorageWrite>();
 
-        if (status == PermissionStatus.Granted && storageWriteStatus == PermissionStatus.Granted)
+        if (status == PermissionStatus.Granted
+            && storageWriteStatus == PermissionStatus.Granted)
+        {
             return status;
+        }
 
 #if ANDROID
         if (Android.OS.Build.VERSION.SdkInt > Android.OS.BuildVersionCodes.Q)

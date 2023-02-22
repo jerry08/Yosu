@@ -67,8 +67,8 @@ public partial class AppShell : Shell
             if (DoubleBackToExitPressedOnce)
             {
                 //Application.Current?.Quit();
-
                 //return true;
+
                 return base.OnBackButtonPressed();
             }
 

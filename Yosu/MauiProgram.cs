@@ -52,8 +52,10 @@ public static class MauiProgram
                 // Register ALL handlers in the assembly
                 handlers.AddCompatibilityRenderers(typeof(TouchEffect).Assembly);
 
+#if ANDROID
                 handlers.AddHandler<CheckBox, MaterialCheckBoxHandler>();
                 handlers.AddHandler<Switch, MaterialSwitchHandler>();
+#endif
 
                 handlers.AddHandler(typeof(ContextMenuContainer), typeof(ContextMenuContainerRenderer));
             })
