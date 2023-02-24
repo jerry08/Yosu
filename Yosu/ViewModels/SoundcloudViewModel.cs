@@ -166,7 +166,10 @@ public class SoundcloudViewModel
                 Downloads.Remove(download);
 
                 if (Downloads.Count == 0)
+                {
+                    NotificationHelper.ShowCompletedNotification();
                     App.StopForeground();
+                }
             }
         });
     }

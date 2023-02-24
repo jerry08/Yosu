@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Linq;
-using Android.OS;
 using Android.App;
 using Android.Content;
+using Android.OS;
 using Android.Service.Notification;
-using AndroidX.Core.App;
 
 namespace Yosu.Utils;
 
@@ -31,7 +30,9 @@ public static class ApplicationEx
     {
         var appProcessInfo = new ActivityManager.RunningAppProcessInfo();
         ActivityManager.GetMyMemoryState(appProcessInfo);
-        return appProcessInfo.Importance == Importance.Foreground || appProcessInfo.Importance == Importance.Visible;
+        return appProcessInfo.Importance == Importance.Foreground
+            //|| appProcessInfo.Importance == Importance.ForegroundService
+            || appProcessInfo.Importance == Importance.Visible;
     }
 
     public static Notification? GetActiveNotification(Context? context, int id)

@@ -7,7 +7,6 @@ using Android.OS;
 using AndroidX.Core.App;
 using AndroidX.Core.Content;
 using Microsoft.Maui;
-using Yosu.Utils;
 using Yosu.ViewModels;
 
 namespace Yosu;
@@ -37,8 +36,6 @@ namespace Yosu;
 [Activity(Exported = true, Theme = "@style/Maui.SplashTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize | ConfigChanges.Density)]
 public class MainActivity : MauiAppCompatActivity
 {
-    public AndroidStoragePermission? AndroidStoragePermission;
-
     private const int PostNotificationsRequestCode = 1006;
 
     protected override void OnCreate(Bundle? savedInstanceState)
@@ -82,18 +79,6 @@ public class MainActivity : MauiAppCompatActivity
         var channelId = $"{PackageName}.general";
         var notificationManager = (NotificationManager?)GetSystemService(NotificationService);
         var channel = new NotificationChannel(channelId, "General", NotificationImportance.Low);
-        notificationManager?.CreateNotificationChannel(channel);
-    }
-
-    public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
-    {
-        base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
-        AndroidStoragePermission?.OnRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
-
-    protected override void OnActivityResult(int requestCode, Result resultCode, Intent? data)
-    {
-        base.OnActivityResult(requestCode, resultCode, data);
-        AndroidStoragePermission?.OnActivityResult(requestCode, resultCode, data);
+        notificationManager.CreateNotificationChannel(channel);
     }
 }

@@ -6,19 +6,17 @@ using Android.Content;
 using Android.OS;
 using Android.Runtime;
 using Android.Util;
-using AndroidX.Core.App;
 using AndroidX.Lifecycle;
+using Yosu.Utils;
 using Yosu.ViewModels;
 
-namespace Yosu.Platforms.Services;
+namespace Yosu.Services;
 
 //[Service(Exported = true, Enabled = true, Name = "com.berry.yosuservice", Process = ":yosudownloader")]
 [Service(Exported = true, Enabled = true, Name = "com.berry.yosuservice")]
 public class ForegroundService : LifecycleService
 {
     public const string Tag = "Foreground Service";
-    public const string ChannelId = "ForegroundDownloaderService";
-    public const int NotificationId = 2781;
 
     public PowerManager.WakeLock? WakeLock { get; set; }
 
@@ -43,7 +41,7 @@ public class ForegroundService : LifecycleService
     {
         base.OnCreate();
 
-        SendNotification(this, "Downloading", "Downloading...");
+        NotificationHelper.ShowNotification(this, "Downloading", "Downloading...");
     }
 
     [return: GeneratedEnum]
@@ -155,80 +153,5 @@ public class ForegroundService : LifecycleService
         {
             StopSelf();
         }
-    }
-
-    [SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
-    public static void SendNotification(
-        Service service,
-        string textTitle,
-        string textContent)
-    {
-        var flags = PendingIntentFlags.UpdateCurrent | PendingIntentFlags.Immutable;
-
-        var intent = new Intent(service, typeof(MainActivity));
-        var pendingIntent = PendingIntent.GetActivity(
-            service,
-            0,
-            intent,
-            flags
-        );
-
-        var cancelIntent = new Intent(service, typeof(ForegroundService));
-        cancelIntent.SetAction("kill");
-        var cancelPendingIntent = PendingIntent.GetForegroundService(
-            service,
-            3462,
-            cancelIntent,
-            flags
-        );
-
-        var channelId = $"{service.PackageName}.general";
-
-        var builder = new NotificationCompat.Builder(service, channelId)
-            .SetSmallIcon(Resource.Drawable.logo_notification)
-            .SetOngoing(true)
-            .SetContentTitle(textTitle)
-            .SetContentText(textContent)
-            .SetContentIntent(pendingIntent)
-            .SetProgress(100, 100, true)
-            .AddAction(Resource.Drawable.logo_notification, "Cancel All", cancelPendingIntent)
-            //.SetPriority(NotificationCompat.PriorityDefault);
-            .SetPriority(NotificationCompat.PriorityLow);
-
-        service.StartForeground(NotificationId, builder.Build());
-    }
-
-    public static void SendNotification(
-        Context service,
-        int notificationId,
-        string textTitle,
-        string textContent)
-    {
-        var flags = PendingIntentFlags.UpdateCurrent | PendingIntentFlags.Immutable;
-
-        var intent = new Intent(service, typeof(MainActivity));
-        var pendingIntent = PendingIntent.GetActivity(
-            service,
-            0,
-            intent,
-            flags
-        );
-
-        var channelId = $"{service.PackageName}.general";
-
-        //Application.Context.Resources?.GetIdentifier();
-
-        var builder = new NotificationCompat.Builder(service, channelId)
-            .SetSmallIcon(Resource.Drawable.logo_notification)
-            .SetOngoing(true)
-            .SetContentTitle(textTitle)
-            .SetContentText(textContent)
-            .SetContentIntent(pendingIntent)
-            .SetPriority(NotificationCompat.PriorityLow);
-
-        var notificationManager = NotificationManagerCompat.From(service);
-        //var notificationManager = (NotificationManager)GetSystemService(NotificationService);
-
-        notificationManager.Notify(notificationId, builder.Build());
     }
 }

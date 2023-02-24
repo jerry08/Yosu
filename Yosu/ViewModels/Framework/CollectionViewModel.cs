@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.Input;
 using Yosu.Common.Utils;
 
@@ -58,7 +57,7 @@ public partial class CollectionViewModel<T> : CollectionViewModelBase
         if (!IsRefreshing)
             IsBusy = true;
 
-        await Task.Delay(100);
+        //await Task.Delay(100);
 
         //Entities.Clear();
         Offset = 0;

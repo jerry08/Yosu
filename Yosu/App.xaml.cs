@@ -87,7 +87,7 @@ public partial class App : Application
 
         var intent = new Android.Content.Intent(
             activity,
-            typeof(Platforms.Services.ForegroundService)
+            typeof(ForegroundService)
         );
 
         //intent.PutExtra("fileName", fileName);
@@ -102,7 +102,7 @@ public partial class App : Application
 
         var intent = new Android.Content.Intent(
             activity,
-            typeof(Platforms.Services.ForegroundService)
+            typeof(ForegroundService)
         );
 
         intent.SetAction("kill");

@@ -158,7 +158,10 @@ public class SpotifyViewModel
                 Downloads.Remove(download);
 
                 if (Downloads.Count == 0)
+                {
+                    NotificationHelper.ShowCompletedNotification();
                     App.StopForeground();
+                }
             }
         });
     }
