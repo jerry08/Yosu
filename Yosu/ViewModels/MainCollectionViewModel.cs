@@ -302,6 +302,7 @@ public partial class MainCollectionViewModel : CollectionViewModel<object>
         _preference.SearchSourceType = SearchSourceType;
         await _preference.SaveAsync();
 
+        Entities.Clear();
         Refresh();
     }
 
