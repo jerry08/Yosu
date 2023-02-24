@@ -20,29 +20,16 @@ internal class StoragePermissionUtil
 
     private static async Task<PermissionStatus> CheckAndRequestStorageReadPermission()
     {
-        var status = await Permissions.CheckStatusAsync<Permissions.StorageRead>();
-
 #if ANDROID
         if (Android.OS.Build.VERSION.SdkInt > Android.OS.BuildVersionCodes.Q)
         {
-            // Writing files using MediaStore doesn't require permission.
+            // Android Q and above are going permissionless.
 
-            if (status == PermissionStatus.Granted)
-                return status;
-        }
-        else
-        {
-            var storageWriteStatus = await Permissions.CheckStatusAsync<Permissions.StorageWrite>();
-
-            if (status == PermissionStatus.Granted
-                && storageWriteStatus == PermissionStatus.Granted)
-            {
-                return status;
-            }
+            return PermissionStatus.Granted;
         }
 #endif
 
-        status = await Permissions.RequestAsync<Permissions.StorageRead>();
+        var status = await Permissions.RequestAsync<Permissions.StorageRead>();
         if (status != PermissionStatus.Granted)
             return status;
 
