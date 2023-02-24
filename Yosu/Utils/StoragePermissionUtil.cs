@@ -1,6 +1,6 @@
-﻿using Microsoft.Maui.ApplicationModel;
+﻿using System.Threading.Tasks;
+using Microsoft.Maui.ApplicationModel;
 using Microsoft.Maui.Devices;
-using System.Threading.Tasks;
 
 namespace Yosu.Utils;
 
@@ -21,30 +21,24 @@ internal class StoragePermissionUtil
     private static async Task<PermissionStatus> CheckAndRequestStorageReadPermission()
     {
         var status = await Permissions.CheckStatusAsync<Permissions.StorageRead>();
-        var storageWriteStatus = await Permissions.CheckStatusAsync<Permissions.StorageWrite>();
-
-        if (status == PermissionStatus.Granted
-            && storageWriteStatus == PermissionStatus.Granted)
-        {
-            return status;
-        }
 
 #if ANDROID
         if (Android.OS.Build.VERSION.SdkInt > Android.OS.BuildVersionCodes.Q)
         {
-            if (Platform.CurrentActivity is not MainActivity mainActivity)
-                return PermissionStatus.Denied;
+            // Writing files using MediaStore doesn't require permission.
 
-            var androidStoragePermission = new AndroidStoragePermission(mainActivity);
-            mainActivity.AndroidStoragePermission = androidStoragePermission;
-            var hasPermission = androidStoragePermission.HasStoragePermission();
-            if (hasPermission)
-                return PermissionStatus.Granted;
+            if (status == PermissionStatus.Granted)
+                return status;
+        }
+        else
+        {
+            var storageWriteStatus = await Permissions.CheckStatusAsync<Permissions.StorageWrite>();
 
-            hasPermission = await androidStoragePermission.RequestStoragePermission();
-            mainActivity.AndroidStoragePermission = null;
-
-            return hasPermission ? PermissionStatus.Granted : PermissionStatus.Denied;
+            if (status == PermissionStatus.Granted
+                && storageWriteStatus == PermissionStatus.Granted)
+            {
+                return status;
+            }
         }
 #endif
 
