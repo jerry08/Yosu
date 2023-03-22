@@ -4,12 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Acr.UserDialogs;
-using Android.Util;
 using CommunityToolkit.Maui.Alerts;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using Gress;
-using Gress.Completable;
 using Microsoft.Maui.ApplicationModel;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Storage;
@@ -189,7 +185,12 @@ public class YoutubeViewModel
                 if (Downloads.Count == 0)
                 {
                     NotificationHelper.ShowCompletedNotification();
+
+                    //var test = ApplicationEx.IsRunning();
+                    //var test2 = ApplicationEx.IsInBackground();
+                    //var test3 = ApplicationEx.IsInForeground();
                     App.StopForeground();
+                    //var test4 = ApplicationEx.IsRunning();
                 }
             }
         });
@@ -240,7 +241,9 @@ public class YoutubeViewModel
                 UserDialogs.Instance.HideLoading();
 
                 await MainThread.InvokeOnMainThreadAsync(async () =>
-                    await Snackbar.Make(e.Message).Show());
+                {
+                    await App.AlertSvc.ShowAlertAsync("Error", e.Message);
+                });
             }
         });
     }
