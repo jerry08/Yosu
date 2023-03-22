@@ -42,7 +42,7 @@ playlist or channel and download it directly to a format of your choice. It also
 
 | Platform | Download | Status |
 |----------|----------|--------|
-| Android    |[![Download Button](https://img.shields.io/github/v/release/jerry08/Yosu?color=7885FF&label=Android-Apk&logo=android&style=for-the-badge)](https://github.com/jerry08/Yosu/releases/download/v1.0.4/Yosu-1.0.4.apk)| ✅ Stable |
+| Android    |[![Download Button](https://img.shields.io/github/v/release/jerry08/Yosu?color=7885FF&label=Android-Apk&logo=android&style=for-the-badge)](https://github.com/jerry08/Yosu/releases/download/v1.0.6/Yosu-1.0.6.apk)| ✅ Stable |
 
 
 ## WANT TO CONTRIBUTE?
