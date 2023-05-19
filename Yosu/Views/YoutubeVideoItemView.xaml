@@ -92,19 +92,29 @@
                             CachingEnabled="False" />
                     </Image.Source>-->
                     </Image>
-                    <Label
+                    <Border
+                        Grid.Column="0"
                         Margin="6,3"
                         Padding="4,0"
                         AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
                         AbsoluteLayout.LayoutFlags="All"
-                        BackgroundColor="#9E000000"
-                        FontSize="11"
+                        BackgroundColor="#BE000000"
                         HorizontalOptions="End"
-                        LineBreakMode="TailTruncation"
-                        MaxLines="1"
-                        Text="{Binding Video.Duration, TargetNullValue=Live, Converter={StaticResource TimeSpanToHumanReadableFormatConverter}}"
-                        TextColor="White"
-                        VerticalOptions="End" />
+                        StrokeThickness="0"
+                        VerticalOptions="End">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="4" />
+                        </Border.StrokeShape>
+                        <Label
+                            FontSize="11"
+                            HorizontalOptions="End"
+                            LineBreakMode="TailTruncation"
+                            MaxLines="1"
+                            FontAttributes="Bold"
+                            Text="{Binding Video.Duration, TargetNullValue=Live, Converter={StaticResource TimeSpanToHumanReadableFormatConverter}}"
+                            TextColor="White"
+                            VerticalOptions="Center" />
+                    </Border>
                 </AbsoluteLayout>
             </Border>
 

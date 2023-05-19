@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using CommunityToolkit.Mvvm.Input;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using SoundCloudExplode.Track;
 using SpotifyExplode.Tracks;
-using Yosu.Platforms.Services;
 using Yosu.Services;
-using Yosu.Utils.Extensions;
 using Yosu.ViewModels.Components;
 using Yosu.ViewModels.Framework;
 using YoutubeExplode.Videos;
@@ -50,7 +46,7 @@ public partial class HistoryCollectionViewModel : CollectionViewModel<ListGroup<
 
         try
         {
-            await _preference.LoadAsync();
+            _preference.Load();
 
             Entities.Clear();
 
@@ -61,37 +57,37 @@ public partial class HistoryCollectionViewModel : CollectionViewModel<ListGroup<
                 .Where(x => x.Entity is not null)
                 .Select(x =>
                 {
-                    var jObj = JObject.FromObject(x.Entity!);
+                    var entityStr = JsonSerializer.Serialize(x.Entity!);
 
                     switch (x.SourceType)
                     {
                         case SourceType.Youtube:
                             x.Entity = new YoutubeDownloadViewModel()
                             {
-                                Video = JsonConvert.DeserializeObject<Video>(jObj.ToString())
+                                Video = JsonSerializer.Deserialize<Video>(entityStr)
                             };
                             break;
 
                         case SourceType.Soundcloud:
                             x.Entity = new SoundcloudDownloadViewModel()
                             {
-                                Track = JsonConvert.DeserializeObject<TrackInformation>(jObj.ToString())
+                                Track = JsonSerializer.Deserialize<TrackInformation>(entityStr)
                             };
                             break;
 
                         case SourceType.Spotify:
                             x.Entity = new SpotifyDownloadViewModel()
                             {
-                                Track = JsonConvert.DeserializeObject<Track>(jObj.ToString())
+                                Track = JsonSerializer.Deserialize<Track>(entityStr)
                             };
                             break;
                     }
 
                     //x.Entity = x.SourceType switch
                     //{
-                    //    SourceType.Youtube => JsonConvert.DeserializeObject<Video>(jObj.ToString()),
-                    //    SourceType.Soundcloud => JsonConvert.DeserializeObject<TrackInformation>(jObj.ToString()),
-                    //    SourceType.Spotify => JsonConvert.DeserializeObject<Track>(jObj.ToString()),
+                    //    SourceType.Youtube => JsonConvert.DeserializeObject<Video>(entityStr),
+                    //    SourceType.Soundcloud => JsonConvert.DeserializeObject<TrackInformation>(entityStr),
+                    //    SourceType.Spotify => JsonConvert.DeserializeObject<Track>(entityStr),
                     //    _ => null,
                     //};
 
@@ -154,16 +150,16 @@ public partial class HistoryCollectionViewModel : CollectionViewModel<ListGroup<
             return;
 
         _preference.Downloads.Clear();
-        await _preference.SaveAsync();
+        _preference.Load();
 
         Load();
     }
 
     [RelayCommand]
-    async void ClearSelected()
+    void ClearSelected()
     {
         _preference.Downloads.Clear();
-        await _preference.SaveAsync();
+        _preference.Save();
 
         Load();
     }

@@ -1,10 +1,12 @@
-﻿using YoutubeExplode.Videos.Streams;
-using Yosu.Settings;
+﻿using System.IO;
+using Cogwheel;
+using Microsoft.Maui.Storage;
 using Yosu.Youtube.Core.Downloading;
+using YoutubeExplode.Videos.Streams;
 
 namespace Yosu.Services;
 
-public class SettingsService : SettingsManager
+public class SettingsService : SettingsBase
 {
     public bool IsAutoUpdateEnabled { get; set; } = true;
 
@@ -24,4 +26,9 @@ public class SettingsService : SettingsManager
     public Container LastContainer { get; set; } = Container.Mp4;
 
     public VideoQualityPreference LastVideoQualityPreference { get; set; } = VideoQualityPreference.Highest;
+
+    public SettingsService()
+        : base(Path.Combine(FileSystem.AppDataDirectory, "Settings.json"))
+    {
+    }
 }

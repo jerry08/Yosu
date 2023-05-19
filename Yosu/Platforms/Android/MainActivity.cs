@@ -7,6 +7,7 @@ using Android.OS;
 using AndroidX.Core.App;
 using AndroidX.Core.Content;
 using Microsoft.Maui;
+using Microsoft.Maui.Storage;
 using Yosu.ViewModels;
 
 namespace Yosu;
@@ -38,7 +39,7 @@ public class MainActivity : MauiAppCompatActivity
 {
     private const int PostNotificationsRequestCode = 1006;
 
-    protected override void OnCreate(Bundle? savedInstanceState)
+    protected override async void OnCreate(Bundle? savedInstanceState)
     {
         //AndroidX.Core.SplashScreen.SplashScreen.InstallSplashScreen(this);
 
@@ -63,6 +64,21 @@ public class MainActivity : MauiAppCompatActivity
         if (Intent?.Data is Android.Net.Uri uri)
         {
             MainCollectionViewModel.IntentUrl = uri.ToString();
+        }
+
+        // Migration
+        var data1 = await SecureStorage.GetAsync("PreferenceService");
+        if (!string.IsNullOrEmpty(data1))
+        {
+            System.IO.File.WriteAllText(System.IO.Path.Combine(FileSystem.AppDataDirectory, "Preferences.json"), data1);
+            SecureStorage.Remove("PreferenceService");
+        }
+
+        var data2 = await SecureStorage.GetAsync("SettingsService");
+        if (!string.IsNullOrEmpty(data2))
+        {
+            System.IO.File.WriteAllText(System.IO.Path.Combine(FileSystem.AppDataDirectory, "Settings.json"), data2);
+            SecureStorage.Remove("SettingsService");
         }
     }
 

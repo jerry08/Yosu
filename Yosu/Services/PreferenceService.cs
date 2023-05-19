@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
+using System.IO;
+using Cogwheel;
 using Microsoft.Maui.ApplicationModel;
-using Yosu.Settings;
+using Microsoft.Maui.Storage;
 using Yosu.ViewModels.Components;
 
 namespace Yosu.Services;
 
-public class PreferenceService : SettingsManager
+public class PreferenceService : SettingsBase
 {
     public AppTheme AppTheme { get; set; }
 
@@ -14,7 +16,7 @@ public class PreferenceService : SettingsManager
     public SourceType SearchSourceType { get; set; } = SourceType.Youtube;
 
     public PreferenceService()
+        : base(Path.Combine(FileSystem.AppDataDirectory, "Preferences.json"))
     {
-        Configuration.UseSecureStorage = false;
     }
 }

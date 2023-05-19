@@ -19,10 +19,10 @@
 	</PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Gress" Version="2.1.0" />
-    <PackageReference Include="CliWrap" Version="3.6.0" />
-    <PackageReference Include="YoutubeExplode" Version="6.2.10" />
-    <PackageReference Include="PolySharp" Version="1.8.1" PrivateAssets="all" />
+    <PackageReference Include="Gress" Version="2.1.1" />
+    <PackageReference Include="CliWrap" Version="3.6.3" />
+    <PackageReference Include="YoutubeExplode" Version="6.2.14" />
+    <PackageReference Include="PolySharp" Version="1.13.2" PrivateAssets="all" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net7.0-android'">

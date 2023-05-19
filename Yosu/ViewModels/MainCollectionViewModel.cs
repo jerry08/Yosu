@@ -294,13 +294,13 @@ public partial class MainCollectionViewModel : CollectionViewModel<object>
         BottomSheetController = Shell.Current.ShowBottomSheet(page, false);
     }
 
-    private async void SearchSourceTypeChanged()
+    private void SearchSourceTypeChanged()
     {
         BottomSheetController?.Dismiss();
 
-        await _preference.LoadAsync();
+        _preference.Load();
         _preference.SearchSourceType = SearchSourceType;
-        await _preference.SaveAsync();
+        _preference.Save();
 
         Entities.Clear();
         Refresh();
