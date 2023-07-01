@@ -60,17 +60,17 @@
 
 	<ItemGroup>
 		<PackageReference Include="Acr.UserDialogs" Version="8.0.1" />
-		<PackageReference Include="Cogwheel" Version="2.0.2" />
-		<PackageReference Include="CommunityToolkit.Maui" Version="5.1.0" />
+		<PackageReference Include="Cogwheel" Version="2.0.3" />
+		<PackageReference Include="CommunityToolkit.Maui" Version="5.2.0" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.0" />
 		<PackageReference Include="Gress" Version="2.1.1" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
-		<PackageReference Include="Octokit" Version="6.0.0" />
+		<PackageReference Include="Octokit" Version="6.2.1" />
 		<PackageReference Include="Plugin.ContextMenuContainer" Version="1.0.3" />
 		<PackageReference Include="SkiaSharp.Views.Maui.Controls" Version="2.88.3" />
-		<PackageReference Include="SoundCloudExplode" Version="1.4.1" />
-		<PackageReference Include="Woka" Version="1.0.6" />
-		<PackageReference Include="YoutubeExplode" Version="6.2.14" />
+		<PackageReference Include="SoundCloudExplode" Version="1.4.2" />
+		<PackageReference Include="Woka" Version="1.0.7" />
+		<PackageReference Include="YoutubeExplode" Version="6.2.16" />
 	</ItemGroup>
 
   <!--<ItemGroup Condition="$(TargetFramework.StartsWith('net7.0-android'))">
