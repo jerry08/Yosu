@@ -62,8 +62,8 @@
                     VerticalOptions="Center" />-->
 
                 <Image
-                    Margin="64,0,0,0"
                     Grid.Column="0"
+                    Margin="64,0,0,0"
                     Aspect="AspectFit"
                     HeightRequest="50"
                     HorizontalOptions="Center"
@@ -206,7 +206,6 @@
                 IsRefreshing="{Binding IsRefreshing}"
                 ZIndex="-1">
                 <CollectionView
-                    x:Name="test1"
                     IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
                     ItemTemplate="{StaticResource mainDataTemplateSelector}"
                     ItemsSource="{Binding Entities}"

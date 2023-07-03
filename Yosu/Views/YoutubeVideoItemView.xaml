@@ -106,11 +106,11 @@
                             <RoundRectangle CornerRadius="4" />
                         </Border.StrokeShape>
                         <Label
+                            FontAttributes="Bold"
                             FontSize="11"
                             HorizontalOptions="End"
                             LineBreakMode="TailTruncation"
                             MaxLines="1"
-                            FontAttributes="Bold"
                             Text="{Binding Video.Duration, TargetNullValue=Live, Converter={StaticResource TimeSpanToHumanReadableFormatConverter}}"
                             TextColor="White"
                             VerticalOptions="Center" />

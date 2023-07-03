@@ -28,7 +28,7 @@
         <StackLayout x:Name="ItemsStackLayout" BindableLayout.ItemsSource="{Binding AvailableDownloadOptions}">
             <BindableLayout.ItemTemplate>
                 <DataTemplate x:DataType="{x:Type core:VideoDownloadOption}">
-                    <!--xct:TouchEffect.Command="{Binding BindingContext.DownloadCommand, Source={RelativeSource AncestorType={x:Type local:DownloadSingleYtOptionsView}}}"-->
+                    <!--  xct:TouchEffect.Command="{Binding BindingContext.DownloadCommand, Source={RelativeSource AncestorType={x:Type local:DownloadSingleYtOptionsView}}}"  -->
                     <StackLayout
                         xct:TouchEffect.Command="{Binding DownloadCommand, Source={RelativeSource AncestorType={x:Type local:DownloadSingleYtOptionsView}}}"
                         xct:TouchEffect.CommandParameter="{Binding .}"

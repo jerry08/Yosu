@@ -10,7 +10,7 @@
     xmlns:viewmodels="clr-namespace:Yosu.ViewModels"
     xmlns:xct="clr-namespace:Plugin.MauiTouchEffect.Effects;assembly=Plugin.MauiTouchEffect"
     x:DataType="viewmodels:MainCollectionViewModel">
-    <StackLayout Spacing="8" Margin="0,0,0,10">
+    <StackLayout Margin="0,0,0,10" Spacing="8">
         <Label
             FontAttributes="Bold"
             FontSize="20"
@@ -43,22 +43,25 @@
                 Content="Youtube"
                 FontAttributes="Bold"
                 FontSize="18"
-                Value="{x:Static components:SourceType.Youtube}"
-                TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+                TextColor="{AppThemeBinding Light={StaticResource Black},
+                                            Dark={StaticResource White}}"
+                Value="{x:Static components:SourceType.Youtube}" />
 
             <RadioButton
                 Content="Soundcloud"
                 FontAttributes="Bold"
                 FontSize="18"
-                Value="{x:Static components:SourceType.Soundcloud}"
-                TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+                TextColor="{AppThemeBinding Light={StaticResource Black},
+                                            Dark={StaticResource White}}"
+                Value="{x:Static components:SourceType.Soundcloud}" />
 
             <RadioButton
                 Content="Spotify"
                 FontAttributes="Bold"
                 FontSize="18"
-                Value="{x:Static components:SourceType.Spotify}"
-                TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+                TextColor="{AppThemeBinding Light={StaticResource Black},
+                                            Dark={StaticResource White}}"
+                Value="{x:Static components:SourceType.Spotify}" />
         </StackLayout>
     </StackLayout>
 </ScrollView>
