@@ -75,16 +75,28 @@
                 Orientation="Vertical">
                 <Label
                     FontAttributes="Bold"
+                    LineBreakMode="TailTruncation"
                     MaxLines="2"
                     Text="{Binding Track.Title}" />
                 <Label Text="{Binding Track.User.Username}" />
-                <HorizontalStackLayout>
+                <!--<HorizontalStackLayout>
                     <Label Text="{Binding Track.PlaybackCount, Converter={StaticResource IntToKiloFormatConverter}}" />
                     <Label Text=" • " />
                     <Label Text="{Binding Track.Duration, Converter={StaticResource MillisecondsToHumanReadableFormatConverter}}" />
                     <Label Text=" • " />
                     <Label Text="{Binding Track.DisplayDate, Converter={StaticResource TimeSinceFormatConverter}}" />
-                </HorizontalStackLayout>
+                </HorizontalStackLayout>-->
+                <Label>
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{Binding Track.PlaybackCount, Converter={StaticResource IntToKiloFormatConverter}}" />
+                            <Span Text=" • " />
+                            <Span Text="{Binding Track.Duration, Converter={StaticResource MillisecondsToHumanReadableFormatConverter}}" />
+                            <Span Text=" • " />
+                            <Span Text="{Binding Track.DisplayDate, Converter={StaticResource TimeSinceFormatConverter}}" />
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
             </StackLayout>
 
             <!--<cm:ContextMenuContainer
