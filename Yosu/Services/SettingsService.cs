@@ -1,31 +1,38 @@
-﻿using System.IO;
+﻿using System.ComponentModel;
+using System.IO;
 using Cogwheel;
 using Microsoft.Maui.Storage;
+using PropertyChanged;
 using Yosu.Youtube.Core.Downloading;
-using YoutubeExplode.Videos.Streams;
+using Container = YoutubeExplode.Videos.Streams.Container;
 
 namespace Yosu.Services;
 
-public class SettingsService : SettingsBase
+[AddINotifyPropertyChangedInterface]
+public partial class SettingsService : SettingsBase, INotifyPropertyChanged
 {
-    public bool IsAutoUpdateEnabled { get; set; } = true;
+    public bool AlwaysCheckForUpdates { get; set; } = true;
+
+#if ANDROID
+    public bool DownloadInSDCard { get; set; }
+#endif
 
     public bool ShouldInjectTags { get; set; } = true;
 
     public bool ShouldSkipExistingFiles { get; set; }
 
-    public string FileNameTemplate { get; set; } = "$title";
+    public string SoundCloudFileNameTemplate { get; set; } = "$title";
 
-    // FFmpeg only handles up to 2 at a time probably
-    public int YoutubeParallelLimit { get; set; } = 1;
+    public string SpotifyFileNameTemplate { get; set; } = "$title";
 
-    public int SoundcloudParallelLimit { get; set; } = 5;
-
-    public int SpotifyParallelLimit { get; set; } = 5;
+    public string YoutubeFileNameTemplate { get; set; } = "$title";
 
     public Container LastContainer { get; set; } = Container.Mp4;
 
     public VideoQualityPreference LastVideoQualityPreference { get; set; } = VideoQualityPreference.Highest;
+
+    // FFmpeg only handles up to 2 at a time probably
+    public int ParallelLimit { get; set; } = 1;
 
     public SettingsService()
         : base(Path.Combine(FileSystem.AppDataDirectory, "Settings.json"))
