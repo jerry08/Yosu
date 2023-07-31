@@ -2,12 +2,14 @@
 using System.Linq;
 using System.Text.Json;
 using CommunityToolkit.Mvvm.Input;
-using SoundCloudExplode.Track;
+using SoundCloudExplode.Tracks;
 using SpotifyExplode.Tracks;
 using Yosu.Services;
 using Yosu.ViewModels.Components;
 using Yosu.ViewModels.Framework;
 using YoutubeExplode.Videos;
+using SoundcloudTrack = SoundCloudExplode.Tracks.Track;
+using SpotifyTrack = SpotifyExplode.Tracks.Track;
 
 namespace Yosu.ViewModels;
 
@@ -71,14 +73,14 @@ public partial class HistoryCollectionViewModel : CollectionViewModel<ListGroup<
                         case SourceType.Soundcloud:
                             x.Entity = new SoundcloudDownloadViewModel()
                             {
-                                Track = JsonSerializer.Deserialize<TrackInformation>(entityStr)
+                                Track = JsonSerializer.Deserialize<SoundcloudTrack>(entityStr)
                             };
                             break;
 
                         case SourceType.Spotify:
                             x.Entity = new SpotifyDownloadViewModel()
                             {
-                                Track = JsonSerializer.Deserialize<Track>(entityStr)
+                                Track = JsonSerializer.Deserialize<SpotifyTrack>(entityStr)
                             };
                             break;
                     }
@@ -86,7 +88,7 @@ public partial class HistoryCollectionViewModel : CollectionViewModel<ListGroup<
                     //x.Entity = x.SourceType switch
                     //{
                     //    SourceType.Youtube => JsonConvert.DeserializeObject<Video>(entityStr),
-                    //    SourceType.Soundcloud => JsonConvert.DeserializeObject<TrackInformation>(entityStr),
+                    //    SourceType.Soundcloud => JsonConvert.DeserializeObject<Track>(entityStr),
                     //    SourceType.Spotify => JsonConvert.DeserializeObject<Track>(entityStr),
                     //    _ => null,
                     //};

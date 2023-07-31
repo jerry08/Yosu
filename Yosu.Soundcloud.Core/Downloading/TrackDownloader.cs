@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Gress;
 using SoundCloudExplode;
-using SoundCloudExplode.Track;
+using SoundCloudExplode.Tracks;
 
 namespace Yosu.Soundcloud.Core.Downloading;
 
@@ -14,7 +14,7 @@ public class TrackDownloader
 
     public async Task DownloadAsync(
         string filePath,
-        TrackInformation track,
+        Track track,
         IProgress<Percentage>? progress = null,
         CancellationToken cancellationToken = default)
     {
@@ -26,6 +26,7 @@ public class TrackDownloader
             track,
             filePath,
             progress?.ToDoubleBased(),
+            null,
             cancellationToken
         );
     }

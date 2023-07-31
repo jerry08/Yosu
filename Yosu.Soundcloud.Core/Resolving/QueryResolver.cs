@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Gress;
 using SoundCloudExplode;
-using SoundCloudExplode.Track;
+using SoundCloudExplode.Tracks;
 
 namespace Yosu.Soundcloud.Core.Resolving;
 
@@ -58,7 +58,7 @@ public class QueryResolver
         if (queries.Count == 1)
             return await ResolveAsync(queries.Single(), cancellationToken);
 
-        var tracks = new List<TrackInformation>();
+        var tracks = new List<Track>();
 
         var completed = 0;
 

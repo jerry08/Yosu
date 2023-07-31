@@ -65,8 +65,14 @@ public partial class App : Application
 
     public static async void CheckForUpdate()
     {
-        var updater = new AppUpdater();
-        await updater.CheckAsync();
+        var settingsService = new SettingsService();
+        settingsService.Load();
+
+        if (settingsService.AlwaysCheckForUpdates)
+        {
+            var updater = new AppUpdater();
+            await updater.CheckAsync();
+        }
     }
 
     public static void ApplyTheme()

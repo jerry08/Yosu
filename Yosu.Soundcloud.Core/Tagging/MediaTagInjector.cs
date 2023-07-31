@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Yosu.Soundcloud.Core.Utils;
-using SoundCloudExplode.Track;
+using SoundCloudExplode.Tracks;
 
 namespace Yosu.Soundcloud.Core.Tagging;
 
@@ -11,7 +11,7 @@ public class MediaTagInjector
 {
     private readonly MusicBrainzClient _musicBrainz = new();
 
-    private static void InjectMiscMetadata(MediaFile mediaFile, TrackInformation track)
+    private static void InjectMiscMetadata(MediaFile mediaFile, Track track)
     {
         if (!string.IsNullOrWhiteSpace(track.Description))
             mediaFile.SetDescription(track.Description);
@@ -27,7 +27,7 @@ public class MediaTagInjector
 
     private async Task InjectMusicMetadataAsync(
         MediaFile mediaFile,
-        TrackInformation track,
+        Track track,
         CancellationToken cancellationToken = default)
     {
         var recordings = await _musicBrainz.SearchRecordingsAsync(track.Title!, cancellationToken);
@@ -56,7 +56,7 @@ public class MediaTagInjector
 
     private static void InjectTrackMetadataAsync(
         MediaFile mediaFile,
-        TrackInformation track)
+        Track track)
     {
         mediaFile.SetTitle(track.Title!);
         mediaFile.SetPerformers(new[] { track.User!.Username! });
@@ -65,7 +65,7 @@ public class MediaTagInjector
 
     private async Task InjectThumbnailAsync(
         MediaFile mediaFile,
-        TrackInformation track,
+        Track track,
         CancellationToken cancellationToken = default)
     {
         var url = track.ArtworkUrl?.ToString().Replace("large", "t500x500").Replace("small", "t500x500");
@@ -82,7 +82,7 @@ public class MediaTagInjector
 
     public async Task InjectTagsAsync(
         string filePath,
-        TrackInformation track,
+        Track track,
         CancellationToken cancellationToken = default)
     {
         using var mediaFile = MediaFile.Create(filePath);

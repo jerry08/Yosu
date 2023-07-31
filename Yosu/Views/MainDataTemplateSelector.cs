@@ -1,6 +1,6 @@
 ﻿using Microsoft.Maui.Controls;
 using YoutubeExplode.Videos;
-using SoundCloudExplode.Track;
+using SoundCloudExplode.Tracks;
 using Yosu.ViewModels.Components;
 
 namespace Yosu.Views;
@@ -18,7 +18,7 @@ public class MainDataTemplateSelector : DataTemplateSelector
         //if (item is IVideo)
         //    return YoutubeVideoDataTemplate;
         //
-        //if (item is TrackInformation)
+        //if (item is Track)
         //    return SoundcloudDataTemplate;
 
         if (item is DownloadItem downloadItem)

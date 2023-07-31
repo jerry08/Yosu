@@ -53,11 +53,16 @@ public static class NotificationHelper
 
         //Application.Context.Resources?.GetIdentifier();
 
+        var dir = System.IO.Path.Combine(
+            Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads)!.AbsolutePath,
+            "Yosu"
+        );
+
         var builder = new NotificationCompat.Builder(context, channelId)
             .SetSmallIcon(Resource.Drawable.logo_notification)
             //.SetOngoing(true)
             .SetContentTitle("Yosu")
-            .SetContentText("Complete")
+            .SetContentText($"Saved to {dir}")
             .SetPriority(NotificationCompat.PriorityLow);
 
         var notificationManager = NotificationManagerCompat.From(context);

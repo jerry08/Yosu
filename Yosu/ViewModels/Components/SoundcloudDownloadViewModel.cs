@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using Microsoft.Maui.Storage;
-using SoundCloudExplode.Track;
+using SoundCloudExplode.Tracks;
 
 namespace Yosu.ViewModels.Components;
 
@@ -9,7 +9,7 @@ public class SoundcloudDownloadViewModel : DownloadViewModelBase
 {
     public long? Key => Track?.Id;
 
-    public TrackInformation? Track { get; set; }
+    public Track? Track { get; set; }
 
     public SoundcloudDownloadViewModel()
     {

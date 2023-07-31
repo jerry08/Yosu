@@ -19,7 +19,7 @@ internal static class ActivityExtensions
     {
         if (Build.VERSION.SdkInt >= BuildVersionCodes.Q)
         {
-            await CopyFileUsingMediaStore(context, filePath, newFilePath, cancellationToken);
+            await CopyFileUsingMediaStoreAsync(context, filePath, newFilePath, cancellationToken);
         }
         else
         {
@@ -41,7 +41,7 @@ internal static class ActivityExtensions
         }
     }
 
-    private static async Task CopyFileUsingMediaStore(
+    private static async Task CopyFileUsingMediaStoreAsync(
         this Context context,
         string filePath,
         string newFilePath,
@@ -62,17 +62,24 @@ internal static class ActivityExtensions
 
         var fileInfo = new FileInfo(filePath);
 
+        //var dir = Android.OS.Environment.DirectoryDownloads;
+        //var dir = "Yosu";
+        //var dir = Path.GetDirectoryName(newFilePath)!
+        //    .Replace(Environment.ExternalStorageDirectory!.AbsolutePath, "");
+
+        var dir = Environment.DirectoryDownloads + "/Yosu";
+
         var contentValues = new ContentValues();
         //contentValues.Put(MediaStore.IMediaColumns.DisplayName, newFilePath);
         contentValues.Put(MediaStore.IMediaColumns.DisplayName, fileName);
         contentValues.Put(MediaStore.IMediaColumns.MimeType, mimeType);
-        contentValues.Put(MediaStore.IMediaColumns.RelativePath, Android.OS.Environment.DirectoryDownloads);
+        contentValues.Put(MediaStore.IMediaColumns.RelativePath, dir);
         //contentValues.Put(MediaStore.IMediaColumns.RelativePath, dir);
         contentValues.Put(MediaStore.IMediaColumns.Size, fileInfo.Length);
 
         if (mimeType.StartsWith("image") || mimeType.StartsWith("video"))
         {
-            //Set media duration
+            // Set media duration
             var retriever = new MediaMetadataRetriever();
             retriever.SetDataSource(context, Android.Net.Uri.FromFile(new Java.IO.File(filePath)));
             var time = retriever.ExtractMetadata(MetadataKey.Duration) ?? string.Empty;
