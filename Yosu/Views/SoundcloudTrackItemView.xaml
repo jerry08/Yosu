@@ -20,7 +20,7 @@
     xmlns:yc="clr-namespace:Yosu.Controls"
     x:Name="this"
     x:DataType="components:SoundcloudDownloadViewModel">
-    <!--  x:DataType="scsc:TrackInformation"  -->
+    <!--  x:DataType="scsc:Track"  -->
     <Grid.Resources>
         <ResourceDictionary>
             <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />

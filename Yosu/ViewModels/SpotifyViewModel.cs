@@ -41,7 +41,26 @@ public class SpotifyViewModel
         App.StartForeground();
 
         foreach (var download in downloads)
+        {
+            var fileName = FileNameTemplate.Apply(
+                _settingsService.SpotifyFileNameTemplate,
+                download.Track!,
+                "mp3"
+            );
+
+#if ANDROID
+            download.FilePath = Path.Combine(
+                Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads)!.AbsolutePath,
+                "Yosu",
+                fileName
+            );
+#endif
+
+            if (_settingsService.ShouldSkipExistingFiles && File.Exists(download.FilePath))
+                continue;
+
             EnqueueDownload(download);
+        }
     }
 
     private void EnqueueDownload(SpotifyDownloadViewModel download)
@@ -54,7 +73,7 @@ public class SpotifyViewModel
 
         download.BeginDownload();
 
-        _downloadSemaphore.MaxCount = _settingsService.SpotifyParallelLimit;
+        _downloadSemaphore.MaxCount = _settingsService.ParallelLimit;
 
         Task.Run(async () =>
         {
@@ -101,11 +120,6 @@ public class SpotifyViewModel
                 download.Status = DownloadStatus.Completed;
 
 #if ANDROID
-                download.FilePath = Path.Combine(
-                    Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads)!.AbsolutePath,
-                    $"{string.Join("_", download.Track!.Title!.Split(Path.GetInvalidFileNameChars()))}.mp3"
-                );
-
                 if (Platform.CurrentActivity is not null)
                 {
                     await Platform.CurrentActivity.CopyFileAsync(

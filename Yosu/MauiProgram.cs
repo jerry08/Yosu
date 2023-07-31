@@ -104,12 +104,12 @@ public static class MauiProgram
             }
         });
 
-        //Views
+        // Views
         builder.Services.AddTransient<MainPage>();
         builder.Services.AddTransient<SettingsPage>();
         builder.Services.AddTransient<HistoryCollectionView>();
 
-        //Viewmodels
+        // Viewmodels
         builder.Services.AddTransient<MainCollectionViewModel>();
         builder.Services.AddTransient<YoutubeViewModel>();
         builder.Services.AddTransient<SoundcloudViewModel>();
@@ -117,7 +117,7 @@ public static class MauiProgram
         builder.Services.AddTransient<SettingsViewModel>();
         builder.Services.AddTransient<HistoryCollectionViewModel>();
 
-        //Services
+        // Services
         builder.Services.AddSingleton<IAlertService, AlertService>();
         //builder.Services.AddSingleton<PreferenceService>();
         builder.Services.AddScoped<PreferenceService>();

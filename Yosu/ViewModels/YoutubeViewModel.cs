@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Acr.UserDialogs;
 using CommunityToolkit.Maui.Alerts;
 using Gress;
+using Java.Nio.FileNio.Attributes;
 using Microsoft.Maui.ApplicationModel;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Storage;
@@ -74,7 +75,7 @@ public class YoutubeViewModel
 
         download.BeginDownload();
 
-        _downloadSemaphore.MaxCount = _settingsService.YoutubeParallelLimit;
+        _downloadSemaphore.MaxCount = _settingsService.ParallelLimit;
 
         Task.Run(async () =>
         {
@@ -285,7 +286,10 @@ public class YoutubeViewModel
             }
 
 #if ANDROID
-            var dirPath = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads)!.AbsolutePath;
+            var dirPath = Path.Combine(
+                Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads)!.AbsolutePath,
+                "Yosu"
+            );
 #elif IOS || MACCATALYST
             var dirPath = "";
 #endif
@@ -293,7 +297,7 @@ public class YoutubeViewModel
             var baseFilePath = Path.Combine(
                 dirPath,
                 FileNameTemplate.Apply(
-                    _settingsService.FileNameTemplate,
+                    _settingsService.YoutubeFileNameTemplate,
                     Downloads[i].Video!,
                     selectedContainer,
                     (i + 1).ToString().PadLeft(Downloads.Count.ToString().Length, '0')
