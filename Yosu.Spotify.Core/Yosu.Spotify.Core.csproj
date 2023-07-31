@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="Gress" Version="2.1.1" />
-    <PackageReference Include="Httpz" Version="1.1.2" />
+    <PackageReference Include="Httpz" Version="1.1.3" />
     <PackageReference Include="SpotifyExplode" Version="1.0.7" />
     <PackageReference Include="Y2mateApi" Version="1.0.0" />
   </ItemGroup>

@@ -1,92 +1,92 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
-		<TargetFrameworks>net7.0-android;net7.0-ios;net7.0-maccatalyst</TargetFrameworks>
-		<OutputType>Exe</OutputType>
-		<RootNamespace>Yosu</RootNamespace>
-		<UseMaui>true</UseMaui>
-		<!-- Rollback MAUI version because of bug (https://github.com/dotnet/maui/issues/14520) -->
+  <PropertyGroup>
+    <TargetFrameworks>net7.0-android;net7.0-ios;net7.0-maccatalyst</TargetFrameworks>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Yosu</RootNamespace>
+    <UseMaui>true</UseMaui>
+    <!-- Rollback MAUI version because of bug (https://github.com/dotnet/maui/issues/14520) -->
     <MauiVersion>7.0.59</MauiVersion>
-		<SingleProject>true</SingleProject>
+    <SingleProject>true</SingleProject>
 
-		<!-- Display name -->
-		<ApplicationTitle>Yosu</ApplicationTitle>
+    <!-- Display name -->
+    <ApplicationTitle>Yosu</ApplicationTitle>
 
-		<!-- App Identifier -->
-		<ApplicationId>com.berry.yosu</ApplicationId>
-		<ApplicationIdGuid>47d295d3-a6c6-4a0b-b863-abcdf653f0fc</ApplicationIdGuid>
+    <!-- App Identifier -->
+    <ApplicationId>com.berry.yosu</ApplicationId>
+    <ApplicationIdGuid>47d295d3-a6c6-4a0b-b863-abcdf653f0fc</ApplicationIdGuid>
 
     <!-- Versions -->
     <ApplicationDisplayVersion>1.0.7</ApplicationDisplayVersion>
     <ApplicationVersion>8</ApplicationVersion>
 
     <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">11.0</SupportedOSPlatformVersion>
-		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">13.1</SupportedOSPlatformVersion>
-		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
-		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
-		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
-		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
-	</PropertyGroup>
+    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">13.1</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
+    <TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
+    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
+  </PropertyGroup>
 
-	<!--<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0-android|AnyCPU'">-->
+  <!--<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0-android|AnyCPU'">-->
   <PropertyGroup Condition="$(TargetFramework.Contains('-android')) and '$(Configuration)' == 'Release'">
-	  <AndroidKeyStore>True</AndroidKeyStore>
+    <AndroidKeyStore>True</AndroidKeyStore>
     <AndroidSigningKeyStore>..\key.keystore</AndroidSigningKeyStore>
-	  <AndroidSigningStorePass>YosuJer20</AndroidSigningStorePass>
-	  <AndroidSigningKeyAlias>YosuAlias</AndroidSigningKeyAlias>
-	  <AndroidSigningKeyPass>YosuJer20</AndroidSigningKeyPass>
-	</PropertyGroup>
+    <AndroidSigningStorePass>YosuJer20</AndroidSigningStorePass>
+    <AndroidSigningKeyAlias>YosuAlias</AndroidSigningKeyAlias>
+    <AndroidSigningKeyPass>YosuJer20</AndroidSigningKeyPass>
+  </PropertyGroup>
 
-	<ItemGroup>
-		<!-- App Icon -->
-		<!--<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#d74c4c" />-->
-		<MauiIcon Include="Resources\AppIcon\appicon.png" />
+  <ItemGroup>
+    <!-- App Icon -->
+    <!--<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#d74c4c" />-->
+    <MauiIcon Include="Resources\AppIcon\appicon.png" />
 
-		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\splash.png" Color="#d74c4c" BaseSize="200,128" />
+    <!-- Splash Screen -->
+    <MauiSplashScreen Include="Resources\Splash\splash.png" Color="#d74c4c" BaseSize="200,128" />
 
-		<!-- Images -->
-		<MauiImage Include="Resources\Images\*" />
+    <!-- Images -->
+    <MauiImage Include="Resources\Images\*" />
 
-		<!-- Custom Fonts -->
-		<MauiFont Include="Resources\Fonts\*" />
+    <!-- Custom Fonts -->
+    <MauiFont Include="Resources\Fonts\*" />
 
-		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
-		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
-	</ItemGroup>
+    <!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
+    <MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+  </ItemGroup>
 
-	<ItemGroup>
-	  <Compile Remove="Platforms\Android\Services\DownloadService_org.cs" />
-	</ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Platforms\Android\Services\DownloadService_org.cs" />
+  </ItemGroup>
 
-	<ItemGroup>
-		<PackageReference Include="Acr.UserDialogs" Version="8.0.1" />
-		<PackageReference Include="Cogwheel" Version="2.0.3" />
-		<PackageReference Include="CommunityToolkit.Maui" Version="5.2.0" />
-		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.0" />
-		<PackageReference Include="Gress" Version="2.1.1" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
-		<PackageReference Include="Octokit" Version="6.2.1" />
-		<PackageReference Include="Plugin.ContextMenuContainer" Version="1.0.3" />
-		<PackageReference Include="SkiaSharp.Views.Maui.Controls" Version="2.88.3" />
-		<PackageReference Include="SoundCloudExplode" Version="1.4.2" />
-		<PackageReference Include="Woka" Version="1.0.7" />
-		<PackageReference Include="YoutubeExplode" Version="6.2.16" />
-	</ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Plugin.MauiTouchEffect\Plugin.MauiTouchEffect.csproj" />
+    <ProjectReference Include="..\Yosu.Soundcloud.Core\Yosu.Soundcloud.Core.csproj" />
+    <ProjectReference Include="..\Yosu.Spotify.Core\Yosu.Spotify.Core.csproj" />
+    <ProjectReference Include="..\Yosu.Youtube.Core\Yosu.Youtube.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Acr.UserDialogs" Version="8.0.1" />
+    <PackageReference Include="Cogwheel" Version="2.0.3" />
+    <PackageReference Include="CommunityToolkit.Maui" Version="5.2.0" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
+    <PackageReference Include="Gress" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
+    <PackageReference Include="Octokit" Version="7.1.0" />
+    <PackageReference Include="Plugin.ContextMenuContainer" Version="1.0.3" />
+    <PackageReference Include="PropertyChanged.Fody" Version="4.1.0" PrivateAssets="all" />
+    <PackageReference Include="SkiaSharp.Views.Maui.Controls" Version="2.88.3" />
+    <PackageReference Include="SoundCloudExplode" Version="1.5.0" />
+    <PackageReference Include="Woka" Version="1.0.7" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net7.0-android'">
+    <PackageReference Include="Xamarin.AndroidX.Lifecycle.Service" Version="2.5.1.1" />
+  </ItemGroup>
 
   <!--<ItemGroup Condition="$(TargetFramework.StartsWith('net7.0-android'))">
     <PackageReference Include="Xamarin.AndroidX.Core.SplashScreen" Version="1.0.0.2" />
-	</ItemGroup>-->
-
-	<ItemGroup>
-	  <ProjectReference Include="..\Plugin.MauiTouchEffect\Plugin.MauiTouchEffect.csproj" />
-	  <ProjectReference Include="..\Yosu.Soundcloud.Core\Yosu.Soundcloud.Core.csproj" />
-	  <ProjectReference Include="..\Yosu.Spotify.Core\Yosu.Spotify.Core.csproj" />
-	  <ProjectReference Include="..\Yosu.Youtube.Core\Yosu.Youtube.Core.csproj" />
-	</ItemGroup>
-
-	<ItemGroup Condition="'$(TargetFramework)' == 'net7.0-android'">
-    <PackageReference Include="Xamarin.AndroidX.Lifecycle.Service" Version="2.5.1.1" />
-	</ItemGroup>
+  </ItemGroup>-->
 
 </Project>
