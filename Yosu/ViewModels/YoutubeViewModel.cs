@@ -185,7 +185,9 @@ public class YoutubeViewModel
 
                 if (Downloads.Count == 0)
                 {
-                    NotificationHelper.ShowCompletedNotification();
+                    NotificationHelper.ShowCompletedNotification(
+                        $"Saved to {Path.GetDirectoryName(download.FilePath)}"
+                    );
 
                     //var test = ApplicationEx.IsRunning();
                     //var test2 = ApplicationEx.IsInBackground();
@@ -259,11 +261,7 @@ public class YoutubeViewModel
         BottomSheetController?.Dismiss();
         BottomSheetController = null;
 
-        if (Downloads.Any())
-        {
-            App.StartForeground();
-            await Toast.Make("Download started").Show();
-        }
+        var started = false;
 
         for (int i = 0; i < Downloads.Count; i++)
         {
@@ -324,6 +322,13 @@ public class YoutubeViewModel
 
             Downloads[i].FilePath = filePath;
             Downloads[i].TempFilePath = tempFilePath;
+
+            if (!started)
+            {
+                App.StartForeground();
+                await Toast.Make("Download started").Show();
+                started = true;
+            }
 
             EnqueueDownload(Downloads[i]);
         }

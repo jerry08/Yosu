@@ -181,7 +181,10 @@ public class SpotifyViewModel
 
                 if (Downloads.Count == 0)
                 {
-                    NotificationHelper.ShowCompletedNotification();
+                    NotificationHelper.ShowCompletedNotification(
+                        $"Saved to {Path.GetDirectoryName(download.FilePath)}"
+                    );
+
                     App.StopForeground();
                 }
             }
