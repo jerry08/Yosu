@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using SpotifyExplode.Tracks;
-using Yosu.Spotify.Core.Utils;
+using Yosu.Core.Utils;
 
 namespace Yosu.Spotify.Core.Downloading;
 

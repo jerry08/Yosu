@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using JsonExtensions.Http;
 using JsonExtensions.Reading;
+using Yosu.Core.Utils;
 using Yosu.Youtube.Core.Utils;
 
 namespace Yosu.Youtube.Core.Tagging;

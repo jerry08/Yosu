@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Text;
 
-namespace Yosu.Youtube.Core.Utils;
+namespace Yosu.Core.Utils;
 
-internal class FileEx
+public class FileEx
 {
     // Checks if thumbnail's data is valid Latin1 encoding (ISO-8859-1)
     //private static bool IsValidISO(string input)

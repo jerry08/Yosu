@@ -2,9 +2,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Yosu.Youtube.Core.Utils;
+namespace Yosu.Core.Utils;
 
-internal class ThrottleLock : IDisposable
+public class ThrottleLock : IDisposable
 {
     private readonly SemaphoreSlim _semaphore = new(1, 1);
     private readonly TimeSpan _interval;

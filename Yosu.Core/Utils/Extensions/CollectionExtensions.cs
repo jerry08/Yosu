@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace Yosu.Spotify.Core.Utils.Extensions;
+namespace Yosu.Core.Utils.Extensions;
 
-internal static class CollectionExtensions
+public static class CollectionExtensions
 {
     public static void AddRange<T>(this ICollection<T> source, IEnumerable<T> items)
     {

@@ -8,6 +8,7 @@ using SixLabors.ImageSharp.Formats.Png;
 using TagLib.Id3v2;
 using Yosu.Spotify.Core.Utils;
 using SixLabors.ImageSharp.Formats.Jpeg;
+using Yosu.Core.Utils;
 
 namespace Yosu.Spotify.Core.Tagging;
 

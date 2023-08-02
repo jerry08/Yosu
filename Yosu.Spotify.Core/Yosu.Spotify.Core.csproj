@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Yosu.Core\Yosu.Core.csproj" />
     <ProjectReference Include="..\Yosu.Youtube.Core\Yosu.Youtube.Core.csproj" />
   </ItemGroup>
 

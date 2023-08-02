@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Yosu.Soundcloud.Core.Utils;
+namespace Yosu.Core.Utils;
 
-internal class DelegateEqualityComparer<T> : IEqualityComparer<T>
+public class DelegateEqualityComparer<T> : IEqualityComparer<T>
 {
     private readonly Func<T, T, bool> _equals;
     private readonly Func<T, int> _getHashCode;

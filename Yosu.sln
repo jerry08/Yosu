@@ -21,6 +21,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yosu.Youtube.Converter", "Y
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yosu.Spotify.Core", "Yosu.Spotify.Core\Yosu.Spotify.Core.csproj", "{A6988CB9-7ECA-42D0-A495-AE8925783BF7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yosu.Core", "Yosu.Core\Yosu.Core.csproj", "{FBCBB4D0-5B9E-4CA7-A6E5-57882AC5707F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,10 @@ Global
 		{A6988CB9-7ECA-42D0-A495-AE8925783BF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A6988CB9-7ECA-42D0-A495-AE8925783BF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A6988CB9-7ECA-42D0-A495-AE8925783BF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FBCBB4D0-5B9E-4CA7-A6E5-57882AC5707F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBCBB4D0-5B9E-4CA7-A6E5-57882AC5707F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBCBB4D0-5B9E-4CA7-A6E5-57882AC5707F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBCBB4D0-5B9E-4CA7-A6E5-57882AC5707F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

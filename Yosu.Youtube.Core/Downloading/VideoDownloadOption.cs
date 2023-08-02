@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Yosu.Youtube.Core.Utils;
-using Yosu.Youtube.Core.Utils.Extensions;
+using Yosu.Core.Utils;
+using Yosu.Core.Utils.Extensions;
 using YoutubeExplode.Videos.Streams;
 
 namespace Yosu.Youtube.Core.Downloading;

@@ -13,7 +13,7 @@ internal static class Http
             UserAgent =
             {
                 new ProductInfoHeaderValue(
-                    "YoutubeDownloader",
+                    "Yosu",
                     typeof(Http).Assembly.GetName().Version?.ToString(3)
                 )
             }

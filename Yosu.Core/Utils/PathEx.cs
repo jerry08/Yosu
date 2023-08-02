@@ -2,17 +2,19 @@
 using System.IO;
 using System.Text;
 
-namespace Yosu.Spotify.Core.Utils;
+namespace Yosu.Core.Utils;
 
-internal static class PathEx
+public static class PathEx
 {
     private static readonly HashSet<char> InvalidFileNameChars = new(Path.GetInvalidFileNameChars());
 
     public static string EscapeFileName(string path)
     {
-        var buffer = new StringBuilder(path.Length);
+        var newPath = path.Trim();
 
-        foreach (var c in path)
+        var buffer = new StringBuilder(newPath.Length);
+
+        foreach (var c in newPath)
             buffer.Append(!InvalidFileNameChars.Contains(c) ? c : '_');
 
         return buffer.ToString();

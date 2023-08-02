@@ -1,4 +1,4 @@
-﻿using Yosu.Youtube.Core.Utils;
+﻿using Yosu.Core.Utils;
 using YoutubeExplode.Videos;
 using YoutubeExplode.Videos.Streams;
 

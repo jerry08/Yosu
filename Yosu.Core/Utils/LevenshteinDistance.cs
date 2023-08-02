@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace Yosu.Spotify.Core.Utils;
+namespace Yosu.Core.Utils;
 
 /// <summary>
 /// Contains approximate string matching
 /// </summary>
-internal static class LevenshteinDistance
+public static class LevenshteinDistance
 {
     /// <summary>
     /// Compute the distance between two strings.

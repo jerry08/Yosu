@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Yosu.Core\Yosu.Core.csproj" />
     <ProjectReference Include="..\Yosu.Youtube.Converter\Yosu.Youtube.Converter.csproj" />
   </ItemGroup>
 

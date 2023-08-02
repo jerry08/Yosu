@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using JsonExtensions.Http;
 using JsonExtensions.Reading;
+using Yosu.Core.Utils;
 using Yosu.Soundcloud.Core.Utils;
 
 namespace Yosu.Soundcloud.Core.Tagging;

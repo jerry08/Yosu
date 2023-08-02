@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
-namespace Yosu.Spotify.Core.Utils;
+namespace Yosu.Core.Utils;
 
-internal static class Memo
+public static class Memo
 {
     private static class ForValue<T>
     {

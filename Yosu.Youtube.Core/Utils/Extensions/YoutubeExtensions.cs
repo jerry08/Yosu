@@ -1,4 +1,6 @@
 ﻿using System.IO;
+using Yosu.Core.Utils;
+using Yosu.Core.Utils.Extensions;
 using YoutubeExplode.Common;
 
 namespace Yosu.Youtube.Core.Utils.Extensions;

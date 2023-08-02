@@ -1,6 +1,6 @@
 ﻿using System;
 using SoundCloudExplode.Tracks;
-using Yosu.Soundcloud.Core.Utils;
+using Yosu.Core.Utils;
 
 namespace Yosu.Soundcloud.Core.Downloading;
 

@@ -1,4 +1,4 @@
-﻿namespace Yosu.Soundcloud.Core.Utils.Extensions;
+﻿namespace Yosu.Core.Utils.Extensions;
 
 internal static class StringExtensions
 {

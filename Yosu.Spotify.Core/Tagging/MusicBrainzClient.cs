@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using JsonExtensions.Http;
 using JsonExtensions.Reading;
+using Yosu.Core.Utils;
 using Yosu.Spotify.Core.Utils;
 
 namespace Yosu.Spotify.Core.Tagging;
