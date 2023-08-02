@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Gress;
 using Microsoft.Maui.ApplicationModel;
@@ -64,22 +63,6 @@ public class SoundcloudViewModel
                     fileName
                 );
             }
-
-            //if (_settingsService.DownloadInSDCard)
-            //{
-            //    if (FileEx.IsExternalStorageAvailable() && !FileEx.IsExternalStorageReadOnly())
-            //    {
-            //        var pp = AndroidX.Core.Content.ContextCompat.GetExternalFilesDirs(Platform.AppContext, null);
-            //        var pp2 = pp.LastOrDefault().ParentFile.ParentFile.ParentFile.ParentFile;
-            //
-            //        download.FilePath = Path.Combine(
-            //            pp2!.AbsolutePath,
-            //            //Android.OS.Environment.ExternalStorageDirectory!.AbsolutePath,
-            //            "Yosu",
-            //            fileName
-            //        );
-            //    }
-            //}
 #endif
 
             if (_settingsService.ShouldSkipExistingFiles && FileEx.Exists(download.FilePath))
