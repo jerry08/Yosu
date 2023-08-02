@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.Input;
 using Yosu.Common.Utils;
 
@@ -44,7 +45,7 @@ public partial class CollectionViewModel<T> : CollectionViewModelBase
     }
 
     [RelayCommand]
-    public virtual async void Refresh()
+    public virtual async Task Refresh()
     {
         if (IsBusy) return;
 
@@ -65,7 +66,7 @@ public partial class CollectionViewModel<T> : CollectionViewModelBase
     }
 
     [RelayCommand]
-    async void Create()
+    async Task Create()
     {
         if (!await IsOnline()) return;
 

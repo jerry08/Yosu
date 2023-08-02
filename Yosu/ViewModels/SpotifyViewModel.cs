@@ -33,6 +33,7 @@ public class SpotifyViewModel
         _settingsService = settingsService;
         _preferenceService = preference;
 
+        _settingsService.Load();
         _preferenceService.Load();
     }
 
@@ -49,14 +50,21 @@ public class SpotifyViewModel
             );
 
 #if ANDROID
-            download.FilePath = Path.Combine(
-                Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads)!.AbsolutePath,
-                "Yosu",
-                fileName
-            );
+            if (!string.IsNullOrWhiteSpace(_settingsService.DownloadDir))
+            {
+                download.FilePath = Path.Combine(_settingsService.DownloadDir, fileName);
+            }
+            else
+            {
+                download.FilePath = Path.Combine(
+                    Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads)!.AbsolutePath,
+                    "Yosu",
+                    fileName
+                );
+            }
 #endif
 
-            if (_settingsService.ShouldSkipExistingFiles && File.Exists(download.FilePath))
+            if (_settingsService.ShouldSkipExistingFiles && FileEx.Exists(download.FilePath))
                 continue;
 
             EnqueueDownload(download);

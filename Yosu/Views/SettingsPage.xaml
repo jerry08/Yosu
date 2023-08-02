@@ -132,6 +132,26 @@
                         <Switch Grid.ColumnSpan="2" IsToggled="{Binding Settings.DownloadInSDCard}" />
                     </Grid>-->
 
+                    <Grid
+                        Margin="0,5,0,10"
+                        Padding="20,0"
+                        BackgroundColor="Transparent"
+                        xct:TouchEffect.NativeAnimation="True"
+                        RowDefinitions="*,*">
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding PickDownloadLocationCommand}" />
+                        </Grid.GestureRecognizers>
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="15"
+                            Text="Download location"
+                            VerticalOptions="Center" />
+                        <Label
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Text="{Binding Settings.DownloadDir}" />
+                    </Grid>
+                    
                     <!--  Inject tags  -->
                     <Grid
                         Margin="0,5,0,10"

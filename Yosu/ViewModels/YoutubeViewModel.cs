@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Acr.UserDialogs;
 using CommunityToolkit.Maui.Alerts;
 using Gress;
-using Java.Nio.FileNio.Attributes;
 using Microsoft.Maui.ApplicationModel;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Storage;
@@ -64,6 +63,7 @@ public class YoutubeViewModel
         _settingsService = settingsService;
         _preferenceService = preferenceService;
 
+        _settingsService.Load();
         _preferenceService.Load();
     }
 
@@ -259,7 +259,11 @@ public class YoutubeViewModel
         BottomSheetController?.Dismiss();
         BottomSheetController = null;
 
-        App.StartForeground();
+        if (Downloads.Any())
+        {
+            App.StartForeground();
+            await Toast.Make("Download started").Show();
+        }
 
         for (int i = 0; i < Downloads.Count; i++)
         {
@@ -286,10 +290,17 @@ public class YoutubeViewModel
             }
 
 #if ANDROID
-            var dirPath = Path.Combine(
-                Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads)!.AbsolutePath,
-                "Yosu"
-            );
+            //var dirPath = Path.Combine(
+            //    Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads)!.AbsolutePath,
+            //    "Yosu"
+            //);
+
+            var dirPath = !string.IsNullOrWhiteSpace(_settingsService.DownloadDir)
+                ? _settingsService.DownloadDir
+                : Path.Combine(
+                    Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads)!.AbsolutePath,
+                    "Yosu"
+                );
 #elif IOS || MACCATALYST
             var dirPath = "";
 #endif
@@ -304,7 +315,7 @@ public class YoutubeViewModel
                 )
             );
 
-            if (_settingsService.ShouldSkipExistingFiles && File.Exists(baseFilePath))
+            if (_settingsService.ShouldSkipExistingFiles && FileEx.Exists(baseFilePath))
                 continue;
 
             var filePath = PathEx.EnsureUniquePath(baseFilePath);
@@ -316,8 +327,6 @@ public class YoutubeViewModel
 
             EnqueueDownload(Downloads[i]);
         }
-
-        await Toast.Make("Download started").Show();
     }
 
     public void RestartDownload(YoutubeDownloadViewModel download)

@@ -13,9 +13,7 @@ public partial class SettingsService : SettingsBase, INotifyPropertyChanged
 {
     public bool AlwaysCheckForUpdates { get; set; } = true;
 
-#if ANDROID
-    public bool DownloadInSDCard { get; set; }
-#endif
+    public string? DownloadDir { get; set; }
 
     public bool ShouldInjectTags { get; set; } = true;
 

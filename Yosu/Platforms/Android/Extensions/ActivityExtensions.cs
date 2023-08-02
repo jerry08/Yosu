@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Android.Content;
@@ -6,11 +8,21 @@ using Android.Media;
 using Android.OS;
 using Android.Provider;
 using Android.Webkit;
+using AndroidX.DocumentFile.Provider;
 
 namespace Yosu.Extensions;
 
 internal static class ActivityExtensions
 {
+    public static List<UriPermission> GetPersistedUriPermissions(this Context context)
+        => context.ContentResolver?.PersistedUriPermissions.ToList() ?? new();
+
+    public static bool HasPersistedUriPermission(this Context context, string uri)
+        => GetPersistedUriPermissions(context).Any(x => x.Uri?.Path == uri);
+
+    public static Android.Net.Uri? GetPersistedUriPermissionFor(this Context context, string uri)
+        => GetPersistedUriPermissions(context).Find(x => x.Uri?.Path == uri)?.Uri;
+
     public static async Task CopyFileAsync(
         this Context context,
         string filePath,
@@ -54,53 +66,83 @@ internal static class ActivityExtensions
         //var dir = Directory.GetParent(newFilePath)?.FullName;
         var fileName = Path.GetFileNameWithoutExtension(newFilePath);
 
-        var mime = MimeTypeMap.Singleton!;
-        var mimeType = mime.GetMimeTypeFromExtension(ext);
+        var mimeType = MimeTypeMap.Singleton!.GetMimeTypeFromExtension(ext);
 
         if (string.IsNullOrEmpty(mimeType))
             return;
 
-        var fileInfo = new FileInfo(filePath);
-
         //var dir = Android.OS.Environment.DirectoryDownloads;
         //var dir = "Yosu";
-        //var dir = Path.GetDirectoryName(newFilePath)!
-        //    .Replace(Environment.ExternalStorageDirectory!.AbsolutePath, "");
+        var dir = Path.GetDirectoryName(newFilePath)!
+            .Replace(Environment.ExternalStorageDirectory!.AbsolutePath, "");
+        if (dir.StartsWith("/"))
+            dir = dir[1..];
 
-        var dir = Environment.DirectoryDownloads + "/Yosu";
+        var hasPersistedUriPermission = context.HasPersistedUriPermission(
+            Path.GetDirectoryName(newFilePath)!
+        );
 
-        var contentValues = new ContentValues();
-        //contentValues.Put(MediaStore.IMediaColumns.DisplayName, newFilePath);
-        contentValues.Put(MediaStore.IMediaColumns.DisplayName, fileName);
-        contentValues.Put(MediaStore.IMediaColumns.MimeType, mimeType);
-        contentValues.Put(MediaStore.IMediaColumns.RelativePath, dir);
-        //contentValues.Put(MediaStore.IMediaColumns.RelativePath, dir);
-        contentValues.Put(MediaStore.IMediaColumns.Size, fileInfo.Length);
+        var uri = context.GetPersistedUriPermissionFor(Path.GetDirectoryName(newFilePath)!);
 
-        if (mimeType.StartsWith("image") || mimeType.StartsWith("video"))
+        if (hasPersistedUriPermission)
         {
-            // Set media duration
-            var retriever = new MediaMetadataRetriever();
-            retriever.SetDataSource(context, Android.Net.Uri.FromFile(new Java.IO.File(filePath)));
-            var time = retriever.ExtractMetadata(MetadataKey.Duration) ?? string.Empty;
-            var timeInMillisec = long.Parse(time);
-            contentValues.Put(MediaStore.IMediaColumns.Duration, timeInMillisec);
+            if (uri is null)
+                return;
+
+            //var uri2 = Android.Net.Uri.Parse(Path.Combine(uri.Path!, Path.GetFileName(newFilePath)));
+
+            //var test1 = DocumentFile.IsDocumentUri(context, uri);
+            //var test2 = DocumentFile.FromSingleUri(context, uri);
+            var test2 = DocumentFile.FromTreeUri(context, uri);
+
+            var ff1 = test2.FindFile(Path.GetFileName(newFilePath));
+            if (ff1 is not null && ff1.Exists())
+            {
+                ff1.Delete();
+            }
+
+            //var gs = test2.Exists();
+            //if (test2.Exists())
+            //    test2.Delete();
+
+            var newFile = test2.CreateFile(mimeType, fileName);
+            uri = newFile.Uri;
+        }
+        else
+        {
+            var contentValues = new ContentValues();
+            //contentValues.Put(MediaStore.IMediaColumns.DisplayName, newFilePath);
+            contentValues.Put(MediaStore.IMediaColumns.DisplayName, fileName);
+            contentValues.Put(MediaStore.IMediaColumns.MimeType, mimeType);
+            contentValues.Put(MediaStore.IMediaColumns.RelativePath, dir);
+            //contentValues.Put(MediaStore.IMediaColumns.RelativePath, dir);
+            contentValues.Put(MediaStore.IMediaColumns.Size, new FileInfo(filePath).Length);
+
+            if (mimeType.StartsWith("image") || mimeType.StartsWith("video"))
+            {
+                // Set media duration
+                var retriever = new MediaMetadataRetriever();
+                retriever.SetDataSource(context, Android.Net.Uri.FromFile(new Java.IO.File(filePath)));
+                var time = retriever.ExtractMetadata(MetadataKey.Duration) ?? string.Empty;
+                var timeInMillisec = long.Parse(time);
+                contentValues.Put(MediaStore.IMediaColumns.Duration, timeInMillisec);
+            }
+
+            var externalContentUri = MediaStore.Files.GetContentUri("external")!;
+
+            //uri = context.ContentResolver?.Insert(MediaStore.Downloads.ExternalContentUri, contentValues);
+            uri = context.ContentResolver?.Insert(externalContentUri, contentValues);
         }
 
-        var resolver = context.ContentResolver;
-        var externalContentUri = MediaStore.Files.GetContentUri("external")!;
+        if (uri is null)
+            return;
 
-        //var uri = resolver?.Insert(MediaStore.Downloads.ExternalContentUri, contentValues);
-        var uri = resolver?.Insert(externalContentUri, contentValues);
-        if (uri is not null)
-        {
-            var defaultBufferSize = 4096;
+        var defaultBufferSize = 4096;
 
-            using var input = File.OpenRead(filePath);
-            var output = resolver?.OpenOutputStream(uri);
-            if (output is not null)
-                await input.CopyToAsync(output, defaultBufferSize, cancellationToken);
-        }
+        using var input = File.OpenRead(filePath);
+        var output = context.ContentResolver?.OpenOutputStream(uri);
+        if (output is not null)
+            await input.CopyToAsync(output, defaultBufferSize, cancellationToken);
 
         MediaScannerConnection.ScanFile(
             context,

@@ -29,7 +29,7 @@ public partial class BaseViewModel : ObservableObject
     private string? _profilePicPath;
 
     [RelayCommand]
-    public async void Load()
+    public async Task Load()
     {
         IsInitialized = true;
 

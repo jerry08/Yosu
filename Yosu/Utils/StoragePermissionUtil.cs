@@ -21,7 +21,7 @@ internal class StoragePermissionUtil
     private static async Task<PermissionStatus> CheckAndRequestStorageReadPermission()
     {
 #if ANDROID
-        if (Android.OS.Build.VERSION.SdkInt > Android.OS.BuildVersionCodes.Q)
+        if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.Q)
         {
             // Android Q and above are going permissionless.
 

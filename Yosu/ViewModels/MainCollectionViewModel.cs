@@ -84,7 +84,7 @@ public partial class MainCollectionViewModel : CollectionViewModel<object>
     }
 
     [RelayCommand]
-    async void ProcessQuery()
+    async Task ProcessQuery()
     {
         if (!string.IsNullOrWhiteSpace(IntentUrl))
         {
@@ -141,7 +141,7 @@ public partial class MainCollectionViewModel : CollectionViewModel<object>
     }
 
     [RelayCommand]
-    async void Download(DownloadViewModelBase entity)
+    async Task Download(DownloadViewModelBase entity)
     {
         if (!await IsOnline()) return;
 
@@ -178,7 +178,7 @@ public partial class MainCollectionViewModel : CollectionViewModel<object>
     }
 
     [RelayCommand]
-    async void DownloadSelected()
+    async Task DownloadSelected()
     {
         if (!await IsOnline()) return;
 
@@ -226,7 +226,7 @@ public partial class MainCollectionViewModel : CollectionViewModel<object>
     }
 
     [RelayCommand]
-    async void RestartDownload(DownloadViewModelBase entity)
+    async Task RestartDownload(DownloadViewModelBase entity)
     {
         if (!await IsOnline()) return;
 
@@ -247,7 +247,7 @@ public partial class MainCollectionViewModel : CollectionViewModel<object>
     }
 
     [RelayCommand]
-    async void OpenUrl(DownloadViewModelBase entity)
+    async Task OpenUrl(DownloadViewModelBase entity)
     {
         var url = GetUrl(entity);
         if (url is null)
@@ -257,7 +257,7 @@ public partial class MainCollectionViewModel : CollectionViewModel<object>
     }
 
     [RelayCommand]
-    async void CopyUrl(DownloadViewModelBase entity)
+    async Task CopyUrl(DownloadViewModelBase entity)
     {
         var url = GetUrl(entity);
         if (url is null)
@@ -282,7 +282,7 @@ public partial class MainCollectionViewModel : CollectionViewModel<object>
     }
 
     [RelayCommand]
-    async void ViewErrorMessage(DownloadViewModelBase download)
+    async Task ViewErrorMessage(DownloadViewModelBase download)
     {
         await App.AlertSvc.ShowAlertAsync("Error", $"{download.ErrorMessage}");
     }
@@ -307,19 +307,19 @@ public partial class MainCollectionViewModel : CollectionViewModel<object>
     }
 
     [RelayCommand]
-    async void GoToHistory()
+    async Task GoToHistory()
     {
         await Shell.Current.GoToAsyncSingle(nameof(HistoryCollectionView));
     }
 
     [RelayCommand]
-    async void GoToSettings()
+    async Task GoToSettings()
     {
         await Shell.Current.GoToAsyncSingle($"Settings/{nameof(SettingsPage)}");
     }
 
     [RelayCommand]
-    async void Donate()
+    async Task Donate()
     {
         await Browser.Default.OpenAsync("https://www.buymeacoffee.com/jerry08");
     }

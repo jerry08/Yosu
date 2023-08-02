@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Gress;
 using Microsoft.Maui.ApplicationModel;
@@ -33,6 +34,7 @@ public class SoundcloudViewModel
         _settingsService = settingsService;
         _preferenceService = preference;
 
+        _settingsService.Load();
         _preferenceService.Load();
     }
 
@@ -49,15 +51,38 @@ public class SoundcloudViewModel
             );
 
 #if ANDROID
-            download.FilePath = Path.Combine(
-                Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads)!.AbsolutePath,
-                //Android.OS.Environment.ExternalStorageDirectory!.AbsolutePath,
-                "Yosu",
-                fileName
-            );
+            if (!string.IsNullOrWhiteSpace(_settingsService.DownloadDir))
+            {
+                download.FilePath = Path.Combine(_settingsService.DownloadDir, fileName);
+            }
+            else
+            {
+                download.FilePath = Path.Combine(
+                    Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads)!.AbsolutePath,
+                    //Android.OS.Environment.ExternalStorageDirectory!.AbsolutePath,
+                    "Yosu",
+                    fileName
+                );
+            }
+
+            //if (_settingsService.DownloadInSDCard)
+            //{
+            //    if (FileEx.IsExternalStorageAvailable() && !FileEx.IsExternalStorageReadOnly())
+            //    {
+            //        var pp = AndroidX.Core.Content.ContextCompat.GetExternalFilesDirs(Platform.AppContext, null);
+            //        var pp2 = pp.LastOrDefault().ParentFile.ParentFile.ParentFile.ParentFile;
+            //
+            //        download.FilePath = Path.Combine(
+            //            pp2!.AbsolutePath,
+            //            //Android.OS.Environment.ExternalStorageDirectory!.AbsolutePath,
+            //            "Yosu",
+            //            fileName
+            //        );
+            //    }
+            //}
 #endif
 
-            if (_settingsService.ShouldSkipExistingFiles && File.Exists(download.FilePath))
+            if (_settingsService.ShouldSkipExistingFiles && FileEx.Exists(download.FilePath))
                 continue;
 
             EnqueueDownload(download);

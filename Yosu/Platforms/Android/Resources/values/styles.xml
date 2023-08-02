@@ -42,9 +42,15 @@
 
   <style name="DialogStyle" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
     <!-- dialog_background is drawable shape with corner radius -->
-    <item name="android:background">@drawable/dialog_background</item>
+    <!--<item name="android:background">@drawable/dialog_background</item>-->
 
-    <item name="android:windowBackground">@android:color/transparent</item>
+    <!--<item name="backgroundTint">#bae</item>
+    <item name="rippleColor">#bae3</item>-->
+
+    <!--<item name="backgroundTint">@color/colorPrimaryDark</item>
+    <item name="rippleColor">@color/colorAccent</item>-->
+
+    <item name="android:windowBackground">@drawable/dialog_background</item>
   </style>
 
   <style name="CustomBottomSheetDialogTheme" parent="@style/ThemeOverlay.Material3.BottomSheetDialog">

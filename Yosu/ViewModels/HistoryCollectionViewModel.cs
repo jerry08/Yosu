@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Text.Json;
+using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.Input;
 using SoundCloudExplode.Tracks;
 using SpotifyExplode.Tracks;
@@ -32,7 +33,7 @@ public partial class HistoryCollectionViewModel : CollectionViewModel<ListGroup<
     }
 
     [RelayCommand]
-    async void ProcessQuery()
+    async Task ProcessQuery()
     {
         //KeyboardHelper.HideKeyboard();
 
@@ -141,7 +142,7 @@ public partial class HistoryCollectionViewModel : CollectionViewModel<ListGroup<
     }
 
     [RelayCommand]
-    async void ClearAll()
+    async Task ClearAll()
     {
         var result = await App.AlertSvc.ShowConfirmationAsync(
             "Confirmation",

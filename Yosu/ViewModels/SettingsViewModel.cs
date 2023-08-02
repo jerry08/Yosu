@@ -1,4 +1,6 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.IO;
+using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Maui.ApplicationModel;
 using Microsoft.Maui.Controls;
@@ -18,6 +20,9 @@ public partial class SettingsViewModel : BaseViewModel
     [ObservableProperty]
     private SettingsService _settings = default!;
 
+    [ObservableProperty]
+    private string _defaultDownloadDirectory = default!;
+
     public SettingsViewModel(
         PreferenceService preferenceService,
         SettingsService settingsService,
@@ -32,6 +37,15 @@ public partial class SettingsViewModel : BaseViewModel
         Settings.Load();
 
         Settings.PropertyChanged += (_, _) => Settings.Save();
+
+#if ANDROID
+        DefaultDownloadDirectory = Path.Combine(
+            Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads)!.AbsolutePath,
+            "Yosu"
+        );
+
+        Settings.DownloadDir ??= DefaultDownloadDirectory;
+#endif
     }
 
     [RelayCommand]
@@ -47,7 +61,41 @@ public partial class SettingsViewModel : BaseViewModel
     }
 
     [RelayCommand]
-    private async void SoundcloudFileNameTemplateTapped()
+    private async Task PickDownloadLocation()
+    {
+#if ANDROID
+        var result = await Shell.Current.DisplayActionSheet(
+            "Choose location",
+            "Cancel",
+            null,
+            DefaultDownloadDirectory,
+            "Pick location"
+        );
+
+        if (result == DefaultDownloadDirectory)
+        {
+            Settings.DownloadDir = DefaultDownloadDirectory;
+            DefaultDownloadDirectory = Settings.DownloadDir;
+            return;
+        }
+
+        if (result != "Pick location")
+            return;
+
+        if (Platform.CurrentActivity is MainActivity activity)
+        {
+            var res = await activity.PickDirectoryAsync();
+            if (res.IsSuccess && !string.IsNullOrWhiteSpace(res.Data?.Data?.Path))
+            {
+                Settings.DownloadDir = res.Data.Data.Path;
+                DefaultDownloadDirectory = Settings.DownloadDir;
+            }
+        }
+#endif
+    }
+
+    [RelayCommand]
+    private async Task SoundcloudFileNameTemplateTapped()
     {
         var result = await Shell.Current.DisplayPromptAsync(
             "Soundcloud file name template",
@@ -74,7 +122,7 @@ public partial class SettingsViewModel : BaseViewModel
     }
 
     [RelayCommand]
-    private async void YoutubeFileNameTemplateTapped()
+    private async Task YoutubeFileNameTemplateTapped()
     {
         var result = await Shell.Current.DisplayPromptAsync(
             "Youtube file name template",
@@ -99,7 +147,7 @@ public partial class SettingsViewModel : BaseViewModel
     }
 
     [RelayCommand]
-    private async void SpotifyFileNameTemplateTapped()
+    private async Task SpotifyFileNameTemplateTapped()
     {
         var result = await Shell.Current.DisplayPromptAsync(
             "Spotify file name template",
@@ -126,13 +174,13 @@ public partial class SettingsViewModel : BaseViewModel
     }
 
     [RelayCommand]
-    private async void Github()
+    private async Task Github()
     {
         await Browser.Default.OpenAsync("https://github.com/jerry08/Yosu");
     }
 
     [RelayCommand]
-    private async void Discord()
+    private async Task Discord()
     {
         await Browser.Default.OpenAsync("https://discord.gg/mhxsSMy2Nf");
     }

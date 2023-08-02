@@ -31,8 +31,8 @@ public static class PageExtensions
     {
         var bottomSheetDialog = new BottomSheetDialog(
             Platform.CurrentActivity?.Window?.DecorView.FindViewById(Android.Resource.Id.Content)?.Context ?? throw new InvalidOperationException("Context is null")
-            //Resource.Style.Test1
-            //Resource.Style.CustomBottomSheetDialogTheme
+        //Resource.Style.Test1
+        //Resource.Style.CustomBottomSheetDialogTheme
         );
 
         bottomSheetDialog.SetContentView(bottomSheetContent.ToPlatform(page.Handler?.MauiContext ?? throw new Exception("MauiContext is null")));
