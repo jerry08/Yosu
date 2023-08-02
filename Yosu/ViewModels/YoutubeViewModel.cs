@@ -73,6 +73,8 @@ public class YoutubeViewModel
         _preferenceService.Downloads.Add(DownloadItem.FromViewModel(download));
         _preferenceService.Save();
 
+        Downloads.Add(download);
+
         download.BeginDownload();
 
         _downloadSemaphore.MaxCount = _settingsService.ParallelLimit;
@@ -256,14 +258,14 @@ public class YoutubeViewModel
         if (opt is null)
             return;
 
-        Downloads.AddRange(downloads);
+        //Downloads.AddRange(downloads);
 
         BottomSheetController?.Dismiss();
         BottomSheetController = null;
 
         var started = false;
 
-        for (int i = 0; i < Downloads.Count; i++)
+        for (int i = 0; i < downloads.Count; i++)
         {
             Container selectedContainer = default!;
 
@@ -271,19 +273,19 @@ public class YoutubeViewModel
             {
                 case VideoDownloadOption option:
                     selectedContainer = option.Container;
-                    Downloads[i].DownloadOption = option;
+                    downloads[i].DownloadOption = option;
                     break;
                 //case VideoDownloadPreference option:
                 //    selectedContainer = option.PreferredContainer;
-                //    Downloads[i].DownloadPreference = option;
+                //    downloads[i].DownloadPreference = option;
                 //    break;
                 case Container container:
                     selectedContainer = container;
-                    Downloads[i].DownloadPreference = new VideoDownloadPreference(container, SelectedVideoQualityPreference);
+                    downloads[i].DownloadPreference = new VideoDownloadPreference(container, SelectedVideoQualityPreference);
                     break;
                 case VideoQualityPreference preference:
                     selectedContainer = SelectedContainer;
-                    Downloads[i].DownloadPreference = new VideoDownloadPreference(SelectedContainer, preference);
+                    downloads[i].DownloadPreference = new VideoDownloadPreference(SelectedContainer, preference);
                     break;
             }
 
@@ -307,9 +309,9 @@ public class YoutubeViewModel
                 dirPath,
                 FileNameTemplate.Apply(
                     _settingsService.YoutubeFileNameTemplate,
-                    Downloads[i].Video!,
+                    downloads[i].Video!,
                     selectedContainer,
-                    (i + 1).ToString().PadLeft(Downloads.Count.ToString().Length, '0')
+                    (i + 1).ToString().PadLeft(downloads.Count.ToString().Length, '0')
                 )
             );
 
@@ -320,8 +322,8 @@ public class YoutubeViewModel
             var extension = Path.GetExtension(baseFilePath);
             var tempFilePath = Path.Combine(FileSystem.CacheDirectory, $"{DateTime.Now.Ticks}{extension}");
 
-            Downloads[i].FilePath = filePath;
-            Downloads[i].TempFilePath = tempFilePath;
+            downloads[i].FilePath = filePath;
+            downloads[i].TempFilePath = tempFilePath;
 
             if (!started)
             {
@@ -330,7 +332,7 @@ public class YoutubeViewModel
                 started = true;
             }
 
-            EnqueueDownload(Downloads[i]);
+            EnqueueDownload(downloads[i]);
         }
     }
 
