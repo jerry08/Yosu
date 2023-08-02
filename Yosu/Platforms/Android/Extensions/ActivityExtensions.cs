@@ -89,23 +89,16 @@ internal static class ActivityExtensions
             if (uri is null)
                 return;
 
-            //var uri2 = Android.Net.Uri.Parse(Path.Combine(uri.Path!, Path.GetFileName(newFilePath)));
+            var documentTree = DocumentFile.FromTreeUri(context, uri)
+                ?? throw new IOException("Permission denied.");
 
-            //var test1 = DocumentFile.IsDocumentUri(context, uri);
-            //var test2 = DocumentFile.FromSingleUri(context, uri);
-            var test2 = DocumentFile.FromTreeUri(context, uri);
+            var documentFile = documentTree.FindFile(Path.GetFileName(newFilePath));
+            if (documentFile?.Exists() == true)
+                documentFile.Delete();
 
-            var ff1 = test2.FindFile(Path.GetFileName(newFilePath));
-            if (ff1 is not null && ff1.Exists())
-            {
-                ff1.Delete();
-            }
+            var newFile = documentTree.CreateFile(mimeType, fileName)
+                ?? throw new IOException("Failed to create file. Permission denied.");
 
-            //var gs = test2.Exists();
-            //if (test2.Exists())
-            //    test2.Delete();
-
-            var newFile = test2.CreateFile(mimeType, fileName);
             uri = newFile.Uri;
         }
         else

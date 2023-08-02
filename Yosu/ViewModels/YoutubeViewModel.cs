@@ -101,7 +101,7 @@ public class YoutubeViewModel
                     );
 
                 var progress = new ProgressReporter();
-                progress.OnReport += (s, e) => download.PercentageProgress = e;
+                progress.OnReport += (_, e) => download.PercentageProgress = e;
 
                 download.IsProgressIndeterminate = false;
 
