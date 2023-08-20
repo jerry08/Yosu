@@ -52,7 +52,7 @@ jobs:
           path: Yosu/bin/Release/net7.0-android/*Signed.a*
           
   notify:
-    if: ${{ github.event_name == 'push' && github.ref_type == 'tag' }}
+    if: ${{ github.event_name == 'release' && github.ref_type == 'tag' }}
     needs: build-android
     runs-on: ubuntu-latest
     permissions:
