@@ -54,7 +54,7 @@ jobs:
             -p:AndroidKeyStore=true
             -p:AndroidSigningKeyStore=${{ github.workspace }}/signing-key.keystore
             -p:AndroidSigningStorePass="${{ secrets.PASSWORD }}"
-            -p:AndroidSigningKeyAlias="DrMedia"
+            -p:AndroidSigningKeyAlias="YosuAlias"
             -p:AndroidSigningKeyPass="${{ secrets.PASSWORD }}"
 
       - name: Rename file
