@@ -9,12 +9,7 @@ on:
       - '**/*.gitattributes'
   pull_request:
     branches: [ master ]
-  release:
-    types: [published]
   workflow_dispatch:
-
-permissions:
-  contents: read
 
 env:
   DOTNET_NOLOGO: true                     # Disable the .NET logo
@@ -22,53 +17,135 @@ env:
   DOTNET_CLI_TELEMETRY_OPTOUT: true       # Disable sending .NET CLI telemetry
 
 jobs:
-# MAUI Android Build
+  # MAUI Android Build
   build-android:
     runs-on: windows-latest
-    
+
+    env:
+      DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+      DOTNET_NOLOGO: true
+      DOTNET_CLI_TELEMETRY_OPTOUT: true
+
     name: Android Build
     steps:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Cook KeyStore
+        run:  echo "${{ secrets.KEYSTORE_B64 }}" | base64 -d > $GITHUB_WORKSPACE/signing-key.keystore
+        shell: bash
+
       - name: Install .NET
         uses: actions/setup-dotnet@v2
         with:
           dotnet-version: 7.0.x
-          
+
       - name: Install MAUI Workload
         run: dotnet workload install maui --ignore-failed-sources
 
       - name: Restore Dependencies
-        run: dotnet restore Yosu/Yosu.csproj
+        run: dotnet restore Yosu/
 
-      - name: Build MAUI Android
-        run: dotnet publish Yosu/Yosu.csproj -c Release -f net7.0-android -p:AndroidKeyStore=false
+      - name: Publish MAUI Android
+        run: >
+            dotnet publish Yosu/
+            -c Release
+            -f net7.0-android
+            -p:AndroidKeyStore=true
+            -p:AndroidSigningKeyStore=${{ github.workspace }}/signing-key.keystore
+            -p:AndroidSigningStorePass="${{ secrets.PASSWORD }}"
+            -p:AndroidSigningKeyAlias="DrMedia"
+            -p:AndroidSigningKeyPass="${{ secrets.PASSWORD }}"
 
+      - name: Rename file
+        run: |
+          set -e
+
+          mv Yosu/bin/Release/net7.0-android/com.berry.yosu-Signed.apk Yosu.apk
+        shell: bash
+        
       - name: Upload Android Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: yosu-android-ci-build
-          path: Yosu/bin/Release/net7.0-android/*Signed.a*
-          
-  notify:
-    if: ${{ github.event_name == 'release' && github.ref_type == 'tag' }}
+          name: Yosu
+          path: Yosu.apk
+
+  deploy:
+    if: ${{ github.event_name == 'push' && github.ref_type == 'tag' }}
     needs: build-android
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: write
+
+    steps:
+      # Checkout required for running git commands, etc.
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set package name env var
+        run: |
+          TAG_NAME="${{ github.ref_name }}"
+          TAG_NAME="$(echo $TAG_NAME | tr -d v)"
+          echo $TAG_NAME
+          echo "PACKAGE_NAME=${{ github.event.repository.name }}-$TAG_NAME.apk" >> $GITHUB_ENV
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: Yosu
+          path: Yosu
+
+      - name: Set body
+        run: |
+          git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+          TAG_MESSAGE=$(git tag -l --format='%(contents)' ${GITHUB_REF#refs/*/})
+          echo "TAG_MESSAGE2<<EOF" >> $GITHUB_ENV
+          echo "$TAG_MESSAGE" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Create release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: >
+          gh release create "${{ github.ref_name }}"
+          "Yosu.apk"
+          --repo "${{ github.event.repository.full_name }}"
+          --title "${{ github.ref_name }}"
+          --notes "${{ env.TAG_MESSAGE2 }}"
+          --verify-tag
+
+  notify:
+    needs: deploy
     runs-on: ubuntu-latest
     permissions:
       contents: read
 
     steps:
-      - name: Set Release Notes
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set package name env var
         run: |
-          content=${{ toJSON(github.event.release.body) }}
-          # The following lines are required for multiline json
-          content="${content//'%'/'%25'}"
-          content="${content//$'\n'/'%0A'}"
-          content="${content//$'\r'/'%0D'}"
-          echo "RELEASE_BODY $content"
-          echo "RELEASE_BODY=$content" >> $GITHUB_ENV
-        
+          TAG_NAME="${{ github.ref_name }}"
+          TAG_NAME="$(echo $TAG_NAME | tr -d v)"
+          echo "$TAG_NAME"
+          echo "PACKAGE_NAME=${{ github.event.repository.name }}-$TAG_NAME.zip" >> $GITHUB_ENV
+
+      - name: Set release body env var
+        run: |
+          git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+          TAG_MESSAGE=$(git tag -l --format='%(contents)' ${GITHUB_REF#refs/*/})
+          # Sanitize content
+          TAG_MESSAGE="${TAG_MESSAGE//'%'/'%25'}"
+          TAG_MESSAGE="${TAG_MESSAGE//$'\n'/'\n'}"
+          TAG_MESSAGE="${TAG_MESSAGE//$'\r'/'\r'}"
+          TAG_MESSAGE="$(echo $TAG_MESSAGE | sed "s/\"/'/g")"
+          # End sanitization
+          echo "RELEASE_BODY<<EOF" >> $GITHUB_ENV
+          echo "$TAG_MESSAGE" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
       - name: Notify Discord
         uses: tyrrrz/action-http-request@v1
         with:
@@ -80,5 +157,5 @@ jobs:
             {
               "username": "Notifications",
               "avatar_url": "https://raw.githubusercontent.com/${{ github.event.repository.full_name }}/master/favicon.png",
-              "content": "**${{ github.event.repository.name }}** new version released!\nVersion: `${{ github.ref_name }}`\n\n${{ env.RELEASE_BODY }}\n\nDownload: <${{ github.event.release.assets[0].browser_download_url }}>"
+              "content": "**${{ github.event.repository.name }}** new version released!\nVersion: `${{ github.ref_name }}`\n\n${{ env.RELEASE_BODY }}\n\nDownload: <${{ github.event.repository.html_url }}/download/${{ github.ref_name }}/${{ env.PACKAGE_NAME }}>"
             }
