@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Yosu.Soundcloud.Core.Utils;
 using SoundCloudExplode.Tracks;
+using Yosu.Soundcloud.Core.Utils;
 
 namespace Yosu.Soundcloud.Core.Tagging;
 

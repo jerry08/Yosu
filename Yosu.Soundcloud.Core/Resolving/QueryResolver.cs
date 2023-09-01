@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Gress;
 using SoundCloudExplode;
+using SoundCloudExplode.Common;
 using SoundCloudExplode.Tracks;
 
 namespace Yosu.Soundcloud.Core.Resolving;
@@ -41,7 +42,7 @@ public class QueryResolver
 
         // Search
         {
-            var tracks = await _soundcloud.Search.GetTracksAsync(query, 0, 50, cancellationToken);
+            var tracks = await _soundcloud.Search.GetTracksAsync(query, cancellationToken).CollectAsync(20);
 
             foreach (var track in tracks)
                 track.ArtworkUrl ??= track.User?.AvatarUrl;
