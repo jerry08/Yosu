@@ -15,7 +15,7 @@ namespace Yosu.Youtube.Core.Resolving;
 
 public class QueryResolver
 {
-    private readonly YoutubeClient _youtube = new(Http.Client);
+    private YoutubeClient _youtube = new(Http.Client);
 
     public async Task<QueryResult> ResolveAsync(
         string query,
@@ -74,6 +74,8 @@ public class QueryResolver
 
         // Search
         {
+            _youtube = new();
+
             var videos = await _youtube.Search.GetVideosAsync(query, cancellationToken).CollectAsync(20);
             return new QueryResult(QueryResultKind.Search, $"Search: {query}", videos);
         }
