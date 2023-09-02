@@ -22,7 +22,7 @@ public class QueryResolver
         if (await _soundcloud.Playlists.IsUrlValidAsync(query, cancellationToken))
         {
             var playlist = await _soundcloud.Playlists.GetAsync(query, true, cancellationToken);
-            var tracks = await _soundcloud.Playlists.GetTracksAsync(query, cancellationToken: cancellationToken);
+            var tracks = await _soundcloud.Playlists.GetTracksAsync(query, cancellationToken);
 
             foreach (var track in tracks)
                 track.ArtworkUrl ??= track.User?.AvatarUrl;
