@@ -38,7 +38,7 @@ Yosu is an android application to download video/audio from Youtube, Soundcloud 
 Yosu is an application that lets you download videos/tracks from YouTube, Soundcloud and Spotify. You can copy-paste URL of any video, track,
 playlist or channel and download it directly to a format of your choice. It also supports searching by keywords, which is helpful if you want to quickly look up and download videos or tracks.
 
-## 💻 Install 
+## 💻 Install
 
 | Platform | Download | Status |
 |----------|----------|--------|
