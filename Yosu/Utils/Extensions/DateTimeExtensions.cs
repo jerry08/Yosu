@@ -1,4 +1,5 @@
 ﻿using System;
+using Yosu.Models;
 
 namespace Yosu.Utils.Extensions;
 

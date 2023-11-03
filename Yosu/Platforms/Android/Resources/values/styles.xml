@@ -12,11 +12,16 @@
     
     <item name="bottomSheetDialogTheme">@style/CustomBottomSheetDialogTheme</item>
 
-    <!-- To change the background of options menu-->
+    <!-- To change the background of options menu -->
     <!--<item name="android:itemBackground">@color/bottomSheetBg</item>-->
 
     <!-- To change the popup menu and app text color  -->
     <item name="android:textColor">@color/textColor</item>
+
+    <!-- To change enable/change background color in the49.maui.bottomsheet -->
+    <item name="android:elevation">0dp</item>
+    <item name="elevation">0dp</item>
+    <item name="elevationOverlayEnabled">false</item>
 
     <!--
     <item name="android:colorBackground">#cd5</item>

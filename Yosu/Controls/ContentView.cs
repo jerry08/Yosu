@@ -6,7 +6,7 @@ public class ContentView : Microsoft.Maui.Controls.ContentView
 {
     public object Tag
     {
-        get => (object)GetValue(TagProperty);
+        get => GetValue(TagProperty);
         set => SetValue(TagProperty, value);
     }
 

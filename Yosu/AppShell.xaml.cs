@@ -1,9 +1,11 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Networking;
+using Yosu.Models;
 using Yosu.ViewModels;
 using Yosu.ViewModels.Framework;
 using Yosu.Views;
@@ -14,6 +16,8 @@ namespace Yosu;
 public partial class AppShell : Shell
 {
     private bool DoubleBackToExitPressedOnce { get; set; }
+
+    public static event EventHandler<BackPressedEventArgs>? BackButtonPressed;
 
     public AppShell()
     {
@@ -54,6 +58,12 @@ public partial class AppShell : Shell
 
     protected override bool OnBackButtonPressed()
     {
+        var @event = new BackPressedEventArgs();
+        BackButtonPressed?.Invoke(this, @event);
+
+        if (@event.Cancelled)
+            return true;
+
         if (Current.CurrentPage.BindingContext is CollectionViewModelBase viewModel
             && viewModel.SelectionMode != SelectionMode.None)
         {
