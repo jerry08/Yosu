@@ -4,11 +4,12 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:app="clr-namespace:Yosu"
+    xmlns:berry="https://schemas.jerry08/dotnet/2023/maui"
     xmlns:fi="clr-namespace:Yosu.FontIcons"
     xmlns:materialDesign="clr-namespace:MaterialDesign"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:viewmodels="clr-namespace:Yosu.ViewModels.Settings"
-    xmlns:xct="clr-namespace:Plugin.MauiTouchEffect.Effects;assembly=Plugin.MauiTouchEffect"
+    x:Name="this"
     x:DataType="viewmodels:SettingsViewModel"
     NavigationPage.HasNavigationBar="False"
     Shell.TabBarIsVisible="False">
@@ -31,11 +32,12 @@
             </Grid.ColumnDefinitions>
 
             <!--  Back button  -->
-            <ImageButton
-                x:Name="BackButton"
-                Grid.Column="0"
-                Margin="0,0,20,0"
-                Style="{StaticResource ImageButton.Back}" />
+            <Grid Grid.Column="0" Margin="0,0,20,0">
+                <Grid.Behaviors>
+                    <berry:TouchBehavior Command="{Binding BindingContext.GoBackCommand, Source={x:Reference this}}" NativeAnimation="True" />
+                </Grid.Behaviors>
+                <ImageButton x:Name="BackButton" Style="{StaticResource ImageButton.Back}" />
+            </Grid>
 
             <!--  Title  -->
             <Label
@@ -55,7 +57,7 @@
             HorizontalScrollBarVisibility="Always"
             Orientation="Vertical"
             VerticalScrollBarVisibility="Always">
-            <Grid Margin="20">
+            <Grid Margin="10,5,10,30">
                 <VerticalStackLayout Spacing="10">
                     <!--  Theme  -->
                     <Grid
@@ -136,8 +138,10 @@
                         Margin="0,5,0,10"
                         Padding="20,0"
                         BackgroundColor="Transparent"
-                        xct:TouchEffect.NativeAnimation="True"
                         RowDefinitions="*,*">
+                        <Grid.Behaviors>
+                            <berry:TouchBehavior NativeAnimation="True" />
+                        </Grid.Behaviors>
                         <Grid.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding PickDownloadLocationCommand}" />
                         </Grid.GestureRecognizers>
@@ -151,7 +155,7 @@
                             Grid.Column="0"
                             Text="{Binding Settings.DownloadDir}" />
                     </Grid>
-                    
+
                     <!--  Inject tags  -->
                     <Grid
                         Margin="0,5,0,10"

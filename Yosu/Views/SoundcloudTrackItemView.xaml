@@ -3,6 +3,7 @@
     x:Class="Yosu.Views.SoundcloudTrackItemView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:berry="https://schemas.jerry08/dotnet/2023/maui"
     xmlns:cm="https://github.com/jerry08/Plugin.ContextMenuContainer"
     xmlns:components="clr-namespace:Yosu.ViewModels.Components"
     xmlns:contextMenus="clr-namespace:Yosu.Views.ContextMenus"
@@ -11,12 +12,11 @@
     xmlns:fi="clr-namespace:Yosu.FontIcons"
     xmlns:local="clr-namespace:Yosu.Views"
     xmlns:materialDesign="clr-namespace:MaterialDesign"
-    xmlns:sc="clr-namespace:SoundCloudExplode.Track;assembly=SoundCloudExplode"
+    xmlns:sc="clr-namespace:SoundCloudExplode.Tracks;assembly=SoundCloudExplode"
     xmlns:sdconverters="clr-namespace:Yosu.Converters.Soundcloud"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:viewmodels="clr-namespace:Yosu.ViewModels"
     xmlns:views="clr-namespace:Yosu.Views"
-    xmlns:xct="clr-namespace:Plugin.MauiTouchEffect.Effects;assembly=Plugin.MauiTouchEffect"
     xmlns:yc="clr-namespace:Yosu.Controls"
     x:Name="this"
     x:DataType="components:SoundcloudDownloadViewModel">
@@ -32,24 +32,30 @@
             <sdconverters:TrackToHighestQualityArtworkUrlConverter x:Key="TrackToHighestQualityArtworkUrlConverter" />
         </ResourceDictionary>
     </Grid.Resources>
-    <Frame
-        Margin="0"
+    <Border
+        Margin="8,6"
         Padding="0"
-        xct:TouchEffect.Command="{Binding BindingContext.OpenUrlCommand, Source={RelativeSource AncestorType={x:Type local:MainPage}}}"
-        xct:TouchEffect.CommandParameter="{Binding .}"
-        xct:TouchEffect.LongPressCommand="{Binding BindingContext.EnableMultiSelectWithParameterCommand, Source={RelativeSource AncestorType={x:Type local:MainPage}}}"
-        xct:TouchEffect.LongPressCommandParameter="{Binding .}"
-        xct:TouchEffect.NativeAnimation="True"
         BackgroundColor="Transparent"
-        CornerRadius="0"
-        Style="{StaticResource CollectionItem.Frame}">
+        Style="{StaticResource CollectionItem.Border}">
+        <!--
+            (Frame control has many issues.) Adding RowDefinitions="*,auto" in Frame
+            will introduce Label bugs
+        -->
         <Grid
-            Margin="10"
+            Padding="5"
             BackgroundColor="Transparent"
             ColumnDefinitions="auto,*,auto"
-            HeightRequest="100"
-            RowDefinitions="*,auto"
+            RowDefinitions="auto,auto"
             RowSpacing="0">
+            <Grid.Behaviors>
+                <berry:TouchBehavior
+                    Command="{Binding Parent.BindingContext.OpenUrlCommand, Source={x:Reference this}}"
+                    CommandParameter="{Binding BindingContext, Source={x:Reference this}}"
+                    LongPressCommand="{Binding Parent.BindingContext.EnableMultiSelectWithParameterCommand, Source={x:Reference this}}"
+                    LongPressCommandParameter="{Binding BindingContext, Source={x:Reference this}}"
+                    NativeAnimation="True"
+                    ShouldMakeChildrenInputTransparent="False" />
+            </Grid.Behaviors>
             <Border
                 Grid.Column="0"
                 Margin="0"
@@ -79,13 +85,6 @@
                     MaxLines="2"
                     Text="{Binding Track.Title}" />
                 <Label Text="{Binding Track.User.Username}" />
-                <!--<HorizontalStackLayout>
-                    <Label Text="{Binding Track.PlaybackCount, Converter={StaticResource IntToKiloFormatConverter}}" />
-                    <Label Text=" • " />
-                    <Label Text="{Binding Track.Duration, Converter={StaticResource MillisecondsToHumanReadableFormatConverter}}" />
-                    <Label Text=" • " />
-                    <Label Text="{Binding Track.DisplayDate, Converter={StaticResource TimeSinceFormatConverter}}" />
-                </HorizontalStackLayout>-->
                 <Label>
                     <Label.FormattedText>
                         <FormattedString>
@@ -98,70 +97,6 @@
                     </Label.FormattedText>
                 </Label>
             </StackLayout>
-
-            <!--<cm:ContextMenuContainer
-                x:Name="ActionsInlineMenu"
-                Grid.Column="2"
-                Margin="0"
-                Padding="0"
-                xct:TouchEffect.NativeAnimation="True"
-                BackgroundColor="Transparent"
-                HeightRequest="50"
-                HorizontalOptions="FillAndExpand"
-                VerticalOptions="Start"
-                WidthRequest="50">
-                <cm:ContextMenuContainer.MenuItems>
-                    <cm:ContextMenuItem
-                        Command="{Binding Parent.BindingContext.OpenUrlCommand, Source={x:Reference this}}"
-                        CommandParameter="{Binding .}"
-                        Text="Open" />
-                    <cm:ContextMenuItem
-                        Command="{Binding Parent.BindingContext.CopyUrlCommand, Source={x:Reference this}}"
-                        CommandParameter="{Binding .}"
-                        Text="Copy url" />
-                    <cm:ContextMenuItem
-                        Command="{Binding Parent.BindingContext.DownloadCommand, Source={x:Reference this}}"
-                        CommandParameter="{Binding .}"
-                        Text="Download" />
-                </cm:ContextMenuContainer.MenuItems>
-                <cm:ContextMenuContainer.Content>
-                    <Border
-                        Grid.Column="2"
-                        Margin="0"
-                        Padding="0"
-                        xct:TouchEffect.Command="{Binding BindingContext.ShowContextMenuCommand, Source={RelativeSource AncestorType={x:Type views:MainPage}}}"
-                        xct:TouchEffect.CommandParameter="{Binding ., Source={x:Reference ActionsInlineMenu}}"
-                        xct:TouchEffect.NativeAnimation="True"
-                        BackgroundColor="Transparent"
-                        HeightRequest="50"
-                        HorizontalOptions="FillAndExpand"
-                        StrokeThickness="0"
-                        VerticalOptions="Start"
-                        WidthRequest="50">
-                        <Border.StrokeShape>
-                            <RoundRectangle CornerRadius="25" />
-                        </Border.StrokeShape>
-                        <Image HeightRequest="25">
-                            <Image.Triggers>
-                                <DataTrigger
-                                    Binding="{Binding BindingContext.SelectionMode, Source={RelativeSource AncestorType={x:Type views:MainPage}}}"
-                                    TargetType="Image"
-                                    Value="Multiple">
-                                    <Setter Property="IsVisible" Value="False" />
-                                </DataTrigger>
-                            </Image.Triggers>
-                            <Image.Source>
-                                <FontImageSource
-                                    FontFamily="Material"
-                                    Glyph="{x:Static materialDesign:MaterialDesignIcons.MoreVert}"
-                                    Size="Large"
-                                    Color="{AppThemeBinding Light={StaticResource Gray400},
-                                                            Dark={StaticResource White}}" />
-                            </Image.Source>
-                        </Image>
-                    </Border>
-                </cm:ContextMenuContainer.Content>
-            </cm:ContextMenuContainer>-->
 
             <!--  Only show when DownloadStatus is None, Canceled or Completed  -->
             <contextMenus:InitialContextMenu
@@ -204,7 +139,7 @@
                 ProgressColor="{Binding Status, Converter={StaticResource DownloadStatusToProgressColorConverter}}"
                 UseGradient="False" />
         </Grid>
-    </Frame>
+    </Border>
     <VisualStateManager.VisualStateGroups>
         <VisualStateGroup Name="CommonStates">
             <VisualState Name="Normal" />

@@ -3,6 +3,7 @@
     x:Class="Yosu.Views.SpotiyTrackItemView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:berry="https://schemas.jerry08/dotnet/2023/maui"
     xmlns:cm="https://github.com/jerry08/Plugin.ContextMenuContainer"
     xmlns:components="clr-namespace:Yosu.ViewModels.Components"
     xmlns:contextMenus="clr-namespace:Yosu.Views.ContextMenus"
@@ -15,7 +16,6 @@
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:viewmodels="clr-namespace:Yosu.ViewModels"
     xmlns:views="clr-namespace:Yosu.Views"
-    xmlns:xct="clr-namespace:Plugin.MauiTouchEffect.Effects;assembly=Plugin.MauiTouchEffect"
     xmlns:yc="clr-namespace:Yosu.Controls"
     x:Name="this"
     x:DataType="components:SpotifyDownloadViewModel">
@@ -30,24 +30,26 @@
             <spconverters:TrackToHighestQualityArtworkUrlConverter x:Key="TrackToHighestQualityArtworkUrlConverter" />
         </ResourceDictionary>
     </Grid.Resources>
-    <Frame
+    <Border
         Margin="0"
         Padding="0"
-        xct:TouchEffect.Command="{Binding BindingContext.OpenUrlCommand, Source={RelativeSource AncestorType={x:Type local:MainPage}}}"
-        xct:TouchEffect.CommandParameter="{Binding .}"
-        xct:TouchEffect.LongPressCommand="{Binding BindingContext.EnableMultiSelectWithParameterCommand, Source={RelativeSource AncestorType={x:Type local:MainPage}}}"
-        xct:TouchEffect.LongPressCommandParameter="{Binding .}"
-        xct:TouchEffect.NativeAnimation="True"
         BackgroundColor="Transparent"
-        CornerRadius="0"
-        Style="{StaticResource CollectionItem.Frame}">
+        Style="{StaticResource CollectionItem.Border}">
         <Grid
-            Margin="10"
+            Padding="10"
             BackgroundColor="Transparent"
             ColumnDefinitions="auto,*,auto"
-            HeightRequest="90"
-            RowDefinitions="*,auto"
+            RowDefinitions="auto,auto"
             RowSpacing="0">
+            <Grid.Behaviors>
+                <berry:TouchBehavior
+                    Command="{Binding Parent.BindingContext.OpenUrlCommand, Source={x:Reference this}}"
+                    CommandParameter="{Binding BindingContext, Source={x:Reference this}}"
+                    LongPressCommand="{Binding Parent.BindingContext.EnableMultiSelectWithParameterCommand, Source={x:Reference this}}"
+                    LongPressCommandParameter="{Binding BindingContext, Source={x:Reference this}}"
+                    NativeAnimation="True"
+                    ShouldMakeChildrenInputTransparent="False" />
+            </Grid.Behaviors>
             <Border
                 Grid.Column="0"
                 Margin="0"
@@ -73,12 +75,11 @@
                 Orientation="Vertical">
                 <Label
                     FontAttributes="Bold"
+                    LineBreakMode="TailTruncation"
                     MaxLines="2"
                     Text="{Binding Track.Title}" />
                 <Label Text="{Binding Track.Artists[0].Name}" />
-                <HorizontalStackLayout>
-                    <Label Text="{Binding Track.DurationMs, Converter={StaticResource MillisecondsToHumanReadableFormatConverter}}" />
-                </HorizontalStackLayout>
+                <Label Text="{Binding Track.DurationMs, Converter={StaticResource MillisecondsToHumanReadableFormatConverter}}" />
             </StackLayout>
 
             <!--  Only show when DownloadStatus is None, Canceled or Completed  -->
@@ -110,7 +111,7 @@
                 ProgressColor="{Binding Status, Converter={StaticResource DownloadStatusToProgressColorConverter}}"
                 UseGradient="False" />
         </Grid>
-    </Frame>
+    </Border>
     <VisualStateManager.VisualStateGroups>
         <VisualStateGroup Name="CommonStates">
             <VisualState Name="Normal" />

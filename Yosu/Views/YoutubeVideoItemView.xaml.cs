@@ -1,13 +1,4 @@
-﻿using Microsoft.Maui;
-using Microsoft.Maui.ApplicationModel;
-using Microsoft.Maui.Controls;
-using System.Linq;
-using System.Threading.Tasks;
-using Plugin.MauiTouchEffect.Extensions;
-using Yosu.ViewModels;
-using Yosu.ViewModels.Components;
-
-namespace Yosu.Views;
+﻿namespace Yosu.Views;
 
 public partial class YoutubeVideoItemView
 {

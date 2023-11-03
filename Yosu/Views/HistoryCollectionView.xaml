@@ -3,6 +3,7 @@
     x:Class="Yosu.Views.HistoryCollectionView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:berry="https://schemas.jerry08/dotnet/2023/maui"
     xmlns:cm="https://github.com/jerry08/Plugin.ContextMenuContainer"
     xmlns:controls="clr-namespace:Microsoft.Maui.Controls"
     xmlns:converters="clr-namespace:Yosu.Converters"
@@ -12,7 +13,6 @@
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:viewmodels="clr-namespace:Yosu.ViewModels"
     xmlns:views="clr-namespace:Yosu.Views"
-    xmlns:xct="clr-namespace:Plugin.MauiTouchEffect.Effects;assembly=Plugin.MauiTouchEffect"
     xmlns:yt="clr-namespace:YoutubeExplode.Videos;assembly=YoutubeExplode"
     x:Name="this"
     x:DataType="viewmodels:HistoryCollectionViewModel">
@@ -74,23 +74,28 @@
                         <cm:ContextMenuItem Command="{Binding ClearAllCommand}" Text="Clear All" />
                     </cm:ContextMenuContainer.MenuItems>
                     <cm:ContextMenuContainer.Content>
-                        <ImageButton
-                            xct:TouchEffect.Command="{Binding BindingContext.ShowContextMenuCommand, Source={RelativeSource AncestorType={x:Type views:HistoryCollectionView}}}"
-                            xct:TouchEffect.CommandParameter="{Binding ., Source={x:Reference ActionsInlineMenu}}"
-                            xct:TouchEffect.NativeAnimation="True"
-                            HeightRequest="30"
-                            HorizontalOptions="EndAndExpand"
-                            VerticalOptions="Center"
-                            WidthRequest="30">
-                            <ImageButton.Source>
-                                <FontImageSource
-                                    FontFamily="Material"
-                                    Glyph="{x:Static materialDesign:MaterialDesignIcons.MoreVert}"
-                                    Size="30"
-                                    Color="{AppThemeBinding Light={StaticResource Gray400},
-                                                            Dark={StaticResource White}}" />
-                            </ImageButton.Source>
-                        </ImageButton>
+                        <Grid>
+                            <Grid.Behaviors>
+                                <berry:TouchBehavior
+                                    Command="{Binding BindingContext.ShowContextMenuCommand, Source={x:Reference this}}"
+                                    CommandParameter="{Binding ., Source={x:Reference ActionsInlineMenu}}"
+                                    NativeAnimation="True" />
+                            </Grid.Behaviors>
+                            <ImageButton
+                                HeightRequest="30"
+                                HorizontalOptions="EndAndExpand"
+                                VerticalOptions="Center"
+                                WidthRequest="30">
+                                <ImageButton.Source>
+                                    <FontImageSource
+                                        FontFamily="Material"
+                                        Glyph="{x:Static materialDesign:MaterialDesignIcons.MoreVert}"
+                                        Size="30"
+                                        Color="{AppThemeBinding Light={StaticResource Gray400},
+                                                                Dark={StaticResource White}}" />
+                                </ImageButton.Source>
+                            </ImageButton>
+                        </Grid>
                     </cm:ContextMenuContainer.Content>
                 </cm:ContextMenuContainer>
             </Grid>
@@ -254,20 +259,5 @@
                 </CollectionView>
             </RefreshView>
         </Grid>
-
-        <!--<Border
-            xct:TouchEffect.Command="{Binding DownloadSelectedCommand}"
-            xct:TouchEffect.NativeAnimation="True"
-            IsVisible="False"
-            Style="{StaticResource AbsoluteBorder.DownloadButton}">
-            <Border.Triggers>
-                <DataTrigger
-                    Binding="{Binding BindingContext.SelectionMode, Source={RelativeSource AncestorType={x:Type views:HistoryCollectionView}}}"
-                    TargetType="Border"
-                    Value="Multiple">
-                    <Setter Property="IsVisible" Value="True" />
-                </DataTrigger>
-            </Border.Triggers>
-        </Border>-->
     </AbsoluteLayout>
 </ContentPage>

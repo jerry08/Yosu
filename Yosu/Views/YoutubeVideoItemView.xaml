@@ -3,6 +3,7 @@
     x:Class="Yosu.Views.YoutubeVideoItemView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:berry="https://schemas.jerry08/dotnet/2023/maui"
     xmlns:cm="https://github.com/jerry08/Plugin.ContextMenuContainer"
     xmlns:components="clr-namespace:Yosu.ViewModels.Components"
     xmlns:contextMenus="clr-namespace:Yosu.Views.ContextMenus"
@@ -14,7 +15,7 @@
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:viewmodels="clr-namespace:Yosu.ViewModels"
     xmlns:views="clr-namespace:Yosu.Views"
-    xmlns:xct="clr-namespace:Plugin.MauiTouchEffect.Effects;assembly=Plugin.MauiTouchEffect"
+    xmlns:woka="clr-namespace:Woka.Controls;assembly=Woka"
     xmlns:yc="clr-namespace:Yosu.Controls"
     xmlns:yt="clr-namespace:YoutubeExplode.Videos;assembly=YoutubeExplode"
     xmlns:ytconverters="clr-namespace:Yosu.Converters.Youtube"
@@ -29,24 +30,26 @@
             <ytconverters:VideoToHighestQualityThumbnailUrlConverter x:Key="VideoToHighestQualityThumbnailUrlConverter" />
         </ResourceDictionary>
     </Grid.Resources>
-    <Frame
+    <Border
         Margin="0"
         Padding="0"
-        xct:TouchEffect.Command="{Binding BindingContext.OpenUrlCommand, Source={RelativeSource AncestorType={x:Type local:MainPage}}}"
-        xct:TouchEffect.CommandParameter="{Binding .}"
-        xct:TouchEffect.LongPressCommand="{Binding BindingContext.EnableMultiSelectWithParameterCommand, Source={RelativeSource AncestorType={x:Type local:MainPage}}}"
-        xct:TouchEffect.LongPressCommandParameter="{Binding .}"
-        xct:TouchEffect.NativeAnimation="True"
         BackgroundColor="Transparent"
-        CornerRadius="0"
-        Style="{StaticResource CollectionItem.Frame}">
+        Style="{StaticResource CollectionItem.Border}">
         <Grid
-            Margin="8,6"
+            Padding="8,6"
             BackgroundColor="Transparent"
             ColumnDefinitions="auto,*,auto"
-            HeightRequest="86"
-            RowDefinitions="*,auto"
+            RowDefinitions="auto,auto"
             RowSpacing="0">
+            <Grid.Behaviors>
+                <berry:TouchBehavior
+                    Command="{Binding Parent.BindingContext.OpenUrlCommand, Source={x:Reference this}}"
+                    CommandParameter="{Binding BindingContext, Source={x:Reference this}}"
+                    LongPressCommand="{Binding Parent.BindingContext.EnableMultiSelectWithParameterCommand, Source={x:Reference this}}"
+                    LongPressCommandParameter="{Binding BindingContext, Source={x:Reference this}}"
+                    NativeAnimation="True"
+                    ShouldMakeChildrenInputTransparent="False" />
+            </Grid.Behaviors>
             <!--  https://www.google.com/search?q=youtube+thumbnail+height+and+width&spell=1&sa=X&ved=2ahUKEwjL5aSe-5X8AhWKQzABHXlwBXwQBSgAegQIEhAB&biw=1490&bih=734&dpr=1.25  -->
             <!--  1280x720  -->
             <!--<Frame
@@ -155,75 +158,6 @@
                 IsVisible="{Binding CanShowDownloadFailedContextMenu}"
                 Tag="{Binding Parent.BindingContext, Source={x:Reference this}}" />
 
-            <!--<cm:ContextMenuContainer
-                x:Name="ActionsInlineMenu"
-                Grid.Column="2"
-                Margin="0"
-                Padding="0"
-                xct:TouchEffect.NativeAnimation="True"
-                BackgroundColor="Transparent"
-                HeightRequest="44"
-                HorizontalOptions="FillAndExpand"
-                VerticalOptions="Start"
-                WidthRequest="44">
-                <cm:ContextMenuContainer.MenuItems>
-                    <cm:ContextMenuItem
-                        Command="{Binding Parent.BindingContext.OpenUrlCommand, Source={x:Reference this}}"
-                        CommandParameter="{Binding .}"
-                        Text="Open" />
-                    <cm:ContextMenuItem
-                        Command="{Binding Parent.BindingContext.CopyUrlCommand, Source={x:Reference this}}"
-                        CommandParameter="{Binding .}"
-                        Text="Copy url" />
-                    <cm:ContextMenuItem
-                        Command="{Binding Parent.BindingContext.DownloadCommand, Source={x:Reference this}}"
-                        CommandParameter="{Binding .}"
-                        Text="Download" />
-                    <cm:ContextMenuItem
-                        Command="{Binding Parent.BindingContext.CancelDownloadCommand, Source={x:Reference this}}"
-                        CommandParameter="{Binding .}"
-                        Text="Cancel"
-                        IsEnabled="{Binding CanCancel}" />
-                </cm:ContextMenuContainer.MenuItems>
-                <cm:ContextMenuContainer.Content>
-                    <Border
-                        Grid.Column="2"
-                        Margin="0"
-                        Padding="0"
-                        xct:TouchEffect.Command="{Binding BindingContext.ShowContextMenuCommand, Source={RelativeSource AncestorType={x:Type views:MainPage}}}"
-                        xct:TouchEffect.CommandParameter="{Binding ., Source={x:Reference ActionsInlineMenu}}"
-                        xct:TouchEffect.NativeAnimation="True"
-                        BackgroundColor="Transparent"
-                        HeightRequest="44"
-                        HorizontalOptions="FillAndExpand"
-                        StrokeThickness="0"
-                        VerticalOptions="Start"
-                        WidthRequest="44">
-                        <Border.StrokeShape>
-                            <RoundRectangle CornerRadius="22" />
-                        </Border.StrokeShape>
-                        <Image HeightRequest="25">
-                            <Image.Triggers>
-                                <DataTrigger
-                                    Binding="{Binding BindingContext.SelectionMode, Source={RelativeSource AncestorType={x:Type views:MainPage}}}"
-                                    TargetType="Image"
-                                    Value="Multiple">
-                                    <Setter Property="IsVisible" Value="False" />
-                                </DataTrigger>
-                            </Image.Triggers>
-                            <Image.Source>
-                                <FontImageSource
-                                    FontFamily="Material"
-                                    Glyph="{x:Static materialDesign:MaterialDesignIcons.MoreVert}"
-                                    Size="Large"
-                                    Color="{AppThemeBinding Light={StaticResource Gray400},
-                                                            Dark={StaticResource White}}" />
-                            </Image.Source>
-                        </Image>
-                    </Border>
-                </cm:ContextMenuContainer.Content>
-            </cm:ContextMenuContainer>-->
-
             <!--<ProgressBar x:Name="bufferProgressBar" Grid.Row="1" Grid.ColumnSpan="3" HeightRequest="5">
                 <ProgressBar.Behaviors>
                     <toolkit:ProgressBarAnimationBehavior
@@ -294,7 +228,7 @@
                 ProgressColor="{Binding Status, Converter={StaticResource DownloadStatusToProgressColorConverter}}"
                 UseGradient="False" />
         </Grid>
-    </Frame>
+    </Border>
     <VisualStateManager.VisualStateGroups>
         <VisualStateGroup Name="CommonStates">
             <VisualState Name="Normal" />

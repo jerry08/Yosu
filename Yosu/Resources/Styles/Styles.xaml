@@ -3,10 +3,10 @@
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:berry="https://schemas.jerry08/dotnet/2023/maui"
     xmlns:fi="clr-namespace:Yosu.FontIcons"
     xmlns:materialDesign="clr-namespace:MaterialDesign"
-    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-    xmlns:xct="clr-namespace:Plugin.MauiTouchEffect.Effects;assembly=Plugin.MauiTouchEffect">
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
 
     <!--#region Custom Search Style-->
     <Style x:Key="SearchContainerStyle" TargetType="Frame">
@@ -65,7 +65,7 @@
             <FontImageSource
                 FontFamily="Material"
                 Glyph="{x:Static materialDesign:MaterialDesignIcons.Search}"
-                Size="Medium"
+                Size="20"
                 Color="{AppThemeBinding Light={StaticResource Gray400},
                                         Dark={StaticResource White}}" />
         </Setter>
@@ -113,6 +113,14 @@
         <Setter Property="HasShadow" Value="True" />
     </Style>
 
+    <Style x:Key="CollectionItem.Border" TargetType="Border">
+        <Setter Property="StrokeShape" Value="RoundRectangle 8" />
+        <Setter Property="Margin" Value="5" />
+        <Setter Property="Padding" Value="5" />
+        <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+        <Setter Property="Stroke" Value="Transparent" />
+    </Style>
+
     <Style x:Key="NameTextStyle" TargetType="Label">
         <Setter Property="FontSize" Value="16" />
         <Setter Property="FontFamily" Value="Metropolis Regular" />
@@ -137,21 +145,18 @@
     <Style x:Key="CollectionItem.MoreButton" TargetType="ImageButton">
         <Setter Property="WidthRequest" Value="30" />
         <Setter Property="Opacity" Value="0.9" />
-        <Setter Property="xct:TouchEffect.NativeAnimation" Value="True" />
         <Setter Property="VerticalOptions" Value="FillAndExpand" />
         <Setter Property="Source">
             <FontImageSource
                 FontFamily="Material"
                 Glyph="{x:Static materialDesign:MaterialDesignIcons.MoreVert}"
-                Size="Large"
+                Size="30"
                 Color="{AppThemeBinding Light={StaticResource Gray400},
                                         Dark={StaticResource White}}" />
         </Setter>
     </Style>
 
     <Style x:Key="ImageButton.Back" TargetType="ImageButton">
-        <Setter Property="xct:TouchEffect.Command" Value="{Binding GoBackCommand}" />
-        <Setter Property="xct:TouchEffect.NativeAnimation" Value="True" />
         <Setter Property="HeightRequest" Value="35" />
         <Setter Property="WidthRequest" Value="35" />
         <Setter Property="HorizontalOptions" Value="Start" />
@@ -161,7 +166,7 @@
                 <FontImageSource
                     FontFamily="Material"
                     Glyph="{x:Static materialDesign:MaterialDesignIcons.ArrowBack}"
-                    Size="Large"
+                    Size="35"
                     Color="{AppThemeBinding Light={StaticResource Gray400},
                                             Dark={StaticResource White}}" />
             </Setter.Value>
@@ -322,7 +327,6 @@
     </Style>-->
 
     <Style TargetType="Frame">
-        <Setter Property="xct:TouchEffect.NativeAnimationColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray100}}" />
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Gray900}}" />
         <Setter Property="HasShadow" Value="True" />
         <!--<Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray950}}" />-->
@@ -330,7 +334,6 @@
     </Style>
 
     <Style TargetType="ImageButton">
-        <Setter Property="xct:TouchEffect.NativeAnimationColor" Value="{StaticResource Gray200}" />
         <Setter Property="BackgroundColor" Value="Transparent" />
         <Setter Property="Opacity" Value="1" />
         <Setter Property="BorderColor" Value="Transparent" />
