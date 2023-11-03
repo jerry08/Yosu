@@ -4,10 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Acr.UserDialogs;
+using Berry.Maui.Controls;
 using CommunityToolkit.Maui.Alerts;
 using Gress;
 using Microsoft.Maui.ApplicationModel;
-using Microsoft.Maui.Controls;
 using Microsoft.Maui.Storage;
 using Yosu.Extensions;
 using Yosu.Services;
@@ -31,7 +31,7 @@ public class YoutubeViewModel
     private readonly VideoDownloader _videoDownloader = new();
     private readonly MediaTagInjector _mediaTagInjector = new();
 
-    private IBottomSheetController? BottomSheetController;
+    private BottomSheet? BottomSheet;
 
     public static List<YoutubeDownloadViewModel> Downloads { get; set; } = new();
 
@@ -224,20 +224,19 @@ public class YoutubeViewModel
                         .Where(x => x.Container == Container.Mp4
                             || x.Container == Container.Mp3).ToList();
 
-                    await MainThread.InvokeOnMainThreadAsync(() =>
+                    await MainThread.InvokeOnMainThreadAsync(async () =>
                     {
-                        var page = new DownloadSingleYtOptionsView(this, downloads);
-                        BottomSheetController = Shell.Current.ShowBottomSheet(page, false);
-
+                        BottomSheet = new DownloadSingleYtOptionsView(this, downloads);
                         UserDialogs.Instance.HideLoading();
+                        await BottomSheet.ShowAsync();
                     });
                 }
                 else
                 {
-                    await MainThread.InvokeOnMainThreadAsync(() =>
+                    await MainThread.InvokeOnMainThreadAsync(async () =>
                     {
-                        var page = new DownloadMultipleYtOptionsView(this, downloads);
-                        BottomSheetController = Shell.Current.ShowBottomSheet(page, false);
+                        BottomSheet = new DownloadMultipleYtOptionsView(this, downloads);
+                        await BottomSheet.ShowAsync();
                     });
                 }
             }
@@ -260,8 +259,11 @@ public class YoutubeViewModel
 
         //Downloads.AddRange(downloads);
 
-        BottomSheetController?.Dismiss();
-        BottomSheetController = null;
+        if (BottomSheet is not null)
+        {
+            await BottomSheet.DismissAsync();
+            BottomSheet = null;
+        }
 
         var started = false;
 

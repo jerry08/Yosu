@@ -7,6 +7,9 @@ using Google.Android.Material.BottomSheet;
 using Yosu.Services;
 using Android.Content.Res;
 using Android;
+using Android.Widget;
+using Android.Views;
+using Orientation = Android.Content.Res.Orientation;
 
 namespace Yosu.Extensions;
 
@@ -35,7 +38,11 @@ public static class PageExtensions
         //Resource.Style.CustomBottomSheetDialogTheme
         );
 
-        bottomSheetDialog.SetContentView(bottomSheetContent.ToPlatform(page.Handler?.MauiContext ?? throw new Exception("MauiContext is null")));
+        var view = bottomSheetContent.ToPlatform(page.Handler?.MauiContext ?? throw new Exception("MauiContext is null"));
+        var c = new FrameLayout(page.Handler!.MauiContext!.Context);
+        c.AddView(view, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.WrapContent));
+
+        bottomSheetDialog.SetContentView(c);
         bottomSheetDialog.Behavior.Hideable = dimDismiss;
         bottomSheetDialog.Behavior.FitToContents = true;
 

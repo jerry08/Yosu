@@ -159,8 +159,22 @@ public partial class HistoryCollectionViewModel : CollectionViewModel<ListGroup<
     }
 
     [RelayCommand]
-    void ClearSelected()
+    async Task ClearSelected()
     {
+        if (SelectedEntities.Count == 0)
+        {
+            await App.AlertSvc.ShowAlertAsync("", "Nothing selected");
+            return;
+        }
+
+        var result = await App.AlertSvc.ShowConfirmationAsync(
+            "Confirmation",
+            "Are you sure you want to clear all selected items?"
+        );
+
+        if (!result)
+            return;
+
         _preference.Downloads.Clear();
         _preference.Save();
 

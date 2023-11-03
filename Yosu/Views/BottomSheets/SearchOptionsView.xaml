@@ -1,15 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ScrollView
+<local:BaseBottomSheetView
     x:Class="Yosu.Views.BottomSheets.SearchOptionsView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:berry="https://schemas.jerry08/dotnet/2023/maui"
     xmlns:components="clr-namespace:Yosu.ViewModels.Components"
     xmlns:converters="clr-namespace:Yosu.Converters"
     xmlns:local="clr-namespace:Yosu.Views.BottomSheets"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:viewmodels="clr-namespace:Yosu.ViewModels"
-    xmlns:xct="clr-namespace:Plugin.MauiTouchEffect.Effects;assembly=Plugin.MauiTouchEffect"
-    x:DataType="viewmodels:MainCollectionViewModel">
+    x:DataType="viewmodels:MainCollectionViewModel"
+    HasBackdrop="True"
+    HasHandle="True"
+    UseNavigationBarArea="True">
+    <berry:BottomSheet.Detents>
+        <berry:DetentsCollection>
+            <berry:RatioDetent Ratio="0.3" />
+            <berry:ContentDetent IsDefault="True" />
+        </berry:DetentsCollection>
+    </berry:BottomSheet.Detents>
     <StackLayout Margin="0,0,0,10" Spacing="8">
         <Label
             FontAttributes="Bold"
@@ -64,4 +73,4 @@
                 Value="{x:Static components:SourceType.Spotify}" />
         </StackLayout>
     </StackLayout>
-</ScrollView>
+</local:BaseBottomSheetView>

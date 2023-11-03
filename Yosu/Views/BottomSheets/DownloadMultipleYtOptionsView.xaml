@@ -1,22 +1,32 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<Grid
+<local:BaseBottomSheetView
     x:Class="Yosu.Views.BottomSheets.DownloadMultipleYtOptionsView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:berry="https://schemas.jerry08/dotnet/2023/maui"
     xmlns:converters="clr-namespace:Yosu.Converters.Youtube"
     xmlns:core="clr-namespace:Yosu.Youtube.Core.Downloading;assembly=Yosu.Youtube.Core"
     xmlns:local="clr-namespace:Yosu.Views.BottomSheets"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:viewmodels="clr-namespace:Yosu.ViewModels"
-    xmlns:xct="clr-namespace:Plugin.MauiTouchEffect.Effects;assembly=Plugin.MauiTouchEffect"
     xmlns:yt="clr-namespace:YoutubeExplode.Videos;assembly=YoutubeExplode"
     xmlns:yts="clr-namespace:YoutubeExplode.Videos.Streams;assembly=YoutubeExplode"
-    x:DataType="viewmodels:YoutubeViewModel">
-    <Grid.Resources>
+    x:Name="this"
+    x:DataType="viewmodels:YoutubeViewModel"
+    HasBackdrop="True"
+    HasHandle="True"
+    UseNavigationBarArea="True">
+    <berry:BottomSheet.Detents>
+        <berry:DetentsCollection>
+            <berry:RatioDetent Ratio="0.3" />
+            <berry:ContentDetent IsDefault="True" />
+        </berry:DetentsCollection>
+    </berry:BottomSheet.Detents>
+    <local:BaseBottomSheetView.Resources>
         <ResourceDictionary>
             <converters:VideoQualityPreferenceToStringConverter x:Key="VideoQualityPreferenceToStringConverter" />
         </ResourceDictionary>
-    </Grid.Resources>
+    </local:BaseBottomSheetView.Resources>
     <StackLayout Spacing="8">
         <Label
             FontAttributes="Bold"
@@ -29,62 +39,66 @@
 
         <BoxView Style="{StaticResource SeparatorBoxView}" />
 
-        <Label
-            Margin="20,0"
-            FontAttributes="Bold"
-            FontSize="20"
-            HeightRequest="30"
-            Text="Audio" />
+        <ScrollView>
+            <VerticalStackLayout>
+                <Label
+                    Margin="20,0"
+                    FontAttributes="Bold"
+                    FontSize="20"
+                    HeightRequest="30"
+                    Text="Audio" />
 
-        <StackLayout BindableLayout.ItemsSource="{Binding AvailableContainers}">
-            <BindableLayout.ItemTemplate>
-                <DataTemplate x:DataType="{x:Type yts:Container}">
-                    <!--  xct:TouchEffect.Command="{Binding BindingContext.DownloadCommand, Source={RelativeSource AncestorType={x:Type local:DownloadMultipleYtOptionsView}}}"  -->
-                    <StackLayout
-                        xct:TouchEffect.Command="{Binding DownloadCommand, Source={RelativeSource AncestorType={x:Type local:DownloadMultipleYtOptionsView}}}"
-                        xct:TouchEffect.CommandParameter="{Binding .}"
-                        xct:TouchEffect.NativeAnimation="True"
-                        BackgroundColor="Transparent"
-                        Orientation="Vertical">
-                        <Label
-                            Margin="20,10"
-                            FontSize="18"
-                            HorizontalOptions="FillAndExpand"
-                            Text="{Binding Name}"
-                            VerticalOptions="Center" />
-                        <!--<BoxView Style="{StaticResource SeparatorBoxView}" />-->
-                    </StackLayout>
-                </DataTemplate>
-            </BindableLayout.ItemTemplate>
-        </StackLayout>
+                <StackLayout BindableLayout.ItemsSource="{Binding AvailableContainers}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="{x:Type yts:Container}">
+                            <Grid x:Name="grid">
+                                <Grid.Behaviors>
+                                    <berry:TouchBehavior
+                                        Command="{Binding DownloadCommand, Source={x:Reference this}}"
+                                        CommandParameter="{Binding BindingContext, Source={x:Reference grid}}"
+                                        NativeAnimation="True" />
+                                </Grid.Behaviors>
+                                <Label
+                                    Margin="20,10"
+                                    FontSize="18"
+                                    HorizontalOptions="FillAndExpand"
+                                    Text="{Binding Name}"
+                                    VerticalOptions="Center" />
+                                <!--<BoxView Style="{StaticResource SeparatorBoxView}" />-->
+                            </Grid>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </StackLayout>
 
-        <Label
-            Margin="20,0"
-            FontAttributes="Bold"
-            FontSize="20"
-            HeightRequest="30"
-            Text="Video" />
+                <Label
+                    Margin="20,0"
+                    FontAttributes="Bold"
+                    FontSize="20"
+                    HeightRequest="30"
+                    Text="Video" />
 
-        <StackLayout Margin="0,10,0,0" BindableLayout.ItemsSource="{Binding AvailableVideoQualityPreferences}">
-            <BindableLayout.ItemTemplate>
-                <DataTemplate x:DataType="{x:Type core:VideoQualityPreference}">
-                    <!--  xct:TouchEffect.Command="{Binding BindingContext.DownloadCommand, Source={RelativeSource AncestorType={x:Type local:DownloadMultipleYtOptionsView}}}"  -->
-                    <StackLayout
-                        xct:TouchEffect.Command="{Binding DownloadCommand, Source={RelativeSource AncestorType={x:Type local:DownloadMultipleYtOptionsView}}}"
-                        xct:TouchEffect.CommandParameter="{Binding .}"
-                        xct:TouchEffect.NativeAnimation="True"
-                        BackgroundColor="Transparent"
-                        Orientation="Vertical">
-                        <Label
-                            Margin="20,10"
-                            FontSize="18"
-                            HorizontalOptions="FillAndExpand"
-                            Text="{Binding Converter={StaticResource VideoQualityPreferenceToStringConverter}}"
-                            VerticalOptions="Center" />
-                        <!--<BoxView Style="{StaticResource SeparatorBoxView}" />-->
-                    </StackLayout>
-                </DataTemplate>
-            </BindableLayout.ItemTemplate>
-        </StackLayout>
+                <StackLayout Margin="0,10,0,0" BindableLayout.ItemsSource="{Binding AvailableVideoQualityPreferences}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="{x:Type core:VideoQualityPreference}">
+                            <Grid x:Name="grid2">
+                                <Grid.Behaviors>
+                                    <berry:TouchBehavior
+                                        Command="{Binding DownloadCommand, Source={x:Reference this}}"
+                                        CommandParameter="{Binding BindingContext, Source={x:Reference grid2}}"
+                                        NativeAnimation="True" />
+                                </Grid.Behaviors>
+                                <Label
+                                    Margin="20,10"
+                                    FontSize="18"
+                                    HorizontalOptions="FillAndExpand"
+                                    Text="{Binding Converter={StaticResource VideoQualityPreferenceToStringConverter}}"
+                                    VerticalOptions="Center" />
+                                <!--<BoxView Style="{StaticResource SeparatorBoxView}" />-->
+                            </Grid>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </StackLayout>
+            </VerticalStackLayout>
+        </ScrollView>
     </StackLayout>
-</Grid>
+</local:BaseBottomSheetView>

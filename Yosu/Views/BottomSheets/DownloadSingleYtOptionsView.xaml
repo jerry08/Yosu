@@ -1,18 +1,30 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ScrollView
+<local:BaseBottomSheetView
     x:Class="Yosu.Views.BottomSheets.DownloadSingleYtOptionsView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:berry="https://schemas.jerry08/dotnet/2023/maui"
     xmlns:components="clr-namespace:Yosu.ViewModels.Components"
     xmlns:converters="clr-namespace:Yosu.Converters"
     xmlns:core="clr-namespace:Yosu.Youtube.Core.Downloading;assembly=Yosu.Youtube.Core"
     xmlns:local="clr-namespace:Yosu.Views.BottomSheets"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:viewmodels="clr-namespace:Yosu.ViewModels"
-    xmlns:xct="clr-namespace:Plugin.MauiTouchEffect.Effects;assembly=Plugin.MauiTouchEffect"
     xmlns:yt="clr-namespace:YoutubeExplode.Videos;assembly=YoutubeExplode"
     xmlns:yts="clr-namespace:YoutubeExplode.Videos.Streams;assembly=YoutubeExplode"
-    x:DataType="viewmodels:YoutubeViewModel">
+    x:Name="this"
+    x:DataType="viewmodels:YoutubeViewModel"
+    HasBackdrop="True"
+    HasHandle="True"
+    UseNavigationBarArea="True">
+    <!--  BackgroundColor="White"  -->
+    <berry:BottomSheet.Detents>
+        <berry:DetentsCollection>
+            <!--<the49:RatioDetent Ratio="0.50" />-->
+            <berry:RatioDetent Ratio="0.3" />
+            <berry:ContentDetent IsDefault="True" />
+        </berry:DetentsCollection>
+    </berry:BottomSheet.Detents>
     <StackLayout Spacing="8">
         <Label
             FontAttributes="Bold"
@@ -25,53 +37,55 @@
 
         <BoxView Style="{StaticResource SeparatorBoxView}" />
 
-        <StackLayout x:Name="ItemsStackLayout" BindableLayout.ItemsSource="{Binding AvailableDownloadOptions}">
-            <BindableLayout.ItemTemplate>
-                <DataTemplate x:DataType="{x:Type core:VideoDownloadOption}">
-                    <!--  xct:TouchEffect.Command="{Binding BindingContext.DownloadCommand, Source={RelativeSource AncestorType={x:Type local:DownloadSingleYtOptionsView}}}"  -->
-                    <StackLayout
-                        xct:TouchEffect.Command="{Binding DownloadCommand, Source={RelativeSource AncestorType={x:Type local:DownloadSingleYtOptionsView}}}"
-                        xct:TouchEffect.CommandParameter="{Binding .}"
-                        xct:TouchEffect.NativeAnimation="True"
-                        BackgroundColor="Transparent"
-                        Orientation="Vertical">
-                        <StackLayout
-                            Margin="20,10"
-                            HorizontalOptions="FillAndExpand"
-                            Orientation="Horizontal">
-                            <Label
-                                FontAttributes="Bold"
-                                FontSize="18"
-                                VerticalOptions="Center">
-                                <Label.Triggers>
-                                    <DataTrigger
-                                        Binding="{Binding IsAudioOnly}"
-                                        TargetType="Label"
-                                        Value="False">
-                                        <Setter Property="Text" Value="{Binding VideoQuality, Mode=OneWay}" />
-                                    </DataTrigger>
-                                    <DataTrigger
-                                        Binding="{Binding IsAudioOnly}"
-                                        TargetType="Label"
-                                        Value="True">
-                                        <Setter Property="Text" Value="Audio" />
-                                    </DataTrigger>
-                                </Label.Triggers>
-                            </Label>
-                            <Label FontSize="18" VerticalOptions="Center">
-                                <Label.FormattedText>
-                                    <FormattedString>
-                                        <Span Text=" (" />
-                                        <Span Text="{Binding Container, Mode=OneWay}" />
-                                        <Span Text=")" />
-                                    </FormattedString>
-                                </Label.FormattedText>
-                            </Label>
-                        </StackLayout>
-                        <!--<BoxView Style="{StaticResource SeparatorBoxView}" />-->
-                    </StackLayout>
-                </DataTemplate>
-            </BindableLayout.ItemTemplate>
-        </StackLayout>
+        <ScrollView>
+            <StackLayout x:Name="ItemsStackLayout" BindableLayout.ItemsSource="{Binding AvailableDownloadOptions}">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="{x:Type core:VideoDownloadOption}">
+                        <Grid x:Name="grid">
+                            <Grid.Behaviors>
+                                <berry:TouchBehavior
+                                    Command="{Binding DownloadCommand, Source={x:Reference this}}"
+                                    CommandParameter="{Binding BindingContext, Source={x:Reference grid}}"
+                                    NativeAnimation="True" />
+                            </Grid.Behaviors>
+                            <StackLayout
+                                Margin="20,10"
+                                HorizontalOptions="FillAndExpand"
+                                Orientation="Horizontal">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="18"
+                                    VerticalOptions="Center">
+                                    <Label.Triggers>
+                                        <DataTrigger
+                                            Binding="{Binding IsAudioOnly}"
+                                            TargetType="Label"
+                                            Value="False">
+                                            <Setter Property="Text" Value="{Binding VideoQuality, Mode=OneWay}" />
+                                        </DataTrigger>
+                                        <DataTrigger
+                                            Binding="{Binding IsAudioOnly}"
+                                            TargetType="Label"
+                                            Value="True">
+                                            <Setter Property="Text" Value="Audio" />
+                                        </DataTrigger>
+                                    </Label.Triggers>
+                                </Label>
+                                <Label FontSize="18" VerticalOptions="Center">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text=" (" />
+                                            <Span Text="{Binding Container, Mode=OneWay}" />
+                                            <Span Text=")" />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                            </StackLayout>
+                            <!--<BoxView Style="{StaticResource SeparatorBoxView}" />-->
+                        </Grid>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </StackLayout>
+        </ScrollView>
     </StackLayout>
-</ScrollView>
+</local:BaseBottomSheetView>

@@ -10,7 +10,6 @@ using Microsoft.Maui.Controls;
 using SoundCloudExplode.Exceptions;
 using SpotifyExplode.Exceptions;
 using Woka.Utils.Extensions;
-using Yosu.Extensions;
 using Yosu.Platforms.Services;
 using Yosu.Services;
 using Yosu.Utils;
@@ -46,7 +45,7 @@ public partial class MainCollectionViewModel : CollectionViewModel<object>
         _ => SourceType.None,
     };
 
-    private IBottomSheetController? BottomSheetController { get; set; }
+    private SearchOptionsView? SearchOptionsView { get; set; }
 
     public static string? IntentUrl { get; set; }
 
@@ -288,15 +287,16 @@ public partial class MainCollectionViewModel : CollectionViewModel<object>
     }
 
     [RelayCommand]
-    void ShowSearchOptions()
+    async Task ShowSearchOptions()
     {
-        var page = new SearchOptionsView(this);
-        BottomSheetController = Shell.Current.ShowBottomSheet(page, false);
+        SearchOptionsView = new SearchOptionsView(this);
+        await SearchOptionsView.ShowAsync();
     }
 
-    private void SearchSourceTypeChanged()
+    private async void SearchSourceTypeChanged()
     {
-        BottomSheetController?.Dismiss();
+        if (SearchOptionsView is not null)
+            await SearchOptionsView.DismissAsync();
 
         _preference.Load();
         _preference.SearchSourceType = SearchSourceType;
