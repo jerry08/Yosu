@@ -6,7 +6,7 @@
     <RootNamespace>Yosu</RootNamespace>
     <UseMaui>true</UseMaui>
     <!-- Rollback MAUI version because of bug (https://github.com/dotnet/maui/issues/14520) -->
-    <MauiVersion>7.0.59</MauiVersion>
+    <!--<MauiVersion>7.0.59</MauiVersion>-->
     <SingleProject>true</SingleProject>
 
     <!-- Display name -->
@@ -47,29 +47,26 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Platforms\Android\Services\DownloadService_org.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Plugin.MauiTouchEffect\Plugin.MauiTouchEffect.csproj" />
     <ProjectReference Include="..\Yosu.Soundcloud.Core\Yosu.Soundcloud.Core.csproj" />
     <ProjectReference Include="..\Yosu.Spotify.Core\Yosu.Spotify.Core.csproj" />
     <ProjectReference Include="..\Yosu.Youtube.Core\Yosu.Youtube.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Berry.Maui" Version="1.0.13" />
     <PackageReference Include="Acr.UserDialogs" Version="8.0.1" />
-    <PackageReference Include="Cogwheel" Version="2.0.3" />
-    <PackageReference Include="CommunityToolkit.Maui" Version="5.3.0" />
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
+    <PackageReference Include="Cogwheel" Version="2.0.4" />
+    <PackageReference Include="CommunityToolkit.Maui" Version="6.0.0" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
     <PackageReference Include="Gress" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
-    <PackageReference Include="Octokit" Version="7.1.0" />
+    <PackageReference Include="Octokit" Version="9.0.0" />
     <PackageReference Include="Plugin.ContextMenuContainer" Version="1.0.3" />
     <PackageReference Include="PropertyChanged.Fody" Version="4.1.0" PrivateAssets="all" />
-    <PackageReference Include="SkiaSharp.Views.Maui.Controls" Version="2.88.5" />
-    <PackageReference Include="Woka" Version="1.0.11" />
-    <PackageReference Include="YoutubeExplode" Version="6.3.4" />
+    <PackageReference Include="SkiaSharp.Views.Maui.Controls" Version="2.88.6" />
+    <!--<PackageReference Include="The49.Maui.BottomSheet" Version="1.0.4" />-->
+    <PackageReference Include="Woka" Version="1.0.14" />
+    <PackageReference Include="YoutubeExplode" Version="6.3.6" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net7.0-android'">

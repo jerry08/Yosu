@@ -1,15 +1,13 @@
-﻿using System.Linq;
+﻿using Berry.Maui;
 using CommunityToolkit.Maui;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Maui;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Controls.Compatibility.Hosting;
 using Microsoft.Maui.Controls.Hosting;
 using Microsoft.Maui.Hosting;
 using Microsoft.Maui.LifecycleEvents;
 using Plugin.ContextMenuContainer;
-using Plugin.MauiTouchEffect.Effects;
 using SkiaSharp.Views.Maui.Controls.Hosting;
 using Woka;
 using Yosu.Handlers;
@@ -46,23 +44,16 @@ public static class MauiProgram
                 fonts.AddFont("fa-solid-900.ttf", "FaSolid");
             })
             .UseSkiaSharp()
+            .UseBerry()
             .UseMauiCompatibility()
             .ConfigureMauiHandlers(handlers =>
             {
-                // Register ALL handlers in the assembly
-                handlers.AddCompatibilityRenderers(typeof(TouchEffect).Assembly);
-
 #if ANDROID
                 handlers.AddHandler<CheckBox, MaterialCheckBoxHandler>();
                 handlers.AddHandler<Switch, MaterialSwitchHandler>();
 #endif
 
                 handlers.AddHandler(typeof(ContextMenuContainer), typeof(ContextMenuContainerRenderer));
-            })
-            .ConfigureEffects(effects =>
-            {
-                effects.AddCompatibilityEffects(typeof(TouchEffect).Assembly);
-                effects.Add(typeof(TouchEffect), typeof(PlatformTouchEffect));
             })
             .ConfigureWorkarounds()
             .ConfigureLifecycleEvents(events =>
@@ -88,21 +79,6 @@ public static class MauiProgram
 #if DEBUG
         builder.Logging.AddDebug();
 #endif
-
-        // Workaround for TouchEffect being lost when navigating multiple times or
-        // when closing the app (with OnBackButtonPressed()) and reopening the cached view.
-        Microsoft.Maui.Handlers.ElementHandler.ElementMapper.AppendToMapping("YosuElement", (handler, e) =>
-        {
-            if (e is Element element)
-            {
-                var touchEffects = element.Effects.OfType<TouchEffect>().ToList();
-                for (int i = 0; i < touchEffects.Count; i++)
-                {
-                    element.Effects.Remove(touchEffects[i]);
-                    element.Effects.Add(touchEffects[i]);
-                }
-            }
-        });
 
         // Views
         builder.Services.AddTransient<MainPage>();
