@@ -129,11 +129,6 @@ public class ForegroundService : LifecycleService
 
     [SuppressMessage(
         "Interoperability",
-        "CA1416:Validate platform compatibility",
-        Justification = "<Pending>"
-    )]
-    [SuppressMessage(
-        "Interoperability",
         "CA1422:Validate platform compatibility",
         Justification = "<Pending>"
     )]

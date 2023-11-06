@@ -67,6 +67,9 @@ internal static class ActivityExtensions
         }
         else
         {
+            var fileInfo = new FileInfo(newFilePath);
+            fileInfo.Directory?.Create();
+
             File.Copy(filePath, newFilePath, true);
 
             var ext = Path.GetExtension(newFilePath).Replace(".", "");

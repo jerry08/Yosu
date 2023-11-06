@@ -104,7 +104,16 @@ public partial class App : Application
         var intent = new Android.Content.Intent(activity, typeof(ForegroundService));
 
         //intent.PutExtra("fileName", fileName);
-        activity.StartForegroundService(intent);
+
+        //if (Android.OS.Build.VERSION.SdkInt > Android.OS.BuildVersionCodes.O)
+        if (OperatingSystem.IsAndroidVersionAtLeast(26))
+        {
+            activity.StartForegroundService(intent);
+        }
+        else
+        {
+            activity.StartService(intent);
+        }
     }
 
     public static void StopForeground()
@@ -118,7 +127,15 @@ public partial class App : Application
         intent.SetAction("kill");
 
         //intent.PutExtra("fileName", fileName);
-        activity.StartForegroundService(intent);
+
+        if (OperatingSystem.IsAndroidVersionAtLeast(26))
+        {
+            activity.StartForegroundService(intent);
+        }
+        else
+        {
+            activity.StartService(intent);
+        }
 
         //if (!ApplicationEx.IsRunning())
         //    Current?.Quit();
