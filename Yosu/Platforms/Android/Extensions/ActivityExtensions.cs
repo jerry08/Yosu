@@ -14,20 +14,52 @@ namespace Yosu.Extensions;
 
 internal static class ActivityExtensions
 {
-    public static List<UriPermission> GetPersistedUriPermissions(this Context context)
-        => context.ContentResolver?.PersistedUriPermissions.ToList() ?? new();
+    public static List<UriPermission> GetPersistedUriPermissions(this Context context) =>
+        context.ContentResolver?.PersistedUriPermissions.ToList() ?? new();
 
-    public static bool HasPersistedUriPermission(this Context context, string uri)
-        => GetPersistedUriPermissions(context).Any(x => x.Uri?.Path == uri);
+    public static bool HasPersistedUriPermission(this Context context, string uri) =>
+        GetPersistedUriPermissions(context).Any(x => x.Uri?.Path == uri);
 
-    public static Android.Net.Uri? GetPersistedUriPermissionFor(this Context context, string uri)
-        => GetPersistedUriPermissions(context).Find(x => x.Uri?.Path == uri)?.Uri;
+    public static Android.Net.Uri? GetPersistedUriPermissionFor(this Context context, string uri) =>
+        GetPersistedUriPermissions(context).Find(x => x.Uri?.Path == uri)?.Uri;
+
+    public static bool FileExists(this Context context, string filePath)
+    {
+        if (Build.VERSION.SdkInt >= BuildVersionCodes.Q)
+        {
+            var hasPersistedUriPermission = context.HasPersistedUriPermission(
+                Path.GetDirectoryName(filePath)!
+            );
+
+            var uri = context.GetPersistedUriPermissionFor(Path.GetDirectoryName(filePath)!);
+
+            if (hasPersistedUriPermission)
+            {
+                if (uri is null)
+                    return false;
+
+                var documentTree =
+                    DocumentFile.FromTreeUri(context, uri)
+                    ?? throw new IOException("Permission denied.");
+
+                var documentFile = documentTree.FindFile(Path.GetFileName(filePath));
+                return documentFile?.Exists() == true;
+            }
+
+            return false;
+        }
+        else
+        {
+            return File.Exists(filePath);
+        }
+    }
 
     public static async Task CopyFileAsync(
         this Context context,
         string filePath,
         string newFilePath,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         if (Build.VERSION.SdkInt >= BuildVersionCodes.Q)
         {
@@ -57,7 +89,8 @@ internal static class ActivityExtensions
         this Context context,
         string filePath,
         string newFilePath,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         if (!File.Exists(filePath))
             return;
@@ -89,14 +122,16 @@ internal static class ActivityExtensions
             if (uri is null)
                 return;
 
-            var documentTree = DocumentFile.FromTreeUri(context, uri)
+            var documentTree =
+                DocumentFile.FromTreeUri(context, uri)
                 ?? throw new IOException("Permission denied.");
 
             var documentFile = documentTree.FindFile(Path.GetFileName(newFilePath));
             if (documentFile?.Exists() == true)
                 documentFile.Delete();
 
-            var newFile = documentTree.CreateFile(mimeType, fileName)
+            var newFile =
+                documentTree.CreateFile(mimeType, fileName)
                 ?? throw new IOException("Failed to create file. Permission denied.");
 
             uri = newFile.Uri;
@@ -115,7 +150,10 @@ internal static class ActivityExtensions
             {
                 // Set media duration
                 var retriever = new MediaMetadataRetriever();
-                retriever.SetDataSource(context, Android.Net.Uri.FromFile(new Java.IO.File(filePath)));
+                retriever.SetDataSource(
+                    context,
+                    Android.Net.Uri.FromFile(new Java.IO.File(filePath))
+                );
                 var time = retriever.ExtractMetadata(MetadataKey.Duration) ?? string.Empty;
                 var timeInMillisec = long.Parse(time);
                 contentValues.Put(MediaStore.IMediaColumns.Duration, timeInMillisec);
@@ -137,11 +175,6 @@ internal static class ActivityExtensions
         if (output is not null)
             await input.CopyToAsync(output, defaultBufferSize, cancellationToken);
 
-        MediaScannerConnection.ScanFile(
-            context,
-            new[] { newFilePath },
-            new[] { mimeType },
-            null
-        );
+        MediaScannerConnection.ScanFile(context, new[] { newFilePath }, new[] { mimeType }, null);
     }
 }
