@@ -1,0 +1,2 @@
+dotnet publish Yosu/ -c Release -f net7.0-android -p:AndroidKeyStore=true -p:AndroidSigningKeyStore="C:\Users\jerem\source\repos\MAUI\Yosu\key.keystore" -p:AndroidSigningStorePass="YosuJer20" -p:AndroidSigningKeyAlias="YosuAlias" -p:AndroidSigningKeyPass="YosuJer20"
+pause

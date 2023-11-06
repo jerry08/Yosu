@@ -16,7 +16,5 @@ public class PreferenceService : SettingsBase
     public SourceType SearchSourceType { get; set; } = SourceType.Youtube;
 
     public PreferenceService()
-        : base(Path.Combine(FileSystem.AppDataDirectory, "Preferences.json"))
-    {
-    }
+        : base(Path.Combine(FileSystem.AppDataDirectory, "Preferences.json")) { }
 }

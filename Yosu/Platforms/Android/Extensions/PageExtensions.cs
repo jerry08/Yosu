@@ -30,17 +30,31 @@ public static class PageExtensions
         }
     }
 
-    public static IBottomSheetController ShowBottomSheet(this Page page, IView bottomSheetContent, bool dimDismiss)
+    public static IBottomSheetController ShowBottomSheet(
+        this Page page,
+        IView bottomSheetContent,
+        bool dimDismiss
+    )
     {
         var bottomSheetDialog = new BottomSheetDialog(
-            Platform.CurrentActivity?.Window?.DecorView.FindViewById(Android.Resource.Id.Content)?.Context ?? throw new InvalidOperationException("Context is null")
+            Platform.CurrentActivity
+                ?.Window?.DecorView.FindViewById(Android.Resource.Id.Content)
+                ?.Context ?? throw new InvalidOperationException("Context is null")
         //Resource.Style.Test1
         //Resource.Style.CustomBottomSheetDialogTheme
         );
 
-        var view = bottomSheetContent.ToPlatform(page.Handler?.MauiContext ?? throw new Exception("MauiContext is null"));
+        var view = bottomSheetContent.ToPlatform(
+            page.Handler?.MauiContext ?? throw new Exception("MauiContext is null")
+        );
         var c = new FrameLayout(page.Handler!.MauiContext!.Context);
-        c.AddView(view, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.WrapContent));
+        c.AddView(
+            view,
+            new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MatchParent,
+                ViewGroup.LayoutParams.WrapContent
+            )
+        );
 
         bottomSheetDialog.SetContentView(c);
         bottomSheetDialog.Behavior.Hideable = dimDismiss;

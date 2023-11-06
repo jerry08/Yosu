@@ -53,58 +53,79 @@ public static class MauiProgram
                 handlers.AddHandler<Switch, MaterialSwitchHandler>();
 #endif
 
-                handlers.AddHandler(typeof(ContextMenuContainer), typeof(ContextMenuContainerRenderer));
+                handlers.AddHandler(
+                    typeof(ContextMenuContainer),
+                    typeof(ContextMenuContainerRenderer)
+                );
             })
             .ConfigureWorkarounds()
             .ConfigureLifecycleEvents(events =>
             {
 #if ANDROID
-                events.AddAndroid(android => android
-                    .OnCreate((activity, bundle) =>
-                    {
-                        var manager = new StatusBarStyleManager();
-                        manager.SetDefault();
-                    }));
+                events.AddAndroid(
+                    android =>
+                        android.OnCreate(
+                            (activity, bundle) =>
+                            {
+                                var manager = new StatusBarStyleManager();
+                                manager.SetDefault();
+                            }
+                        )
+                );
 #elif IOS
-                events.AddiOS(ios => ios
-                    .OnActivated((app) =>
-                    {
-                        var manager = new StatusBarStyleManager();
-                        manager.SetDefault();
-                    }));
+                events.AddiOS(
+                    ios =>
+                        ios.OnActivated(
+                            (app) =>
+                            {
+                                var manager = new StatusBarStyleManager();
+                                manager.SetDefault();
+                            }
+                        )
+                );
 #endif
             });
-        //.ConfigureKeyboardM();
 
 #if DEBUG
         builder.Logging.AddDebug();
 #endif
 
-        // Views
-        builder.Services.AddTransient<MainPage>();
-        builder.Services.AddTransient<SettingsPage>();
-        builder.Services.AddTransient<HistoryCollectionView>();
-
-        // Viewmodels
-        builder.Services.AddTransient<MainCollectionViewModel>();
-        builder.Services.AddTransient<YoutubeViewModel>();
-        builder.Services.AddTransient<SoundcloudViewModel>();
-        builder.Services.AddTransient<SpotifyViewModel>();
-        builder.Services.AddTransient<SettingsViewModel>();
-        builder.Services.AddTransient<HistoryCollectionViewModel>();
-
-        // Services
-        builder.Services.AddSingleton<IAlertService, AlertService>();
-        //builder.Services.AddSingleton<PreferenceService>();
-        builder.Services.AddScoped<PreferenceService>();
-        builder.Services.AddSingleton<SettingsService>();
-
-        builder.Services.AddSingleton<IStatusBarStyleManager, StatusBarStyleManager>();
+        RegisterViewsAndViewModels(builder.Services);
+        RegisterYosuServices(builder.Services);
 
 #if DEBUG
         builder.Logging.AddDebug();
 #endif
 
         return builder.Build();
+    }
+
+    static void RegisterViewsAndViewModels(in IServiceCollection services)
+    {
+        // Add Views
+        services.AddTransient<MainPage>();
+        services.AddTransient<SettingsPage>();
+        services.AddTransient<HistoryCollectionView>();
+
+        // Viewmodels
+        services.AddTransient<MainCollectionViewModel>();
+        services.AddTransient<YoutubeViewModel>();
+        services.AddTransient<SoundcloudViewModel>();
+        services.AddTransient<SpotifyViewModel>();
+        services.AddTransient<SettingsViewModel>();
+        services.AddTransient<HistoryCollectionViewModel>();
+
+        // Add Popups
+        //services.AddTransientPopup<LoadingPopup, LoadingPopupViewModel>();
+    }
+
+    static void RegisterYosuServices(in IServiceCollection services)
+    {
+        // Services
+        services.AddSingleton<IAlertService, AlertService>();
+        services.AddSingleton<IStatusBarStyleManager, StatusBarStyleManager>();
+        //services.AddSingleton<PreferenceService>();
+        services.AddScoped<PreferenceService>();
+        services.AddSingleton<SettingsService>();
     }
 }

@@ -26,7 +26,11 @@ public static class PageExtensions
         }
     }
 
-    public static IBottomSheetController ShowBottomSheet(this Page page, IView bottomSheetContent, bool dimDismiss)
+    public static IBottomSheetController ShowBottomSheet(
+        this Page page,
+        IView bottomSheetContent,
+        bool dimDismiss
+    )
     {
         var mauiContext = page.Handler?.MauiContext ?? throw new Exception("MauiContext is null");
         var viewController = page.ToUIViewController(mauiContext);
@@ -40,7 +44,9 @@ public static class PageExtensions
                 UISheetPresentationControllerDetent.CreateMediumDetent(),
                 UISheetPresentationControllerDetent.CreateLargeDetent(),
             };
-            sheet.LargestUndimmedDetentIdentifier = dimDismiss ? UISheetPresentationControllerDetentIdentifier.Unknown : UISheetPresentationControllerDetentIdentifier.Medium;
+            sheet.LargestUndimmedDetentIdentifier = dimDismiss
+                ? UISheetPresentationControllerDetentIdentifier.Unknown
+                : UISheetPresentationControllerDetentIdentifier.Medium;
             sheet.PrefersScrollingExpandsWhenScrolledToEdge = false;
             sheet.PrefersEdgeAttachedInCompactHeight = true;
             sheet.WidthFollowsPreferredContentSizeWhenEdgeAttached = true;

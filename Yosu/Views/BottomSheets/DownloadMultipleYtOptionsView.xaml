@@ -27,19 +27,19 @@
             <converters:VideoQualityPreferenceToStringConverter x:Key="VideoQualityPreferenceToStringConverter" />
         </ResourceDictionary>
     </local:BaseBottomSheetView.Resources>
-    <StackLayout Spacing="8">
-        <Label
-            FontAttributes="Bold"
-            FontSize="18"
-            HeightRequest="60"
-            HorizontalOptions="CenterAndExpand"
-            HorizontalTextAlignment="Center"
-            Text="Select Container"
-            VerticalTextAlignment="Center" />
+    <ScrollView>
+        <StackLayout Spacing="8">
+            <Label
+                FontAttributes="Bold"
+                FontSize="18"
+                HeightRequest="60"
+                HorizontalOptions="CenterAndExpand"
+                HorizontalTextAlignment="Center"
+                Text="Select Container"
+                VerticalTextAlignment="Center" />
 
-        <BoxView Style="{StaticResource SeparatorBoxView}" />
+            <BoxView Style="{StaticResource SeparatorBoxView}" />
 
-        <ScrollView>
             <VerticalStackLayout>
                 <Label
                     Margin="20,0"
@@ -99,6 +99,6 @@
                     </BindableLayout.ItemTemplate>
                 </StackLayout>
             </VerticalStackLayout>
-        </ScrollView>
-    </StackLayout>
+        </StackLayout>
+    </ScrollView>
 </local:BaseBottomSheetView>

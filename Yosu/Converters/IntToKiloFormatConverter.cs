@@ -8,10 +8,12 @@ namespace Yosu.Converters;
 public class IntToKiloFormatConverter : IValueConverter
 {
     public object? Convert(object? value, Type targetType, object parameter, CultureInfo culture) =>
-        int.TryParse(value?.ToString(), out var count)
-            ? count.ToKiloFormat(false)
-            : null;
+        int.TryParse(value?.ToString(), out var count) ? count.ToKiloFormat(false) : null;
 
-    public object ConvertBack(object? value, Type targetType, object parameter, CultureInfo culture) =>
-        throw new NotSupportedException();
+    public object ConvertBack(
+        object? value,
+        Type targetType,
+        object parameter,
+        CultureInfo culture
+    ) => throw new NotSupportedException();
 }

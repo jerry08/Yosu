@@ -14,7 +14,12 @@ internal class AlertService : IAlertService
         return Shell.Current.DisplayAlert(title, message, cancel);
     }
 
-    public Task<bool> ShowConfirmationAsync(string title, string message, string accept = "Yes", string cancel = "No")
+    public Task<bool> ShowConfirmationAsync(
+        string title,
+        string message,
+        string accept = "Yes",
+        string cancel = "No"
+    )
     {
         //return Application.Current.MainPage.DisplayAlert(title, message, accept, cancel);
         return Shell.Current.DisplayAlert(title, message, accept, cancel);
@@ -27,17 +32,20 @@ internal class AlertService : IAlertService
     /// </summary>
     public void ShowAlert(string title, string message, string cancel = "OK")
     {
-        Shell.Current.Dispatcher.Dispatch(async () =>
-            await ShowAlertAsync(title, message, cancel)
-        );
+        Shell.Current.Dispatcher.Dispatch(async () => await ShowAlertAsync(title, message, cancel));
     }
 
     /// <summary>
     /// "Fire and forget". Method returns BEFORE showing alert.
     /// </summary>
     /// <param name="callback">Action to perform afterwards.</param>
-    public void ShowConfirmation(string title, string message, Action<bool> callback,
-        string accept = "Yes", string cancel = "No")
+    public void ShowConfirmation(
+        string title,
+        string message,
+        Action<bool> callback,
+        string accept = "Yes",
+        string cancel = "No"
+    )
     {
         Shell.Current.Dispatcher.Dispatch(async () =>
         {

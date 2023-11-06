@@ -40,13 +40,9 @@ public partial class BaseViewModel : ObservableObject
         LoadCore();
     }
 
-    protected virtual void LoadCore()
-    {
-    }
+    protected virtual void LoadCore() { }
 
-    public virtual void OnNavigated()
-    {
-    }
+    public virtual void OnNavigated() { }
 
     [RelayCommand]
     void ShowContextMenu(ContextMenuContainer menu)
@@ -71,7 +67,11 @@ public partial class BaseViewModel : ObservableObject
 
     private Task ShowNoInternetAlert()
     {
-        return App.AlertSvc.ShowAlertAsync("No Internet Connection.", "If the problem persists, please try again later.", "CLOSE");
+        return App.AlertSvc.ShowAlertAsync(
+            "No Internet Connection.",
+            "If the problem persists, please try again later.",
+            "CLOSE"
+        );
     }
 
     [RelayCommand]

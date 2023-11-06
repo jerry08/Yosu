@@ -25,7 +25,9 @@ public class AppUpdater
     public async Task CheckAsync()
     {
         var dontShow = false;
-        var dontShowStr = await SecureStorage.GetAsync($"dont_ask_for_update_{AppInfo.Current.VersionString}");
+        var dontShowStr = await SecureStorage.GetAsync(
+            $"dont_ask_for_update_{AppInfo.Current.VersionString}"
+        );
         if (!string.IsNullOrEmpty(dontShowStr))
             dontShow = Convert.ToBoolean(dontShowStr);
 

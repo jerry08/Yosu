@@ -51,17 +51,18 @@ public partial class DownloadViewModelBase : ObservableObject, IDisposable
     {
         PropertyChanged += (s, e) =>
         {
-            if (e.PropertyName == nameof(CanCancel)
-                || e.PropertyName == nameof(Status))
+            if (e.PropertyName == nameof(CanCancel) || e.PropertyName == nameof(Status))
             {
                 //CanShowInitialContextMenu = !CanCancel;
-                CanShowInitialContextMenu = Status is DownloadStatus.None
-                    or DownloadStatus.Canceled
-                    or DownloadStatus.Completed;
+                CanShowInitialContextMenu =
+                    Status
+                        is DownloadStatus.None
+                            or DownloadStatus.Canceled
+                            or DownloadStatus.Completed;
 
                 //CanShowDownloadingContextMenu = CanCancel;
-                CanShowDownloadingContextMenu = Status is DownloadStatus.Started
-                    or DownloadStatus.Enqueued;
+                CanShowDownloadingContextMenu =
+                    Status is DownloadStatus.Started or DownloadStatus.Enqueued;
 
                 CanShowDownloadFailedContextMenu = Status is DownloadStatus.Failed;
             }

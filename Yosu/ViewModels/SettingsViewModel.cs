@@ -26,7 +26,8 @@ public partial class SettingsViewModel : BaseViewModel
     public SettingsViewModel(
         PreferenceService preferenceService,
         SettingsService settingsService,
-        IStatusBarStyleManager statusBarStyleManager)
+        IStatusBarStyleManager statusBarStyleManager
+    )
     {
         _statusBarStyleManager = statusBarStyleManager;
 
@@ -40,7 +41,9 @@ public partial class SettingsViewModel : BaseViewModel
 
 #if ANDROID
         DefaultDownloadDirectory = Path.Combine(
-            Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads)!.AbsolutePath,
+            Android.OS.Environment
+                .GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads)!
+                .AbsolutePath,
             "Yosu"
         );
 
@@ -113,7 +116,8 @@ public partial class SettingsViewModel : BaseViewModel
 
             $album - track album/playlist name if available. It's only available when downloading tracks from an album/playlist url.
             """,
-            initialValue: Settings.SoundCloudFileNameTemplate);
+            initialValue: Settings.SoundCloudFileNameTemplate
+        );
 
         if (string.IsNullOrWhiteSpace(result))
             return;
@@ -138,7 +142,8 @@ public partial class SettingsViewModel : BaseViewModel
 
             $author - video author
             """,
-            initialValue: Settings.YoutubeFileNameTemplate);
+            initialValue: Settings.YoutubeFileNameTemplate
+        );
 
         if (string.IsNullOrWhiteSpace(result))
             return;
@@ -165,7 +170,8 @@ public partial class SettingsViewModel : BaseViewModel
 
             $album - track album/playlist name if available. It's only available when downloading tracks from an album/playlist url.
             """,
-            initialValue: Settings.SpotifyFileNameTemplate);
+            initialValue: Settings.SpotifyFileNameTemplate
+        );
 
         if (string.IsNullOrWhiteSpace(result))
             return;

@@ -21,11 +21,15 @@ internal class QueryResolver
         string query,
         SourceType sourceType,
         IProgress<Percentage>? progress = null,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         var results = new List<object>();
 
-        var queries = query.Split("\n", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        var queries = query.Split(
+            "\n",
+            StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries
+        );
 
         var ytQueries = new List<string>();
         var scQueries = new List<string>();
@@ -63,31 +67,40 @@ internal class QueryResolver
 
         if (ytQueries.Count > 0)
         {
-            var ytResults = await _ytQueryResolver.ResolveAsync(queries, progress, cancellationToken);
-            var downloads = ytResults.Videos.Select(video => new YoutubeDownloadViewModel()
-            {
-                Video = video
-            });
+            var ytResults = await _ytQueryResolver.ResolveAsync(
+                queries,
+                progress,
+                cancellationToken
+            );
+            var downloads = ytResults.Videos.Select(
+                video => new YoutubeDownloadViewModel() { Video = video }
+            );
             results.AddRange(downloads);
         }
 
         if (scQueries.Count > 0)
         {
-            var scResults = await _scQueryResolver.ResolveAsync(queries, progress, cancellationToken);
-            var downloads = scResults.Tracks.Select(track => new SoundcloudDownloadViewModel()
-            {
-                Track = track
-            });
+            var scResults = await _scQueryResolver.ResolveAsync(
+                queries,
+                progress,
+                cancellationToken
+            );
+            var downloads = scResults.Tracks.Select(
+                track => new SoundcloudDownloadViewModel() { Track = track }
+            );
             results.AddRange(downloads);
         }
 
         if (spQueries.Count > 0)
         {
-            var spResults = await _spQueryResolver.ResolveAsync(queries, progress, cancellationToken);
-            var downloads = spResults.Tracks.Select(track => new SpotifyDownloadViewModel()
-            {
-                Track = track
-            });
+            var spResults = await _spQueryResolver.ResolveAsync(
+                queries,
+                progress,
+                cancellationToken
+            );
+            var downloads = spResults.Tracks.Select(
+                track => new SpotifyDownloadViewModel() { Track = track }
+            );
             results.AddRange(downloads);
         }
 

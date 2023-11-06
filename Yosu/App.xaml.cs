@@ -37,12 +37,17 @@ public partial class App : Application
         {
             if (showSnackbar)
             {
-                Snackbar.Make("No interent", visualOptions: new SnackbarOptions()
-                {
-                    BackgroundColor = Colors.Red,
-                    TextColor = Colors.White,
-                    ActionButtonTextColor = Colors.White
-                }).Show();
+                Snackbar
+                    .Make(
+                        "No interent",
+                        visualOptions: new SnackbarOptions()
+                        {
+                            BackgroundColor = Colors.Red,
+                            TextColor = Colors.White,
+                            ActionButtonTextColor = Colors.White
+                        }
+                    )
+                    .Show();
             }
 
             return false;
@@ -51,12 +56,17 @@ public partial class App : Application
         {
             if (showSnackbar)
             {
-                Snackbar.Make("You're back online", visualOptions: new SnackbarOptions()
-                {
-                    BackgroundColor = Colors.Green,
-                    TextColor = Colors.White,
-                    ActionButtonTextColor = Colors.White
-                }).Show();
+                Snackbar
+                    .Make(
+                        "You're back online",
+                        visualOptions: new SnackbarOptions()
+                        {
+                            BackgroundColor = Colors.Green,
+                            TextColor = Colors.White,
+                            ActionButtonTextColor = Colors.White
+                        }
+                    )
+                    .Show();
             }
 
             return true;
@@ -91,10 +101,7 @@ public partial class App : Application
         if (activity is null)
             return;
 
-        var intent = new Android.Content.Intent(
-            activity,
-            typeof(ForegroundService)
-        );
+        var intent = new Android.Content.Intent(activity, typeof(ForegroundService));
 
         //intent.PutExtra("fileName", fileName);
         activity.StartForegroundService(intent);
@@ -106,10 +113,7 @@ public partial class App : Application
         if (activity is null)
             return;
 
-        var intent = new Android.Content.Intent(
-            activity,
-            typeof(ForegroundService)
-        );
+        var intent = new Android.Content.Intent(activity, typeof(ForegroundService));
 
         intent.SetAction("kill");
 

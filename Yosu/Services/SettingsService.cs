@@ -27,13 +27,12 @@ public partial class SettingsService : SettingsBase, INotifyPropertyChanged
 
     public Container LastContainer { get; set; } = Container.Mp4;
 
-    public VideoQualityPreference LastVideoQualityPreference { get; set; } = VideoQualityPreference.Highest;
+    public VideoQualityPreference LastVideoQualityPreference { get; set; } =
+        VideoQualityPreference.Highest;
 
     // FFmpeg only handles up to 2 at a time probably
     public int ParallelLimit { get; set; } = 1;
 
     public SettingsService()
-        : base(Path.Combine(FileSystem.AppDataDirectory, "Settings.json"))
-    {
-    }
+        : base(Path.Combine(FileSystem.AppDataDirectory, "Settings.json")) { }
 }

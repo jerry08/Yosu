@@ -13,6 +13,10 @@ public class TrackToHighestQualityArtworkUrlConverter : IValueConverter
             ? track.Album.Images.OrderByDescending(x => x.Height).FirstOrDefault()?.Url
             : null;
 
-    public object ConvertBack(object? value, Type targetType, object parameter, CultureInfo culture) =>
-        throw new NotSupportedException();
+    public object ConvertBack(
+        object? value,
+        Type targetType,
+        object parameter,
+        CultureInfo culture
+    ) => throw new NotSupportedException();
 }

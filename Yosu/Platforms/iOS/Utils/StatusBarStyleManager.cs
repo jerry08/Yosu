@@ -17,13 +17,16 @@ public class StatusBarStyleManager : IStatusBarStyleManager
     {
         MainThread.BeginInvokeOnMainThread(() =>
         {
-            UIView statusBar = UIApplication.SharedApplication.ValueForKey(new NSString("statusBar")) as UIView;
+            UIView statusBar =
+                UIApplication.SharedApplication.ValueForKey(new NSString("statusBar")) as UIView;
             if (statusBar.RespondsToSelector(new ObjCRuntime.Selector("setBackgroundColor:")))
             {
                 statusBar.BackgroundColor = Color.FromHex(hexColor).ToUIColor();
             }
             UIApplication.SharedApplication.SetStatusBarStyle(
-                isLight ? UIStatusBarStyle.DarkContent : UIStatusBarStyle.LightContent, false);
+                isLight ? UIStatusBarStyle.DarkContent : UIStatusBarStyle.LightContent,
+                false
+            );
             GetCurrentViewController().SetNeedsStatusBarAppearanceUpdate();
         });
     }
@@ -32,7 +35,8 @@ public class StatusBarStyleManager : IStatusBarStyleManager
     {
         MainThread.BeginInvokeOnMainThread(() =>
         {
-            UIView statusBar = UIApplication.SharedApplication.ValueForKey(new NSString("statusBar")) as UIView;
+            UIView statusBar =
+                UIApplication.SharedApplication.ValueForKey(new NSString("statusBar")) as UIView;
             if (statusBar.RespondsToSelector(new ObjCRuntime.Selector("setBackgroundColor:")))
             {
                 statusBar.BackgroundColor = UIColor.White;

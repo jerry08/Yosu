@@ -16,7 +16,8 @@ public static class ApplicationEx
     {
         var appProcessInfo = new ActivityManager.RunningAppProcessInfo();
         ActivityManager.GetMyMemoryState(appProcessInfo);
-        return appProcessInfo.Importance == Importance.Foreground || appProcessInfo.Importance == Importance.Visible;
+        return appProcessInfo.Importance == Importance.Foreground
+            || appProcessInfo.Importance == Importance.Visible;
     }
 
     public static bool IsInBackground()
@@ -35,15 +36,17 @@ public static class ApplicationEx
             || appProcessInfo.Importance == Importance.Visible;
     }
 
-    public static Notification? GetActiveNotification(Context? context, int id)
-        => GetActiveStatusBarNotification(context, id)?.Notification;
+    public static Notification? GetActiveNotification(Context? context, int id) =>
+        GetActiveStatusBarNotification(context, id)?.Notification;
 
-    public static StatusBarNotification? GetActiveStatusBarNotification(Context? context, int id)
-        => GetActiveStatusBarNotifications(context)?.Where(x => x.Id == id).FirstOrDefault();
+    public static StatusBarNotification? GetActiveStatusBarNotification(Context? context, int id) =>
+        GetActiveStatusBarNotifications(context)?.Where(x => x.Id == id).FirstOrDefault();
 
-    public static Notification[] GetActiveNotifications(Context? context)
-        => GetActiveStatusBarNotifications(context).Where(x => x is not null)
-        .Select(x => x.Notification!).ToArray() ?? Array.Empty<Notification>();
+    public static Notification[] GetActiveNotifications(Context? context) =>
+        GetActiveStatusBarNotifications(context)
+            .Where(x => x is not null)
+            .Select(x => x.Notification!)
+            .ToArray() ?? Array.Empty<Notification>();
 
     public static StatusBarNotification[] GetActiveStatusBarNotifications(Context? context)
     {

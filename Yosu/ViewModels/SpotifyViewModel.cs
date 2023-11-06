@@ -26,9 +26,7 @@ public class SpotifyViewModel
 
     public static List<SpotifyDownloadViewModel> Downloads { get; set; } = new();
 
-    public SpotifyViewModel(
-        SettingsService settingsService,
-        PreferenceService preference)
+    public SpotifyViewModel(SettingsService settingsService, PreferenceService preference)
     {
         _settingsService = settingsService;
         _preferenceService = preference;
@@ -57,7 +55,11 @@ public class SpotifyViewModel
             else
             {
                 download.FilePath = Path.Combine(
-                    Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads)!.AbsolutePath,
+                    Android.OS.Environment
+                        .GetExternalStoragePublicDirectory(
+                            Android.OS.Environment.DirectoryDownloads
+                        )!
+                        .AbsolutePath,
                     "Yosu",
                     fileName
                 );
@@ -87,7 +89,9 @@ public class SpotifyViewModel
         {
             try
             {
-                using var access = await _downloadSemaphore.AcquireAsync(download.CancellationToken);
+                using var access = await _downloadSemaphore.AcquireAsync(
+                    download.CancellationToken
+                );
 
                 download.Status = DownloadStatus.Started;
 
@@ -142,14 +146,13 @@ public class SpotifyViewModel
             {
                 download.PercentageProgress = Percentage.FromValue(100);
 
-                download.Status = ex is OperationCanceledException
-                    ? DownloadStatus.Canceled
-                    : DownloadStatus.Failed;
+                download.Status =
+                    ex is OperationCanceledException
+                        ? DownloadStatus.Canceled
+                        : DownloadStatus.Failed;
 
                 // Short error message for Spotify-related errors, full for others
-                download.ErrorMessage = ex is SpotifyExplodeException
-                    ? ex.Message
-                    : ex.ToString();
+                download.ErrorMessage = ex is SpotifyExplodeException ? ex.Message : ex.ToString();
 
                 try
                 {

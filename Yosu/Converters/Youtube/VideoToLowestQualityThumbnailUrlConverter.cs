@@ -25,6 +25,10 @@ public class VideoToLowestQualityThumbnailUrlConverter : IValueConverter
             ? video.Thumbnails.OrderBy(t => t.Resolution.Area).FirstOrDefault()?.Url
             : null;
 
-    public object ConvertBack(object? value, Type targetType, object parameter, CultureInfo culture) =>
-        throw new NotSupportedException();
+    public object ConvertBack(
+        object? value,
+        Type targetType,
+        object parameter,
+        CultureInfo culture
+    ) => throw new NotSupportedException();
 }

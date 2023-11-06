@@ -16,9 +16,17 @@ public static class DateTimeExtensions
         else if (tspan.Hours >= 1)
             return string.Format("{0} {1}", tspan.Hours, (tspan.Hours > 1) ? "hours" : "hour");
         else if (tspan.Minutes >= 1)
-            return string.Format("{0} {1}", tspan.Minutes, (tspan.Minutes > 1) ? "minutes" : "minute");
+            return string.Format(
+                "{0} {1}",
+                tspan.Minutes,
+                (tspan.Minutes > 1) ? "minutes" : "minute"
+            );
         else if (tspan.Seconds >= 1)
-            return string.Format("{0} {1}", tspan.Seconds, (tspan.Seconds > 1) ? "seconds" : "second");
+            return string.Format(
+                "{0} {1}",
+                tspan.Seconds,
+                (tspan.Seconds > 1) ? "seconds" : "second"
+            );
         else
             return "1 second";
     }

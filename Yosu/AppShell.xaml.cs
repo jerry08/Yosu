@@ -64,8 +64,10 @@ public partial class AppShell : Shell
         if (@event.Cancelled)
             return true;
 
-        if (Current.CurrentPage.BindingContext is CollectionViewModelBase viewModel
-            && viewModel.SelectionMode != SelectionMode.None)
+        if (
+            Current.CurrentPage.BindingContext is CollectionViewModelBase viewModel
+            && viewModel.SelectionMode != SelectionMode.None
+        )
         {
             viewModel.SelectionMode = SelectionMode.None;
             viewModel.SelectedEntities.Clear();

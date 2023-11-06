@@ -26,9 +26,7 @@ public class SoundcloudViewModel
 
     public static List<SoundcloudDownloadViewModel> Downloads { get; set; } = new();
 
-    public SoundcloudViewModel(
-        SettingsService settingsService,
-        PreferenceService preference)
+    public SoundcloudViewModel(SettingsService settingsService, PreferenceService preference)
     {
         _settingsService = settingsService;
         _preferenceService = preference;
@@ -57,7 +55,11 @@ public class SoundcloudViewModel
             else
             {
                 download.FilePath = Path.Combine(
-                    Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads)!.AbsolutePath,
+                    Android.OS.Environment
+                        .GetExternalStoragePublicDirectory(
+                            Android.OS.Environment.DirectoryDownloads
+                        )!
+                        .AbsolutePath,
                     //Android.OS.Environment.ExternalStorageDirectory!.AbsolutePath,
                     "Yosu",
                     fileName
@@ -88,7 +90,9 @@ public class SoundcloudViewModel
         {
             try
             {
-                using var access = await _downloadSemaphore.AcquireAsync(download.CancellationToken);
+                using var access = await _downloadSemaphore.AcquireAsync(
+                    download.CancellationToken
+                );
 
                 download.Status = DownloadStatus.Started;
                 download.IsProgressIndeterminate = false;
@@ -151,14 +155,14 @@ public class SoundcloudViewModel
             {
                 download.PercentageProgress = Percentage.FromValue(100);
 
-                download.Status = ex is OperationCanceledException
-                    ? DownloadStatus.Canceled
-                    : DownloadStatus.Failed;
+                download.Status =
+                    ex is OperationCanceledException
+                        ? DownloadStatus.Canceled
+                        : DownloadStatus.Failed;
 
                 // Short error message for SoundCloud-related errors, full for others
-                download.ErrorMessage = ex is SoundcloudExplodeException
-                    ? ex.Message
-                    : ex.ToString();
+                download.ErrorMessage =
+                    ex is SoundcloudExplodeException ? ex.Message : ex.ToString();
 
                 try
                 {

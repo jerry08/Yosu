@@ -14,11 +14,12 @@ public static class NotificationHelper
     public const int CompletedNotificationId = 2682;
     public const int CancelIntentRequestCode = 3462;
 
-    [SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
-    public static void ShowNotification(
-        Service service,
-        string textTitle,
-        string textContent)
+    [SuppressMessage(
+        "Interoperability",
+        "CA1416:Validate platform compatibility",
+        Justification = "<Pending>"
+    )]
+    public static void ShowNotification(Service service, string textTitle, string textContent)
     {
         var flags = PendingIntentFlags.UpdateCurrent | PendingIntentFlags.Immutable;
 
@@ -27,7 +28,12 @@ public static class NotificationHelper
 
         var cancelIntent = new Intent(service, typeof(ForegroundService));
         cancelIntent.SetAction("kill");
-        var cancelPendingIntent = PendingIntent.GetForegroundService(service, CancelIntentRequestCode, cancelIntent, flags);
+        var cancelPendingIntent = PendingIntent.GetForegroundService(
+            service,
+            CancelIntentRequestCode,
+            cancelIntent,
+            flags
+        );
 
         var channelId = $"{service.PackageName}.general";
 

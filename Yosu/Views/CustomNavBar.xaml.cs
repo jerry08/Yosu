@@ -9,7 +9,8 @@ public partial class CustomNavBar : ContentView
         nameof(Title),
         typeof(string),
         typeof(CustomNavBar),
-        default);
+        default
+    );
 
     public string Title
     {
@@ -21,7 +22,8 @@ public partial class CustomNavBar : ContentView
         nameof(ShowBackButton),
         typeof(bool),
         typeof(CustomNavBar),
-        default);
+        default
+    );
 
     public bool ShowBackButton
     {
@@ -33,7 +35,8 @@ public partial class CustomNavBar : ContentView
         nameof(ShowTitleLabel),
         typeof(bool),
         typeof(CustomNavBar),
-        default);
+        default
+    );
 
     public bool ShowTitleLabel
     {

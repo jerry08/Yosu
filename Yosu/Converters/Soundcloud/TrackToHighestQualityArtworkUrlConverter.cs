@@ -12,6 +12,10 @@ public class TrackToHighestQualityArtworkUrlConverter : IValueConverter
             ? track.ArtworkUrl?.ToString().Replace("large", "t500x500").Replace("small", "t500x500")
             : null;
 
-    public object ConvertBack(object? value, Type targetType, object parameter, CultureInfo culture) =>
-        throw new NotSupportedException();
+    public object ConvertBack(
+        object? value,
+        Type targetType,
+        object parameter,
+        CultureInfo culture
+    ) => throw new NotSupportedException();
 }

@@ -10,9 +10,11 @@ internal class StoragePermissionUtil
     {
         if (DeviceInfo.Platform == DevicePlatform.Android)
             return await CheckAndRequestStorageReadPermission();
-        else if (DeviceInfo.Platform == DevicePlatform.iOS
+        else if (
+            DeviceInfo.Platform == DevicePlatform.iOS
             || DeviceInfo.Platform == DevicePlatform.macOS
-            || DeviceInfo.Platform == DevicePlatform.MacCatalyst)
+            || DeviceInfo.Platform == DevicePlatform.MacCatalyst
+        )
             return await CheckAndRequestPhotosPermission();
 
         return PermissionStatus.Granted;
@@ -51,7 +53,10 @@ internal class StoragePermissionUtil
         {
             // Prompt the user to turn on in settings
             // On iOS once a permission has been denied it may not be requested again from the application
-            await App.AlertSvc.ShowAlertAsync("Permission", "Please grant photos permission in settings.");
+            await App.AlertSvc.ShowAlertAsync(
+                "Permission",
+                "Please grant photos permission in settings."
+            );
             return status;
         }
 

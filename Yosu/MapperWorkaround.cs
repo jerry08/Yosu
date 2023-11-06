@@ -3,15 +3,19 @@ using Microsoft.Maui;
 
 namespace Yosu.Platforms;
 
-internal class MapperWorkaround<TVirtualView, TViewHandler> : PropertyMapper<TVirtualView, TViewHandler>
+internal class MapperWorkaround<TVirtualView, TViewHandler>
+    : PropertyMapper<TVirtualView, TViewHandler>
     where TVirtualView : IElement
     where TViewHandler : IElementHandler
 {
-    public MapperWorkaround(params IPropertyMapper[] chained) : base(chained)
-    {
-    }
+    public MapperWorkaround(params IPropertyMapper[] chained)
+        : base(chained) { }
 
-    protected override void UpdatePropertyCore(string key, IElementHandler viewHandler, IElement virtualView)
+    protected override void UpdatePropertyCore(
+        string key,
+        IElementHandler viewHandler,
+        IElement virtualView
+    )
     {
         try
         {

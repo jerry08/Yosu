@@ -50,7 +50,8 @@ public static class StorageUtil
     public static DocumentFile? ParseDocumentFile(
         this Context context,
         Android.Net.Uri treeUri,
-        File file)
+        File file
+    )
     {
         DocumentFile? treeRoot;
         try
@@ -112,7 +113,8 @@ public static class StorageUtil
         this Context context,
         Android.Net.Uri treeUri,
         string path,
-        string mimeType)
+        string mimeType
+    )
     {
         var index = path.LastIndexOf("/");
         var dirPath = path.Substring(0, index);
@@ -128,7 +130,8 @@ public static class StorageUtil
     public static DocumentFile? CreateDocumentDir(
         this Context context,
         Android.Net.Uri treeUri,
-        string path)
+        string path
+    )
     {
         var index = path.LastIndexOf("/");
         var dirPath = path.Substring(0, index);

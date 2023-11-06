@@ -105,8 +105,10 @@ public class StatusBarStyleManager : IStatusBarStyleManager
 
     public void SetStatusBarIsLight(Window currentWindow, bool isLight)
     {
-        var windowInsetsController =
-            new WindowInsetsControllerCompat(currentWindow, currentWindow.DecorView);
+        var windowInsetsController = new WindowInsetsControllerCompat(
+            currentWindow,
+            currentWindow.DecorView
+        );
         windowInsetsController.AppearanceLightStatusBars = isLight;
 
         return;
@@ -114,14 +116,19 @@ public class StatusBarStyleManager : IStatusBarStyleManager
         if ((int)Build.VERSION.SdkInt < 30)
         {
 #pragma warning disable CS0618 // Type or member is obsolete. Using new API for Sdk 30+
-            currentWindow.DecorView.SystemUiVisibility = isLight ? (StatusBarVisibility)(SystemUiFlags.LightStatusBar) : 0;
+            currentWindow.DecorView.SystemUiVisibility = isLight
+                ? (StatusBarVisibility)(SystemUiFlags.LightStatusBar)
+                : 0;
 #pragma warning restore CS0618 // Type or member is obsolete
         }
         else
         {
             var lightStatusBars = isLight ? WindowInsetsControllerAppearance.LightStatusBars : 0;
 #pragma warning disable CA1416
-            currentWindow.InsetsController?.SetSystemBarsAppearance((int)lightStatusBars, (int)lightStatusBars);
+            currentWindow.InsetsController?.SetSystemBarsAppearance(
+                (int)lightStatusBars,
+                (int)lightStatusBars
+            );
 #pragma warning restore CA1416
         }
     }
@@ -133,8 +140,10 @@ public class StatusBarStyleManager : IStatusBarStyleManager
         //var view = Platform.CurrentActivity.FindViewById(Android.Resource.Id.Content)!;
         //view.SystemUiVisibility = (StatusBarVisibility)SystemUiFlags.LightNavigationBar;
 
-        var windowInsetsController =
-            new WindowInsetsControllerCompat(currentWindow, currentWindow.DecorView);
+        var windowInsetsController = new WindowInsetsControllerCompat(
+            currentWindow,
+            currentWindow.DecorView
+        );
         windowInsetsController.AppearanceLightNavigationBars = isLight;
     }
 

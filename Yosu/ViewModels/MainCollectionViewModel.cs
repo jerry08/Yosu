@@ -37,13 +37,14 @@ public partial class MainCollectionViewModel : CollectionViewModel<object>
     [ObservableProperty]
     private SourceType _searchSourceType;
 
-    private SourceType SourceType => SelectedEntities.FirstOrDefault() switch
-    {
-        YoutubeDownloadViewModel => SourceType.Youtube,
-        SoundcloudDownloadViewModel => SourceType.Soundcloud,
-        SpotifyDownloadViewModel => SourceType.Spotify,
-        _ => SourceType.None,
-    };
+    private SourceType SourceType =>
+        SelectedEntities.FirstOrDefault() switch
+        {
+            YoutubeDownloadViewModel => SourceType.Youtube,
+            SoundcloudDownloadViewModel => SourceType.Soundcloud,
+            SpotifyDownloadViewModel => SourceType.Spotify,
+            _ => SourceType.None,
+        };
 
     private SearchOptionsView? SearchOptionsView { get; set; }
 
@@ -53,7 +54,8 @@ public partial class MainCollectionViewModel : CollectionViewModel<object>
         PreferenceService preference,
         YoutubeViewModel youtubeViewModel,
         SoundcloudViewModel soundcloudViewModel,
-        SpotifyViewModel spotifyViewModel)
+        SpotifyViewModel spotifyViewModel
+    )
     {
         Title = "Youtube";
         IsBusy = false;
@@ -100,7 +102,8 @@ public partial class MainCollectionViewModel : CollectionViewModel<object>
             return;
         }
 
-        if (!await IsOnline()) return;
+        if (!await IsOnline())
+            return;
 
         if (!IsRefreshing)
             IsBusy = true;
@@ -113,7 +116,10 @@ public partial class MainCollectionViewModel : CollectionViewModel<object>
 
             if (result.Count == 0)
             {
-                await App.AlertSvc.ShowAlertAsync("Nothing found", "Couldn't find any media based on the query or URL you provided");
+                await App.AlertSvc.ShowAlertAsync(
+                    "Nothing found",
+                    "Couldn't find any media based on the query or URL you provided"
+                );
                 return;
             }
 
@@ -127,7 +133,9 @@ public partial class MainCollectionViewModel : CollectionViewModel<object>
                 "Error",
                 // Short error message for YouTube-related errors, Soundcloud-related errors,
                 // Spotify-related errors, full for others
-                ex is YoutubeExplodeException || ex is SoundcloudExplodeException || ex is SpotifyExplodeException
+                ex is YoutubeExplodeException
+                || ex is SoundcloudExplodeException
+                || ex is SpotifyExplodeException
                     ? ex.Message
                     : ex.ToString()
             );
@@ -142,7 +150,8 @@ public partial class MainCollectionViewModel : CollectionViewModel<object>
     [RelayCommand]
     async Task Download(DownloadViewModelBase entity)
     {
-        if (!await IsOnline()) return;
+        if (!await IsOnline())
+            return;
 
         var status = await StoragePermissionUtil.CheckAndRequestStoragePermission();
         if (status == PermissionStatus.Denied)
@@ -156,9 +165,7 @@ public partial class MainCollectionViewModel : CollectionViewModel<object>
             switch (entity)
             {
                 case YoutubeDownloadViewModel download:
-                    _youtubeViewModel.ShowOptions(
-                        new() { download }
-                    );
+                    _youtubeViewModel.ShowOptions(new() { download });
                     break;
 
                 case SoundcloudDownloadViewModel download:
@@ -179,7 +186,8 @@ public partial class MainCollectionViewModel : CollectionViewModel<object>
     [RelayCommand]
     async Task DownloadSelected()
     {
-        if (!await IsOnline()) return;
+        if (!await IsOnline())
+            return;
 
         var status = await StoragePermissionUtil.CheckAndRequestStoragePermission();
         if (status == PermissionStatus.Denied)
@@ -227,7 +235,8 @@ public partial class MainCollectionViewModel : CollectionViewModel<object>
     [RelayCommand]
     async Task RestartDownload(DownloadViewModelBase entity)
     {
-        if (!await IsOnline()) return;
+        if (!await IsOnline())
+            return;
 
         switch (entity)
         {
@@ -336,8 +345,9 @@ public partial class MainCollectionViewModel : CollectionViewModel<object>
                 case YoutubeDownloadViewModel download:
                     //var existingYtDownload = _youtubeViewModel.Downloads
                     //    .FirstOrDefault(x => x.Video?.Id == download.Video?.Id);
-                    var existingYtDownload = YoutubeViewModel.Downloads
-                        .FirstOrDefault(x => x.Key == download.Key);
+                    var existingYtDownload = YoutubeViewModel.Downloads.FirstOrDefault(
+                        x => x.Key == download.Key
+                    );
                     if (existingYtDownload is not null)
                     {
                         Entities[i] = existingYtDownload;
@@ -345,8 +355,9 @@ public partial class MainCollectionViewModel : CollectionViewModel<object>
                     break;
 
                 case SoundcloudDownloadViewModel download:
-                    var existingScDownload = SoundcloudViewModel.Downloads
-                        .FirstOrDefault(x => x.Key == download.Key);
+                    var existingScDownload = SoundcloudViewModel.Downloads.FirstOrDefault(
+                        x => x.Key == download.Key
+                    );
                     if (existingScDownload is not null)
                     {
                         Entities[i] = existingScDownload;
@@ -354,8 +365,9 @@ public partial class MainCollectionViewModel : CollectionViewModel<object>
                     break;
 
                 case SpotifyDownloadViewModel download:
-                    var existingSpDownload = SpotifyViewModel.Downloads
-                        .FirstOrDefault(x => x.Key == download.Key);
+                    var existingSpDownload = SpotifyViewModel.Downloads.FirstOrDefault(
+                        x => x.Key == download.Key
+                    );
                     if (existingSpDownload is not null)
                     {
                         Entities[i] = existingSpDownload;

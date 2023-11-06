@@ -8,15 +8,17 @@ namespace Yosu.Utils;
 
 internal static class FileEx
 {
-    public static bool IsExternalStorageAvailable()
-        => Environment.ExternalStorageState == Environment.MediaMounted;
+    public static bool IsExternalStorageAvailable() =>
+        Environment.ExternalStorageState == Environment.MediaMounted;
 
-    public static bool IsExternalStorageReadOnly()
-        => Environment.ExternalStorageState == Environment.MediaMountedReadOnly;
+    public static bool IsExternalStorageReadOnly() =>
+        Environment.ExternalStorageState == Environment.MediaMountedReadOnly;
 
     public static bool Exists(string filePath)
     {
-        var uri = Platform.AppContext.GetPersistedUriPermissionFor(Path.GetDirectoryName(filePath)!);
+        var uri = Platform.AppContext.GetPersistedUriPermissionFor(
+            Path.GetDirectoryName(filePath)!
+        );
         if (uri is not null)
         {
             var documentFile = DocumentFile.FromTreeUri(Platform.AppContext, uri);

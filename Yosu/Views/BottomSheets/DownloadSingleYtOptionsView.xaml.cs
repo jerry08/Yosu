@@ -12,7 +12,8 @@ public partial class DownloadSingleYtOptionsView
 
     public DownloadSingleYtOptionsView(
         YoutubeViewModel viewModel,
-        List<YoutubeDownloadViewModel> downloads)
+        List<YoutubeDownloadViewModel> downloads
+    )
     {
         InitializeComponent();
 

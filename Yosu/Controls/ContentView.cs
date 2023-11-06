@@ -14,5 +14,6 @@ public class ContentView : Microsoft.Maui.Controls.ContentView
         nameof(Tag),
         typeof(object),
         typeof(ProgressBar),
-        false);
+        false
+    );
 }

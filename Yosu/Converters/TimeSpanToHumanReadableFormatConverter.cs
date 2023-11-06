@@ -18,13 +18,22 @@ public class TimeSpanToHumanReadableFormatConverter : IValueConverter
             else
             {
                 //return string.Format("{0}:{1:0#}:{2:0#}.{3:000}", (int)duration.TotalHours, duration.Minutes, duration.Seconds, duration.Milliseconds);
-                return string.Format("{0}:{1:0#}:{2:0#}", (int)duration.TotalHours, duration.Minutes, duration.Seconds);
+                return string.Format(
+                    "{0}:{1:0#}:{2:0#}",
+                    (int)duration.TotalHours,
+                    duration.Minutes,
+                    duration.Seconds
+                );
             }
         }
 
         return null;
     }
 
-    public object ConvertBack(object? value, Type targetType, object parameter, CultureInfo culture) =>
-        throw new NotSupportedException();
+    public object ConvertBack(
+        object? value,
+        Type targetType,
+        object parameter,
+        CultureInfo culture
+    ) => throw new NotSupportedException();
 }

@@ -24,9 +24,7 @@ public class ForegroundService : LifecycleService
 
     class DownloadServiceBinder : Binder
     {
-        public DownloadServiceBinder()
-        {
-        }
+        public DownloadServiceBinder() { }
     }
 
     IBinder myBinder = new DownloadServiceBinder();
@@ -45,7 +43,11 @@ public class ForegroundService : LifecycleService
     }
 
     [return: GeneratedEnum]
-    public override StartCommandResult OnStartCommand(Intent? intent, [GeneratedEnum] StartCommandFlags flags, int startId)
+    public override StartCommandResult OnStartCommand(
+        Intent? intent,
+        [GeneratedEnum] StartCommandFlags flags,
+        int startId
+    )
     {
         base.OnStartCommand(intent, flags, startId);
 
@@ -70,8 +72,9 @@ public class ForegroundService : LifecycleService
 
             Log.Info(Tag, "Starting the foreground service task");
 
-            WakeLock = PowerManager.FromContext(this)?
-                .NewWakeLock(WakeLockFlags.Partial, "EndlessService::lock");
+            WakeLock = PowerManager
+                .FromContext(this)
+                ?.NewWakeLock(WakeLockFlags.Partial, "EndlessService::lock");
             WakeLock?.Acquire();
 
             Log.Info(Tag, "Started the foreground service task");
@@ -86,9 +89,11 @@ public class ForegroundService : LifecycleService
     {
         Task.Run(async () =>
         {
-            while (YoutubeViewModel.Downloads.Count > 0
+            while (
+                YoutubeViewModel.Downloads.Count > 0
                 || SoundcloudViewModel.Downloads.Count > 0
-                || SpotifyViewModel.Downloads.Count > 0)
+                || SpotifyViewModel.Downloads.Count > 0
+            )
             {
                 await Task.Delay(3000);
             }
@@ -122,8 +127,16 @@ public class ForegroundService : LifecycleService
         IsServiceStarted = false;
     }
 
-    [SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
-    [SuppressMessage("Interoperability", "CA1422:Validate platform compatibility", Justification = "<Pending>")]
+    [SuppressMessage(
+        "Interoperability",
+        "CA1416:Validate platform compatibility",
+        Justification = "<Pending>"
+    )]
+    [SuppressMessage(
+        "Interoperability",
+        "CA1422:Validate platform compatibility",
+        Justification = "<Pending>"
+    )]
     private void KillService()
     {
         // Crashing and closing app

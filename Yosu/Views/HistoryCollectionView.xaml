@@ -70,6 +70,8 @@
                     VerticalOptions="Center"
                     WidthRequest="30">
                     <cm:ContextMenuContainer.MenuItems>
+                        <cm:ContextMenuItem Command="{Binding ExportCommand}" Text="Export" />
+                        <cm:ContextMenuItem Command="{Binding ImportCommand}" Text="Import" />
                         <cm:ContextMenuItem Command="{Binding ClearSelectedCommand}" Text="Clear Selected" />
                         <cm:ContextMenuItem Command="{Binding ClearAllCommand}" Text="Clear All" />
                     </cm:ContextMenuContainer.MenuItems>

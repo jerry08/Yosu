@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using Acr.UserDialogs;
 using Android;
 using Android.App;
 using Android.Content;
@@ -35,7 +34,17 @@ namespace Yosu;
 //    Categories = new[] { Intent.CategoryDefault },
 //    DataMimeTypes = new[] { "text/plain" }
 //)]
-[Activity(Exported = true, Theme = "@style/Maui.SplashTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize | ConfigChanges.Density)]
+[Activity(
+    Exported = true,
+    Theme = "@style/Maui.SplashTheme",
+    MainLauncher = true,
+    ConfigurationChanges = ConfigChanges.ScreenSize
+        | ConfigChanges.Orientation
+        | ConfigChanges.UiMode
+        | ConfigChanges.ScreenLayout
+        | ConfigChanges.SmallestScreenSize
+        | ConfigChanges.Density
+)]
 public class MainActivity : MauiAppCompatActivity
 {
     private const int PostNotificationsRequestCode = 1006;
@@ -47,17 +56,18 @@ public class MainActivity : MauiAppCompatActivity
 
         base.OnCreate(savedInstanceState);
 
-        UserDialogs.Init(this);
-
         if (Build.VERSION.SdkInt > BuildVersionCodes.S)
         {
-            if (ContextCompat.CheckSelfPermission(this,
-                Manifest.Permission.PostNotifications)
-                != Permission.Granted)
+            if (
+                ContextCompat.CheckSelfPermission(this, Manifest.Permission.PostNotifications)
+                != Permission.Granted
+            )
             {
-                ActivityCompat.RequestPermissions(this,
+                ActivityCompat.RequestPermissions(
+                    this,
                     new string[] { Manifest.Permission.PostNotifications },
-                    PostNotificationsRequestCode);
+                    PostNotificationsRequestCode
+                );
             }
         }
 
@@ -77,7 +87,11 @@ public class MainActivity : MauiAppCompatActivity
         }
     }
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        "Interoperability",
+        "CA1416:Validate platform compatibility",
+        Justification = "<Pending>"
+    )]
     private void CreateNotificationChannel()
     {
         var channelId = $"{PackageName}.general";
@@ -96,8 +110,12 @@ public class MainActivity : MauiAppCompatActivity
             {
                 if (data?.Data is not null)
                 {
-                    var flags = data.Flags & (ActivityFlags.GrantWriteUriPermission |
-                        ActivityFlags.GrantReadUriPermission);
+                    var flags =
+                        data.Flags
+                        & (
+                            ActivityFlags.GrantWriteUriPermission
+                            | ActivityFlags.GrantReadUriPermission
+                        );
 
                     var uri = data.Data;
 
@@ -117,6 +135,7 @@ public class MainActivity : MauiAppCompatActivity
     }
 
     private TaskCompletionSource<PickDirectoryResult>? PickDirectoryPermissionResult;
+
     public Task<PickDirectoryResult> PickDirectoryAsync()
     {
         PickDirectoryPermissionResult ??= new();

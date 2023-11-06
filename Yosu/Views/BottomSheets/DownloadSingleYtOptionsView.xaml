@@ -21,12 +21,13 @@
     <berry:BottomSheet.Detents>
         <berry:DetentsCollection>
             <!--<the49:RatioDetent Ratio="0.50" />-->
-            <berry:RatioDetent Ratio="0.3" />
+            <berry:RatioDetent Ratio="0.4" />
             <berry:ContentDetent IsDefault="True" />
         </berry:DetentsCollection>
     </berry:BottomSheet.Detents>
-    <StackLayout Spacing="8">
+    <Grid RowDefinitions="auto,auto,*">
         <Label
+            Grid.Row="0"
             FontAttributes="Bold"
             FontSize="20"
             HeightRequest="60"
@@ -35,57 +36,58 @@
             Text="Select Container"
             VerticalTextAlignment="Center" />
 
-        <BoxView Style="{StaticResource SeparatorBoxView}" />
+        <BoxView Grid.Row="1" Style="{StaticResource SeparatorBoxView}" />
 
-        <ScrollView>
-            <StackLayout x:Name="ItemsStackLayout" BindableLayout.ItemsSource="{Binding AvailableDownloadOptions}">
-                <BindableLayout.ItemTemplate>
-                    <DataTemplate x:DataType="{x:Type core:VideoDownloadOption}">
-                        <Grid x:Name="grid">
-                            <Grid.Behaviors>
-                                <berry:TouchBehavior
-                                    Command="{Binding DownloadCommand, Source={x:Reference this}}"
-                                    CommandParameter="{Binding BindingContext, Source={x:Reference grid}}"
-                                    NativeAnimation="True" />
-                            </Grid.Behaviors>
-                            <StackLayout
-                                Margin="20,10"
-                                HorizontalOptions="FillAndExpand"
-                                Orientation="Horizontal">
-                                <Label
-                                    FontAttributes="Bold"
-                                    FontSize="18"
-                                    VerticalOptions="Center">
-                                    <Label.Triggers>
-                                        <DataTrigger
-                                            Binding="{Binding IsAudioOnly}"
-                                            TargetType="Label"
-                                            Value="False">
-                                            <Setter Property="Text" Value="{Binding VideoQuality, Mode=OneWay}" />
-                                        </DataTrigger>
-                                        <DataTrigger
-                                            Binding="{Binding IsAudioOnly}"
-                                            TargetType="Label"
-                                            Value="True">
-                                            <Setter Property="Text" Value="Audio" />
-                                        </DataTrigger>
-                                    </Label.Triggers>
-                                </Label>
-                                <Label FontSize="18" VerticalOptions="Center">
-                                    <Label.FormattedText>
-                                        <FormattedString>
-                                            <Span Text=" (" />
-                                            <Span Text="{Binding Container, Mode=OneWay}" />
-                                            <Span Text=")" />
-                                        </FormattedString>
-                                    </Label.FormattedText>
-                                </Label>
-                            </StackLayout>
-                            <!--<BoxView Style="{StaticResource SeparatorBoxView}" />-->
-                        </Grid>
-                    </DataTemplate>
-                </BindableLayout.ItemTemplate>
-            </StackLayout>
-        </ScrollView>
-    </StackLayout>
+        <CollectionView Grid.Row="2" ItemsSource="{Binding AvailableDownloadOptions}">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Vertical" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="{x:Type core:VideoDownloadOption}">
+                    <Grid x:Name="grid">
+                        <Grid.Behaviors>
+                            <berry:TouchBehavior
+                                Command="{Binding DownloadCommand, Source={x:Reference this}}"
+                                CommandParameter="{Binding BindingContext, Source={x:Reference grid}}"
+                                NativeAnimation="True" />
+                        </Grid.Behaviors>
+                        <StackLayout
+                            Margin="20,10"
+                            HorizontalOptions="FillAndExpand"
+                            Orientation="Horizontal">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="18"
+                                VerticalOptions="Center">
+                                <Label.Triggers>
+                                    <DataTrigger
+                                        Binding="{Binding IsAudioOnly}"
+                                        TargetType="Label"
+                                        Value="False">
+                                        <Setter Property="Text" Value="{Binding VideoQuality, Mode=OneWay}" />
+                                    </DataTrigger>
+                                    <DataTrigger
+                                        Binding="{Binding IsAudioOnly}"
+                                        TargetType="Label"
+                                        Value="True">
+                                        <Setter Property="Text" Value="Audio" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+                            <Label FontSize="18" VerticalOptions="Center">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text=" (" />
+                                        <Span Text="{Binding Container, Mode=OneWay}" />
+                                        <Span Text=")" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                        </StackLayout>
+                        <!--<BoxView Style="{StaticResource SeparatorBoxView}" />-->
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
 </local:BaseBottomSheetView>

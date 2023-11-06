@@ -12,7 +12,11 @@ namespace Yosu.Services;
 
 public class DownloadServiceImpl : IDownloadService
 {
-    public async Task EnqueueAsync(string fileName, string url, Dictionary<string, string>? headers = null)
+    public async Task EnqueueAsync(
+        string fileName,
+        string url,
+        Dictionary<string, string>? headers = null
+    )
     {
         var status = await StoragePermissionUtil.CheckAndRequestStoragePermission();
         if (status == PermissionStatus.Denied)
@@ -30,8 +34,9 @@ public class DownloadServiceImpl : IDownloadService
 
         var invalidChars = System.IO.Path.GetInvalidFileNameChars();
 
-        var invalidCharsRemoved = new string(fileName
-          .Where(x => !invalidChars.Contains(x)).ToArray());
+        var invalidCharsRemoved = new string(
+            fileName.Where(x => !invalidChars.Contains(x)).ToArray()
+        );
 
         var request = new DownloadManager.Request(Android.Net.Uri.Parse(url));
 
@@ -45,8 +50,12 @@ public class DownloadServiceImpl : IDownloadService
         //request.SetDestinationInExternalPublicDir(Android.OS.Environment.DirectoryMusic, songFullName + ".mp3");
 
         //request.SetDestinationInExternalPublicDir(WeebUtils.AppFolderName, invalidCharsRemoved + ".mp4");
-        request.SetDestinationInExternalPublicDir(Android.OS.Environment.DirectoryDownloads, invalidCharsRemoved);
-        var dm = (DownloadManager)Application.Context.GetSystemService(Android.Content.Context.DownloadService)!;
+        request.SetDestinationInExternalPublicDir(
+            Android.OS.Environment.DirectoryDownloads,
+            invalidCharsRemoved
+        );
+        var dm = (DownloadManager)
+            Application.Context.GetSystemService(Android.Content.Context.DownloadService)!;
         var id = dm.Enqueue(request);
     }
 }

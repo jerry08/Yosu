@@ -11,7 +11,10 @@ namespace Yosu.Handlers;
 
 public class MaterialEntryHandler : ViewHandler<Entry, TextInputLayout>, IEntryHandler
 {
-    public static IPropertyMapper<IEntry, MaterialEntryHandler> Mapper = new MapperWorkaround<IEntry, MaterialEntryHandler>(EntryHandler.Mapper)
+    public static IPropertyMapper<IEntry, MaterialEntryHandler> Mapper = new MapperWorkaround<
+        IEntry,
+        MaterialEntryHandler
+    >(EntryHandler.Mapper)
     {
         // Place holder maps to a different property
         [nameof(IEntry.Placeholder)] = MapPlaceHolder,
@@ -29,9 +32,8 @@ public class MaterialEntryHandler : ViewHandler<Entry, TextInputLayout>, IEntryH
             arg1.PlatformView.Hint = ph.Placeholder;
     }
 
-    public MaterialEntryHandler() : base(Mapper, null)
-    {
-    }
+    public MaterialEntryHandler()
+        : base(Mapper, null) { }
 
     IEntry IEntryHandler.VirtualView => base.VirtualView as IEntry;
 
@@ -42,7 +44,8 @@ public class MaterialEntryHandler : ViewHandler<Entry, TextInputLayout>, IEntryH
     protected override TextInputLayout CreatePlatformView()
     {
         var layoutInflater = MauiContext.Services.GetService<LayoutInflater>();
-        var view = layoutInflater.Inflate(Yosu.Resource.Layout.materialentry, null) as TextInputLayout;
+        var view =
+            layoutInflater.Inflate(Yosu.Resource.Layout.materialentry, null) as TextInputLayout;
 
         _editText = view.FindViewById<TextInputEditText>(Resource.Id.materialentry_entry);
 

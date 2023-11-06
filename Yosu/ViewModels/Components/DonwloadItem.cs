@@ -23,7 +23,8 @@ public class DownloadItem
         DownloadStatus = DownloadStatus.Enqueued;
     }
 
-    public DownloadItem(object entity) : this()
+    public DownloadItem(object entity)
+        : this()
     {
         Entity = entity;
     }

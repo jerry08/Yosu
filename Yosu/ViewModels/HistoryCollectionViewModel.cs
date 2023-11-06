@@ -1,13 +1,23 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
+using CommunityToolkit.Maui.Views;
 using CommunityToolkit.Mvvm.Input;
-using SoundCloudExplode.Tracks;
-using SpotifyExplode.Tracks;
+using Microsoft.Maui.ApplicationModel;
+using Microsoft.Maui.Controls;
+using Microsoft.Maui.Devices;
+using Microsoft.Maui.Storage;
+using Yosu.Extensions;
 using Yosu.Services;
+using Yosu.Utils.Extensions;
 using Yosu.ViewModels.Components;
 using Yosu.ViewModels.Framework;
+using Yosu.Views;
 using YoutubeExplode.Videos;
 using SoundcloudTrack = SoundCloudExplode.Tracks.Track;
 using SpotifyTrack = SpotifyExplode.Tracks.Track;
@@ -97,33 +107,64 @@ public partial class HistoryCollectionViewModel : CollectionViewModel<ListGroup<
                     return x;
                     //return null;
                 })
-                .Where(x => Query is null
-                    || (x.Entity is YoutubeDownloadViewModel ytDownload
-                        && ytDownload.Video?.Title?.Contains(Query, StringComparison.OrdinalIgnoreCase) == true)
-                    || (x.Entity is SoundcloudDownloadViewModel scDownload
-                        && (scDownload.Track?.Title?.Contains(Query, StringComparison.OrdinalIgnoreCase) == true
-                            || scDownload.Track?.User?.Username?.Contains(Query, StringComparison.OrdinalIgnoreCase) == true))
-                    || (x.Entity is SpotifyDownloadViewModel spDownload
-                        && (spDownload.Track?.Title?.Contains(Query, StringComparison.OrdinalIgnoreCase) == true
-                            || spDownload.Track?.Artists.FirstOrDefault()?.Name.Contains(Query, StringComparison.OrdinalIgnoreCase) == true)))
-                .Select(x => x!).ToList();
+                .Where(
+                    x =>
+                        Query is null
+                        || (
+                            x.Entity is YoutubeDownloadViewModel ytDownload
+                            && ytDownload.Video?.Title?.Contains(
+                                Query,
+                                StringComparison.OrdinalIgnoreCase
+                            ) == true
+                        )
+                        || (
+                            x.Entity is SoundcloudDownloadViewModel scDownload
+                            && (
+                                scDownload.Track?.Title?.Contains(
+                                    Query,
+                                    StringComparison.OrdinalIgnoreCase
+                                ) == true
+                                || scDownload.Track?.User?.Username?.Contains(
+                                    Query,
+                                    StringComparison.OrdinalIgnoreCase
+                                ) == true
+                            )
+                        )
+                        || (
+                            x.Entity is SpotifyDownloadViewModel spDownload
+                            && (
+                                spDownload.Track?.Title?.Contains(
+                                    Query,
+                                    StringComparison.OrdinalIgnoreCase
+                                ) == true
+                                || spDownload.Track?.Artists
+                                    .FirstOrDefault()
+                                    ?.Name.Contains(Query, StringComparison.OrdinalIgnoreCase)
+                                    == true
+                            )
+                        )
+                )
+                .Select(x => x!)
+                .ToList();
 
             if (newList.Count > 0)
             {
-                var list = newList.OrderByDescending(x => x.DownloadDate)
+                var list = newList
+                    .OrderByDescending(x => x.DownloadDate)
                     //.GroupBy(x => x.DownloadDate.StartOfWeek(DayOfWeek.Sunday))
                     //.GroupBy(x => $"{x.DownloadDate.StartOfWeek(DayOfWeek.Sunday)}-{x.SourceType}")
-                    .GroupBy(x => $"{x.DownloadDate.DayOfYear + x.DownloadDate.Year}-{x.SourceType}")
+                    .GroupBy(
+                        x => $"{x.DownloadDate.DayOfYear + x.DownloadDate.Year}-{x.SourceType}"
+                    )
                     .Select(x =>
                     {
                         var firstItem = x.First()!;
-                        var name = $"{firstItem.SourceType} - {firstItem.DownloadDate:MMMM dd, yyyy}";
+                        var name =
+                            $"{firstItem.SourceType} - {firstItem.DownloadDate:MMMM dd, yyyy}";
 
-                        return new ListGroup<object>(
-                            name,
-                            x.Select(x => x.Entity!).ToList()
-                        );
-                    }).ToList();
+                        return new ListGroup<object>(name, x.Select(x => x.Entity!).ToList());
+                    })
+                    .ToList();
 
                 Push(list);
 
@@ -179,5 +220,121 @@ public partial class HistoryCollectionViewModel : CollectionViewModel<ListGroup<
         _preference.Save();
 
         Load();
+    }
+
+    [RelayCommand]
+    async Task Export()
+    {
+        if (Platform.CurrentActivity is MainActivity activity)
+        {
+            var result = await activity.PickDirectoryAsync();
+            if (result.IsSuccess && !string.IsNullOrWhiteSpace(result.Data?.Data?.Path))
+            {
+                var path = result.Data.Data.Path;
+                var newFilePath = Path.Combine(path, "yosu-history.json");
+
+                var tempFilePath = Path.Combine(
+                    FileSystem.CacheDirectory,
+                    $"{DateTime.Now.Ticks}.json"
+                );
+
+                var popup = new LoadingPopup(
+                    new LoadingPopupViewModel { LoadingText = "Exporting..." }
+                );
+                Application.Current?.MainPage?.ShowPopup(popup);
+
+                try
+                {
+                    _preference.Load();
+
+                    var jsonData = JsonSerializer.Serialize(_preference.Downloads);
+
+                    using (var writer = File.CreateText(tempFilePath))
+                    {
+                        await writer.WriteLineAsync(jsonData);
+                    }
+
+                    var tryCount = 1;
+                    while (activity.FileExists(newFilePath))
+                    {
+                        tryCount++;
+                        newFilePath = Path.Combine(path, $"yosu-history ({tryCount}).json");
+                    }
+
+                    await activity.CopyFileAsync(tempFilePath, newFilePath);
+
+                    await Toast.Make("Export completed").Show();
+
+                    File.Delete(tempFilePath);
+                }
+                catch
+                {
+                    await Toast.Make("Export failed").Show();
+
+                    try
+                    {
+                        // Delete file
+                        if (!string.IsNullOrEmpty(tempFilePath))
+                            File.Delete(tempFilePath);
+                    }
+                    catch
+                    {
+                        // Ignore
+                    }
+                }
+                finally
+                {
+                    popup.Close();
+                }
+            }
+        }
+    }
+
+    [RelayCommand]
+    async Task Import()
+    {
+        var customFileType = new FilePickerFileType(
+            new Dictionary<DevicePlatform, IEnumerable<string>>
+            {
+                { DevicePlatform.Android, new[] { "application/json" } },
+            }
+        );
+
+        var options = new PickOptions
+        {
+            PickerTitle = "Please select a json file",
+            FileTypes = customFileType,
+        };
+
+        var result = await FilePicker.PickAsync(options);
+        if (result is null)
+            return;
+
+        try
+        {
+            _preference.Load();
+
+            var stream = await result.OpenReadAsync();
+            //var json = await stream.ToStringAsync();
+
+            var list = await JsonSerializer.DeserializeAsync<List<DownloadItem>>(stream);
+            if (list is not null)
+            {
+                _preference.Downloads.AddRange(list);
+                _preference.Downloads = _preference.Downloads
+                    .GroupBy(x => x.Key)
+                    .Select(x => x.Last())
+                    .ToList();
+                _preference.Save();
+
+                await Toast.Make("History imported successfully").Show();
+
+                Refresh();
+            }
+        }
+        catch (Exception ex)
+        {
+            await Toast.Make("Import failed").Show();
+        }
     }
 }
