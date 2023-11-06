@@ -3,16 +3,18 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Acr.UserDialogs;
 using Berry.Maui.Controls;
 using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Views;
 using Gress;
 using Microsoft.Maui.ApplicationModel;
+using Microsoft.Maui.Controls;
 using Microsoft.Maui.Storage;
 using Yosu.Extensions;
 using Yosu.Services;
 using Yosu.Utils;
 using Yosu.ViewModels.Components;
+using Yosu.Views;
 using Yosu.Views.BottomSheets;
 using Yosu.Youtube.Core.Downloading;
 using Yosu.Youtube.Core.Tagging;
@@ -43,22 +45,22 @@ public class YoutubeViewModel
     //Tyrrrz multiple videos
     public Container SelectedContainer { get; set; } = Container.Mp4;
 
-    public IReadOnlyList<Container> AvailableContainers { get; } = new[]
-    {
-        //Container.Mp4,
-        //Container.WebM,
-        Container.Mp3,
-        new Container("ogg")
-    };
+    public IReadOnlyList<Container> AvailableContainers { get; } =
+        new[]
+        {
+            //Container.Mp4,
+            //Container.WebM,
+            Container.Mp3,
+            new Container("ogg")
+        };
 
     public IReadOnlyList<VideoQualityPreference> AvailableVideoQualityPreferences { get; } =
         Enum.GetValues<VideoQualityPreference>().Reverse().ToArray();
 
-    public VideoQualityPreference SelectedVideoQualityPreference { get; set; } = VideoQualityPreference.Highest;
+    public VideoQualityPreference SelectedVideoQualityPreference { get; set; } =
+        VideoQualityPreference.Highest;
 
-    public YoutubeViewModel(
-        SettingsService settingsService,
-        PreferenceService preferenceService)
+    public YoutubeViewModel(SettingsService settingsService, PreferenceService preferenceService)
     {
         _settingsService = settingsService;
         _preferenceService = preferenceService;
@@ -88,13 +90,15 @@ public class YoutubeViewModel
                 //App.StopForeground();
                 //return;
 
-                using var access = await _downloadSemaphore.AcquireAsync(download.CancellationToken);
+                using var access = await _downloadSemaphore.AcquireAsync(
+                    download.CancellationToken
+                );
 
                 download.Status = DownloadStatus.Started;
 
                 var downloadOption =
-                    download.DownloadOption ??
-                    await _videoDownloader.GetBestDownloadOptionAsync(
+                    download.DownloadOption
+                    ?? await _videoDownloader.GetBestDownloadOptionAsync(
                         download.Video!.Id,
                         download.DownloadPreference!,
                         download.CancellationToken
@@ -148,14 +152,13 @@ public class YoutubeViewModel
             {
                 download.PercentageProgress = Percentage.FromValue(100);
 
-                download.Status = ex is OperationCanceledException
-                    ? DownloadStatus.Canceled
-                    : DownloadStatus.Failed;
+                download.Status =
+                    ex is OperationCanceledException
+                        ? DownloadStatus.Canceled
+                        : DownloadStatus.Failed;
 
                 // Short error message for YouTube-related errors, full for others
-                download.ErrorMessage = ex is YoutubeExplodeException
-                    ? ex.Message
-                    : ex.ToString();
+                download.ErrorMessage = ex is YoutubeExplodeException ? ex.Message : ex.ToString();
 
                 try
                 {
@@ -205,6 +208,8 @@ public class YoutubeViewModel
     {
         await Task.Run(async () =>
         {
+            Popup? popup = null;
+
             try
             {
                 //IView page = SelectedEntities.Count == 1
@@ -213,21 +218,29 @@ public class YoutubeViewModel
 
                 if (downloads.Count == 1)
                 {
-                    UserDialogs.Instance.ShowLoading("Loading...");
+                    await MainThread.InvokeOnMainThreadAsync(() =>
+                    {
+                        popup = new LoadingPopup(
+                            new LoadingPopupViewModel { LoadingText = "Loading..." }
+                        );
+                        Application.Current?.MainPage?.ShowPopup(popup);
+                    });
 
                     var video = downloads.Single().Video!;
 
-                    AvailableDownloadOptions = await _videoDownloader.GetDownloadOptionsAsync(video.Id);
+                    AvailableDownloadOptions = await _videoDownloader.GetDownloadOptionsAsync(
+                        video.Id
+                    );
 
                     // Nobody really use the other formats
                     AvailableDownloadOptions = AvailableDownloadOptions
-                        .Where(x => x.Container == Container.Mp4
-                            || x.Container == Container.Mp3).ToList();
+                        .Where(x => x.Container == Container.Mp4 || x.Container == Container.Mp3)
+                        .ToList();
 
                     await MainThread.InvokeOnMainThreadAsync(async () =>
                     {
                         BottomSheet = new DownloadSingleYtOptionsView(this, downloads);
-                        UserDialogs.Instance.HideLoading();
+                        popup?.Close();
                         await BottomSheet.ShowAsync();
                     });
                 }
@@ -242,7 +255,7 @@ public class YoutubeViewModel
             }
             catch (Exception e)
             {
-                UserDialogs.Instance.HideLoading();
+                popup?.Close();
 
                 await MainThread.InvokeOnMainThreadAsync(async () =>
                 {
@@ -283,11 +296,17 @@ public class YoutubeViewModel
                 //    break;
                 case Container container:
                     selectedContainer = container;
-                    downloads[i].DownloadPreference = new VideoDownloadPreference(container, SelectedVideoQualityPreference);
+                    downloads[i].DownloadPreference = new VideoDownloadPreference(
+                        container,
+                        SelectedVideoQualityPreference
+                    );
                     break;
                 case VideoQualityPreference preference:
                     selectedContainer = SelectedContainer;
-                    downloads[i].DownloadPreference = new VideoDownloadPreference(SelectedContainer, preference);
+                    downloads[i].DownloadPreference = new VideoDownloadPreference(
+                        SelectedContainer,
+                        preference
+                    );
                     break;
             }
 
@@ -300,7 +319,11 @@ public class YoutubeViewModel
             var dirPath = !string.IsNullOrWhiteSpace(_settingsService.DownloadDir)
                 ? _settingsService.DownloadDir
                 : Path.Combine(
-                    Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads)!.AbsolutePath,
+                    Android.OS.Environment
+                        .GetExternalStoragePublicDirectory(
+                            Android.OS.Environment.DirectoryDownloads
+                        )!
+                        .AbsolutePath,
                     "Yosu"
                 );
 #elif IOS || MACCATALYST
@@ -322,7 +345,10 @@ public class YoutubeViewModel
 
             var filePath = PathEx.EnsureUniquePath(baseFilePath);
             var extension = Path.GetExtension(baseFilePath);
-            var tempFilePath = Path.Combine(FileSystem.CacheDirectory, $"{DateTime.Now.Ticks}{extension}");
+            var tempFilePath = Path.Combine(
+                FileSystem.CacheDirectory,
+                $"{DateTime.Now.Ticks}{extension}"
+            );
 
             downloads[i].FilePath = filePath;
             downloads[i].TempFilePath = tempFilePath;

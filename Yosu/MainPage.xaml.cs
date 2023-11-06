@@ -1,13 +1,19 @@
-﻿using Microsoft.Maui.Controls;
+﻿using CommunityToolkit.Maui.Core;
+using CommunityToolkit.Maui.Views;
+using Microsoft.Maui.Controls;
 using Yosu.ViewModels;
 
 namespace Yosu.Views;
 
 public partial class MainPage : ContentPage
 {
-    public MainPage(MainCollectionViewModel viewModel)
+    private readonly IPopupService _popupService;
+
+    public MainPage(MainCollectionViewModel viewModel, IPopupService popupService)
     {
         InitializeComponent();
+
+        _popupService = popupService;
 
         BindingContext = viewModel;
 
@@ -28,5 +34,24 @@ public partial class MainPage : ContentPage
                 }
             }
         };
+
+        //Loaded += MainPage_Loaded;
+    }
+
+    private async void MainPage_Loaded(object? sender, System.EventArgs e)
+    {
+        //var loadingPopupViewModel = new LoadingPopupViewModel();
+        //var popup = new LoadingPopup(loadingPopupViewModel);
+        //
+        //Application.Current?.MainPage?.ShowPopup(popup);
+        //
+        //return;
+
+        var p = await _popupService.ShowPopupAsync<LoadingPopupViewModel>(
+            (vm) =>
+            {
+                vm.LoadingText = "test...";
+            }
+        );
     }
 }
