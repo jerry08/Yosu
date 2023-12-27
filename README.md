@@ -55,7 +55,7 @@ playlist or channel and download it directly to a format of your choice. It also
 
 <p align="center">
  <a href="https://discord.gg/mhxsSMy2Nf">
-  <img src="https://invidget.switchblade.xyz/mhxsSMy2Nf">
+  <img src="https://invidget.switchblade.xyz/mhxsSMy2Nf?">
  </a>
 </p>
 
