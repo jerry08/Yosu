@@ -67,7 +67,6 @@
     <PackageReference Include="PropertyChanged.Fody" Version="4.1.0" PrivateAssets="all" />
     <PackageReference Include="SkiaSharp.Views.Maui.Controls" Version="2.88.6" />
     <PackageReference Include="Woka" Version="1.0.20" />
-    <PackageReference Include="YoutubeExplode" Version="6.3.9" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == '$(NetVersion)-android'">
