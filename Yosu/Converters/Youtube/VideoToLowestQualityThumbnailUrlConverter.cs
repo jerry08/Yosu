@@ -2,16 +2,6 @@
 using System.Linq;
 using System.Globalization;
 using Microsoft.Maui.Controls;
-
-/* Unmerged change from project 'Yosu (net7.0-android)'
-Before:
-using YoutubeExplode.Videos;
-After:
-using YoutubeExplode.Videos;
-using Yosu;
-using Yosu.Converters;
-using Yosu.Converters.Youtube;
-*/
 using YoutubeExplode.Videos;
 
 namespace Yosu.Converters.Youtube;
