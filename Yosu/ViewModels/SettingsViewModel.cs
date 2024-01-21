@@ -41,8 +41,10 @@ public partial class SettingsViewModel : BaseViewModel
 
 #if ANDROID
         DefaultDownloadDirectory = Path.Combine(
-            Android.OS.Environment
-                .GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads)!
+            Android
+                .OS.Environment.GetExternalStoragePublicDirectory(
+                    Android.OS.Environment.DirectoryDownloads
+                )!
                 .AbsolutePath,
             "Yosu"
         );

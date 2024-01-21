@@ -319,8 +319,8 @@ public class YoutubeViewModel
             var dirPath = !string.IsNullOrWhiteSpace(_settingsService.DownloadDir)
                 ? _settingsService.DownloadDir
                 : Path.Combine(
-                    Android.OS.Environment
-                        .GetExternalStoragePublicDirectory(
+                    Android
+                        .OS.Environment.GetExternalStoragePublicDirectory(
                             Android.OS.Environment.DirectoryDownloads
                         )!
                         .AbsolutePath,

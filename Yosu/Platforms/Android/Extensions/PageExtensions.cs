@@ -1,14 +1,14 @@
 ﻿using System;
+using Android;
+using Android.Content.Res;
+using Android.Views;
+using Android.Widget;
+using Google.Android.Material.BottomSheet;
 using Microsoft.Maui;
+using Microsoft.Maui.ApplicationModel;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Platform;
-using Microsoft.Maui.ApplicationModel;
-using Google.Android.Material.BottomSheet;
 using Yosu.Services;
-using Android.Content.Res;
-using Android;
-using Android.Widget;
-using Android.Views;
 using Orientation = Android.Content.Res.Orientation;
 
 namespace Yosu.Extensions;
@@ -37,8 +37,10 @@ public static class PageExtensions
     )
     {
         var bottomSheetDialog = new BottomSheetDialog(
-            Platform.CurrentActivity
-                ?.Window?.DecorView.FindViewById(Android.Resource.Id.Content)
+            Platform
+                .CurrentActivity?.Window
+                ?.DecorView
+                .FindViewById(Android.Resource.Id.Content)
                 ?.Context ?? throw new InvalidOperationException("Context is null")
         //Resource.Style.Test1
         //Resource.Style.CustomBottomSheetDialogTheme

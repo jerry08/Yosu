@@ -55,8 +55,8 @@ public class SoundcloudViewModel
             else
             {
                 download.FilePath = Path.Combine(
-                    Android.OS.Environment
-                        .GetExternalStoragePublicDirectory(
+                    Android
+                        .OS.Environment.GetExternalStoragePublicDirectory(
                             Android.OS.Environment.DirectoryDownloads
                         )!
                         .AbsolutePath,

@@ -62,26 +62,24 @@ public static class MauiProgram
             .ConfigureLifecycleEvents(events =>
             {
 #if ANDROID
-                events.AddAndroid(
-                    android =>
-                        android.OnCreate(
-                            (activity, bundle) =>
-                            {
-                                var manager = new StatusBarStyleManager();
-                                manager.SetDefault();
-                            }
-                        )
+                events.AddAndroid(android =>
+                    android.OnCreate(
+                        (activity, bundle) =>
+                        {
+                            var manager = new StatusBarStyleManager();
+                            manager.SetDefault();
+                        }
+                    )
                 );
 #elif IOS
-                events.AddiOS(
-                    ios =>
-                        ios.OnActivated(
-                            (app) =>
-                            {
-                                var manager = new StatusBarStyleManager();
-                                manager.SetDefault();
-                            }
-                        )
+                events.AddiOS(ios =>
+                    ios.OnActivated(
+                        (app) =>
+                        {
+                            var manager = new StatusBarStyleManager();
+                            manager.SetDefault();
+                        }
+                    )
                 );
 #endif
             });

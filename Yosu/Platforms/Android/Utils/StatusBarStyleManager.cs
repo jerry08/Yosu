@@ -2,10 +2,10 @@
 using Android.OS;
 using Android.Views;
 using AndroidX.Core.View;
-using Window = Android.Views.Window;
-using Color = Android.Graphics.Color;
-using Microsoft.Maui.Controls;
 using Microsoft.Maui.ApplicationModel;
+using Microsoft.Maui.Controls;
+using Color = Android.Graphics.Color;
+using Window = Android.Views.Window;
 
 namespace Yosu.Utils;
 

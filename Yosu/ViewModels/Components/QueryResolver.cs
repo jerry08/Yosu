@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Gress;
-using YtQueryResolver = Yosu.Youtube.Core.Resolving.QueryResolver;
 using ScQueryResolver = Yosu.Soundcloud.Core.Resolving.QueryResolver;
 using SpQueryResolver = Yosu.Spotify.Core.Resolving.QueryResolver;
+using YtQueryResolver = Yosu.Youtube.Core.Resolving.QueryResolver;
 
 namespace Yosu.ViewModels.Components;
 
@@ -72,9 +72,10 @@ internal class QueryResolver
                 progress,
                 cancellationToken
             );
-            var downloads = ytResults.Videos.Select(
-                video => new YoutubeDownloadViewModel() { Video = video }
-            );
+            var downloads = ytResults.Videos.Select(video => new YoutubeDownloadViewModel()
+            {
+                Video = video
+            });
             results.AddRange(downloads);
         }
 
@@ -85,9 +86,10 @@ internal class QueryResolver
                 progress,
                 cancellationToken
             );
-            var downloads = scResults.Tracks.Select(
-                track => new SoundcloudDownloadViewModel() { Track = track }
-            );
+            var downloads = scResults.Tracks.Select(track => new SoundcloudDownloadViewModel()
+            {
+                Track = track
+            });
             results.AddRange(downloads);
         }
 
@@ -98,9 +100,10 @@ internal class QueryResolver
                 progress,
                 cancellationToken
             );
-            var downloads = spResults.Tracks.Select(
-                track => new SpotifyDownloadViewModel() { Track = track }
-            );
+            var downloads = spResults.Tracks.Select(track => new SpotifyDownloadViewModel()
+            {
+                Track = track
+            });
             results.AddRange(downloads);
         }
 

@@ -345,8 +345,8 @@ public partial class MainCollectionViewModel : CollectionViewModel<object>
                 case YoutubeDownloadViewModel download:
                     //var existingYtDownload = _youtubeViewModel.Downloads
                     //    .FirstOrDefault(x => x.Video?.Id == download.Video?.Id);
-                    var existingYtDownload = YoutubeViewModel.Downloads.FirstOrDefault(
-                        x => x.Key == download.Key
+                    var existingYtDownload = YoutubeViewModel.Downloads.FirstOrDefault(x =>
+                        x.Key == download.Key
                     );
                     if (existingYtDownload is not null)
                     {
@@ -355,8 +355,8 @@ public partial class MainCollectionViewModel : CollectionViewModel<object>
                     break;
 
                 case SoundcloudDownloadViewModel download:
-                    var existingScDownload = SoundcloudViewModel.Downloads.FirstOrDefault(
-                        x => x.Key == download.Key
+                    var existingScDownload = SoundcloudViewModel.Downloads.FirstOrDefault(x =>
+                        x.Key == download.Key
                     );
                     if (existingScDownload is not null)
                     {
@@ -365,8 +365,8 @@ public partial class MainCollectionViewModel : CollectionViewModel<object>
                     break;
 
                 case SpotifyDownloadViewModel download:
-                    var existingSpDownload = SpotifyViewModel.Downloads.FirstOrDefault(
-                        x => x.Key == download.Key
+                    var existingSpDownload = SpotifyViewModel.Downloads.FirstOrDefault(x =>
+                        x.Key == download.Key
                     );
                     if (existingSpDownload is not null)
                     {

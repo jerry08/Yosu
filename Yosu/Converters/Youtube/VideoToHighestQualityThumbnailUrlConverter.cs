@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Globalization;
 using Microsoft.Maui.Controls;
-using YoutubeExplode.Videos;
 using YoutubeExplode.Common;
+using YoutubeExplode.Videos;
 
 namespace Yosu.Converters.Youtube;
 

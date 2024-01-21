@@ -66,8 +66,8 @@ public partial class HistoryCollectionViewModel : CollectionViewModel<ListGroup<
             //var test1 = JsonConvert.SerializeObject(_preference.Downloads);
             //var test2 = JsonConvert.DeserializeObject<List<DownloadItem>>(test1);
 
-            var newList = _preference.Downloads
-                .Where(x => x.Entity is not null)
+            var newList = _preference
+                .Downloads.Where(x => x.Entity is not null)
                 .Select(x =>
                 {
                     var entityStr = JsonSerializer.Serialize(x.Entity!);
@@ -107,42 +107,39 @@ public partial class HistoryCollectionViewModel : CollectionViewModel<ListGroup<
                     return x;
                     //return null;
                 })
-                .Where(
-                    x =>
-                        Query is null
-                        || (
-                            x.Entity is YoutubeDownloadViewModel ytDownload
-                            && ytDownload.Video?.Title?.Contains(
-                                Query,
-                                StringComparison.OrdinalIgnoreCase
-                            ) == true
+                .Where(x =>
+                    Query is null
+                    || (
+                        x.Entity is YoutubeDownloadViewModel ytDownload
+                        && ytDownload
+                            .Video?.Title
+                            ?.Contains(Query, StringComparison.OrdinalIgnoreCase) == true
+                    )
+                    || (
+                        x.Entity is SoundcloudDownloadViewModel scDownload
+                        && (
+                            scDownload
+                                .Track?.Title
+                                ?.Contains(Query, StringComparison.OrdinalIgnoreCase) == true
+                            || scDownload
+                                .Track?.User
+                                ?.Username
+                                ?.Contains(Query, StringComparison.OrdinalIgnoreCase) == true
                         )
-                        || (
-                            x.Entity is SoundcloudDownloadViewModel scDownload
-                            && (
-                                scDownload.Track?.Title?.Contains(
-                                    Query,
-                                    StringComparison.OrdinalIgnoreCase
-                                ) == true
-                                || scDownload.Track?.User?.Username?.Contains(
-                                    Query,
-                                    StringComparison.OrdinalIgnoreCase
-                                ) == true
-                            )
+                    )
+                    || (
+                        x.Entity is SpotifyDownloadViewModel spDownload
+                        && (
+                            spDownload
+                                .Track?.Title
+                                ?.Contains(Query, StringComparison.OrdinalIgnoreCase) == true
+                            || spDownload
+                                .Track?.Artists
+                                .FirstOrDefault()
+                                ?.Name
+                                .Contains(Query, StringComparison.OrdinalIgnoreCase) == true
                         )
-                        || (
-                            x.Entity is SpotifyDownloadViewModel spDownload
-                            && (
-                                spDownload.Track?.Title?.Contains(
-                                    Query,
-                                    StringComparison.OrdinalIgnoreCase
-                                ) == true
-                                || spDownload.Track?.Artists
-                                    .FirstOrDefault()
-                                    ?.Name.Contains(Query, StringComparison.OrdinalIgnoreCase)
-                                    == true
-                            )
-                        )
+                    )
                 )
                 .Select(x => x!)
                 .ToList();
@@ -153,8 +150,8 @@ public partial class HistoryCollectionViewModel : CollectionViewModel<ListGroup<
                     .OrderByDescending(x => x.DownloadDate)
                     //.GroupBy(x => x.DownloadDate.StartOfWeek(DayOfWeek.Sunday))
                     //.GroupBy(x => $"{x.DownloadDate.StartOfWeek(DayOfWeek.Sunday)}-{x.SourceType}")
-                    .GroupBy(
-                        x => $"{x.DownloadDate.DayOfYear + x.DownloadDate.Year}-{x.SourceType}"
+                    .GroupBy(x =>
+                        $"{x.DownloadDate.DayOfYear + x.DownloadDate.Year}-{x.SourceType}"
                     )
                     .Select(x =>
                     {
@@ -321,8 +318,8 @@ public partial class HistoryCollectionViewModel : CollectionViewModel<ListGroup<
             if (list is not null)
             {
                 _preference.Downloads.AddRange(list);
-                _preference.Downloads = _preference.Downloads
-                    .GroupBy(x => x.Key)
+                _preference.Downloads = _preference
+                    .Downloads.GroupBy(x => x.Key)
                     .Select(x => x.Last())
                     .ToList();
                 _preference.Save();

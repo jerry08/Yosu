@@ -1,8 +1,8 @@
 ﻿using System;
-using UIKit;
 using Microsoft.Maui;
-using Microsoft.Maui.Platform;
 using Microsoft.Maui.Controls;
+using Microsoft.Maui.Platform;
+using UIKit;
 using Yosu.Services;
 
 namespace Yosu.Extensions;
