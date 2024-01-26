@@ -111,33 +111,34 @@ public partial class HistoryCollectionViewModel : CollectionViewModel<ListGroup<
                     Query is null
                     || (
                         x.Entity is YoutubeDownloadViewModel ytDownload
-                        && ytDownload
-                            .Video?.Title
-                            ?.Contains(Query, StringComparison.OrdinalIgnoreCase) == true
+                        && ytDownload.Video?.Title?.Contains(
+                            Query,
+                            StringComparison.OrdinalIgnoreCase
+                        ) == true
                     )
                     || (
                         x.Entity is SoundcloudDownloadViewModel scDownload
                         && (
-                            scDownload
-                                .Track?.Title
-                                ?.Contains(Query, StringComparison.OrdinalIgnoreCase) == true
-                            || scDownload
-                                .Track?.User
-                                ?.Username
-                                ?.Contains(Query, StringComparison.OrdinalIgnoreCase) == true
+                            scDownload.Track?.Title?.Contains(
+                                Query,
+                                StringComparison.OrdinalIgnoreCase
+                            ) == true
+                            || scDownload.Track?.User?.Username?.Contains(
+                                Query,
+                                StringComparison.OrdinalIgnoreCase
+                            ) == true
                         )
                     )
                     || (
                         x.Entity is SpotifyDownloadViewModel spDownload
                         && (
-                            spDownload
-                                .Track?.Title
-                                ?.Contains(Query, StringComparison.OrdinalIgnoreCase) == true
+                            spDownload.Track?.Title?.Contains(
+                                Query,
+                                StringComparison.OrdinalIgnoreCase
+                            ) == true
                             || spDownload
-                                .Track?.Artists
-                                .FirstOrDefault()
-                                ?.Name
-                                .Contains(Query, StringComparison.OrdinalIgnoreCase) == true
+                                .Track?.Artists.FirstOrDefault()
+                                ?.Name.Contains(Query, StringComparison.OrdinalIgnoreCase) == true
                         )
                     )
                 )

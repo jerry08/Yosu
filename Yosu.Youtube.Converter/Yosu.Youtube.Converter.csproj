@@ -3,7 +3,8 @@
 	<PropertyGroup>
 		<TargetFrameworks>$(NetVersion);$(NetVersion)-android;$(NetVersion)-ios;$(NetVersion)-maccatalyst</TargetFrameworks>
 		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);$(NetVersion)-windows10.0.19041.0</TargetFrameworks>
-    <UseMauiEssentials>true</UseMauiEssentials>
+    <!--<UseMauiEssentials>true</UseMauiEssentials>-->
+    <UseMaui>true</UseMaui>
 		<SingleProject>true</SingleProject>
 		<ImplicitUsings>disable</ImplicitUsings>
 
@@ -23,6 +24,7 @@
     <PackageReference Include="CliWrap" Version="3.6.6" />
     <PackageReference Include="YoutubeExplode" Version="6.3.12" />
     <PackageReference Include="PolySharp" Version="1.14.1" PrivateAssets="all" />
+    <!--<PackageReference Include="Microsoft.Maui.Essentials" Version="8.0.6" />-->
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == '$(NetVersion)-android'">
