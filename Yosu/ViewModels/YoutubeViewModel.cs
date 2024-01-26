@@ -46,13 +46,7 @@ public class YoutubeViewModel
     public Container SelectedContainer { get; set; } = Container.Mp4;
 
     public IReadOnlyList<Container> AvailableContainers { get; } =
-        new[]
-        {
-            //Container.Mp4,
-            //Container.WebM,
-            Container.Mp3,
-            new Container("ogg")
-        };
+        new[] { Container.Mp4, Container.WebM, Container.Mp3, new Container("ogg") };
 
     public IReadOnlyList<VideoQualityPreference> AvailableVideoQualityPreferences { get; } =
         Enum.GetValues<VideoQualityPreference>().Reverse().ToArray();
