@@ -13,11 +13,12 @@ using Woka;
 using Yosu.Handlers;
 using Yosu.Services;
 using Yosu.Services.AlertDialog;
-using Yosu.Utils;
 using Yosu.ViewModels;
 using Yosu.ViewModels.Settings;
 using Yosu.Views;
 using Yosu.Views.Settings;
+using IStatusBarStyleManager = Yosu.Utils.IStatusBarStyleManager;
+using StatusBarStyleManager = Yosu.Utils.StatusBarStyleManager;
 
 namespace Yosu;
 

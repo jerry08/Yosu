@@ -32,6 +32,14 @@
     <PackageReference Include="Laerdal.FFmpeg.Android.Full" Version="4.4.28" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Update="Microsoft.Maui.Controls" Version="8.0.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="Microsoft.Maui.Controls.Compatibility" Version="8.0.7" />
+  </ItemGroup>
+
   <!--<ItemGroup Condition="'$(TargetFramework)' == '$(NetVersion)-maccatalyst' OR '$(TargetFramework)' == '$(NetVersion)-ios'">
     <PackageReference Include="Laerdal.FFmpeg.iOS.Min" Version="4.4.52" />
   </ItemGroup>-->
