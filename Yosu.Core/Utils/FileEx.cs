@@ -27,6 +27,5 @@ public class FileEx
     /// Checks if thumbnail's data is valid Latin1 encoding (ISO-8859-1)
     /// </summary>
     /// <param name="input"></param>
-    public static bool IsValidISO(byte[] input) =>
-        IsValidISO(BitConverter.ToString(input));
+    public static bool IsValidISO(byte[] input) => IsValidISO(BitConverter.ToString(input));
 }

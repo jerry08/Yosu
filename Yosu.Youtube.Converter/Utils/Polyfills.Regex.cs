@@ -6,7 +6,6 @@ using System.Text.RegularExpressions;
 
 internal static class RegexPolyfills
 {
-    public static Match[] ToArray(this MatchCollection matches) =>
-        matches.Cast<Match>().ToArray();
+    public static Match[] ToArray(this MatchCollection matches) => matches.Cast<Match>().ToArray();
 }
 #endif

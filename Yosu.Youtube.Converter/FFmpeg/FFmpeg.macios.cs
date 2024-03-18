@@ -14,7 +14,6 @@ internal class FFmpeg
     public void Execute(
         string arguments,
         IProgress<double>? progress,
-        CancellationToken cancellationToken = default)
-    {
-    }
+        CancellationToken cancellationToken = default
+    ) { }
 }

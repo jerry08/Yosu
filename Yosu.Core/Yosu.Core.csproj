@@ -4,4 +4,8 @@
     <TargetFramework>$(NetVersion)</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="CSharpier.MsBuild" Version="0.27.3" PrivateAssets="all" />
+  </ItemGroup>
+
 </Project>

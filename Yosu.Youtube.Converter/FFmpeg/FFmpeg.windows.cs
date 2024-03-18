@@ -14,7 +14,6 @@ internal class FFmpeg
     public async ValueTask ExecuteAsync(
         string arguments,
         IProgress<double>? progress,
-        CancellationToken cancellationToken = default)
-    {
-    }
+        CancellationToken cancellationToken = default
+    ) { }
 }

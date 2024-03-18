@@ -10,11 +10,14 @@ namespace Yosu.Youtube.Core.Downloading;
 public partial record VideoDownloadOption(
     Container Container,
     bool IsAudioOnly,
-    IReadOnlyList<IStreamInfo> StreamInfos)
+    IReadOnlyList<IStreamInfo> StreamInfos
+)
 {
-    public VideoQuality? VideoQuality => Memo.Cache(this, () =>
-        StreamInfos.OfType<IVideoStreamInfo>().MaxBy(s => s.VideoQuality)?.VideoQuality
-    );
+    public VideoQuality? VideoQuality =>
+        Memo.Cache(
+            this,
+            () => StreamInfos.OfType<IVideoStreamInfo>().MaxBy(s => s.VideoQuality)?.VideoQuality
+        );
 }
 
 public partial record VideoDownloadOption
@@ -23,9 +26,7 @@ public partial record VideoDownloadOption
     {
         IEnumerable<VideoDownloadOption> GetVideoAndAudioOptions()
         {
-            var videoStreams = manifest
-                .GetVideoStreams()
-                .OrderByDescending(v => v.VideoQuality);
+            var videoStreams = manifest.GetVideoStreams().OrderByDescending(v => v.VideoQuality);
 
             foreach (var videoStreamInfo in videoStreams)
             {

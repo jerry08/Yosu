@@ -17,29 +17,28 @@ public class MediaTagInjector
             mediaFile.SetDescription(track.Description);
 
         mediaFile.SetComment(
-            "Downloaded using SoundCloudDownloader (https://github.com/jerry08/SoundCloudDownloader)" +
-            Environment.NewLine +
-            $"Track: {track.Title}" +
-            Environment.NewLine +
-            $"Track URL: {track.PermalinkUrl}"
+            "Downloaded using SoundCloudDownloader (https://github.com/jerry08/SoundCloudDownloader)"
+                + Environment.NewLine
+                + $"Track: {track.Title}"
+                + Environment.NewLine
+                + $"Track URL: {track.PermalinkUrl}"
         );
     }
 
     private async Task InjectMusicMetadataAsync(
         MediaFile mediaFile,
         Track track,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         var recordings = await _musicBrainz.SearchRecordingsAsync(track.Title!, cancellationToken);
 
-        var recording = recordings
-            .FirstOrDefault(r =>
-                // Recording title must be part of the track title.
-                // Recording artist must be part of the track title.
-                track.Title!.Contains(r.Title, StringComparison.OrdinalIgnoreCase) && (
-                    track.Title.Contains(r.Artist, StringComparison.OrdinalIgnoreCase)
-                )
-            );
+        var recording = recordings.FirstOrDefault(r =>
+            // Recording title must be part of the track title.
+            // Recording artist must be part of the track title.
+            track.Title!.Contains(r.Title, StringComparison.OrdinalIgnoreCase)
+            && (track.Title.Contains(r.Artist, StringComparison.OrdinalIgnoreCase))
+        );
 
         if (recording is null)
             return;
@@ -54,9 +53,7 @@ public class MediaTagInjector
             mediaFile.SetAlbum(recording.Album);
     }
 
-    private static void InjectTrackMetadataAsync(
-        MediaFile mediaFile,
-        Track track)
+    private static void InjectTrackMetadataAsync(MediaFile mediaFile, Track track)
     {
         mediaFile.SetTitle(track.Title!);
         mediaFile.SetPerformers(new[] { track.User!.Username! });
@@ -66,24 +63,27 @@ public class MediaTagInjector
     private async Task InjectThumbnailAsync(
         MediaFile mediaFile,
         Track track,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
-        var url = track.ArtworkUrl?.ToString().Replace("large", "t500x500").Replace("small", "t500x500");
+        var url = track
+            .ArtworkUrl?.ToString()
+            .Replace("large", "t500x500")
+            .Replace("small", "t500x500");
 
         if (url == null)
         {
             await Task.CompletedTask;
         }
 
-        mediaFile.SetThumbnail(
-            await Http.Client.GetByteArrayAsync(url, cancellationToken)
-        );
+        mediaFile.SetThumbnail(await Http.Client.GetByteArrayAsync(url, cancellationToken));
     }
 
     public async Task InjectTagsAsync(
         string filePath,
         Track track,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         using var mediaFile = MediaFile.Create(filePath);
 

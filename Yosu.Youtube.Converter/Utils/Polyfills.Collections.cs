@@ -8,7 +8,7 @@ internal static class CollectionPolyfills
 {
     public static IEnumerable<(TFirst left, TSecond right)> Zip<TFirst, TSecond>(
         this IEnumerable<TFirst> first,
-        IEnumerable<TSecond> second) =>
-        first.Zip(second, (x, y) => (x, y));
+        IEnumerable<TSecond> second
+    ) => first.Zip(second, (x, y) => (x, y));
 }
 #endif

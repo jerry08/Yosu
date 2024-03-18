@@ -21,13 +21,10 @@ public partial class ConversionRequestBuilder
     /// <summary>
     /// Initializes an instance of <see cref="ConversionRequestBuilder" />.
     /// </summary>
-    public ConversionRequestBuilder(string outputFilePath) =>
-        _outputFilePath = outputFilePath;
+    public ConversionRequestBuilder(string outputFilePath) => _outputFilePath = outputFilePath;
 
-    private Container GetDefaultContainer() => new(
-        Path.GetExtension(_outputFilePath).TrimStart('.').NullIfWhiteSpace() ??
-        "mp4"
-    );
+    private Container GetDefaultContainer() =>
+        new(Path.GetExtension(_outputFilePath).TrimStart('.').NullIfWhiteSpace() ?? "mp4");
 
     /// <summary>
     /// Sets FFmpeg CLI path.
@@ -64,8 +61,7 @@ public partial class ConversionRequestBuilder
     /// Sets conversion format.
     /// </summary>
     [Obsolete("Use SetContainer instead."), ExcludeFromCodeCoverage]
-    public ConversionRequestBuilder SetFormat(string format) =>
-        SetContainer(format);
+    public ConversionRequestBuilder SetFormat(string format) => SetContainer(format);
 
     /// <summary>
     /// Sets conversion preset.
@@ -79,29 +75,34 @@ public partial class ConversionRequestBuilder
     /// <summary>
     /// Builds the resulting request.
     /// </summary>
-    public ConversionRequest Build() => new(
-        _ffmpegCliFilePath ?? DefaultFFmpegCliPathLazy.Value,
-        _outputFilePath,
-        _container ?? GetDefaultContainer(),
-        _preset
-    );
+    public ConversionRequest Build() =>
+        new(
+            _ffmpegCliFilePath ?? DefaultFFmpegCliPathLazy.Value,
+            _outputFilePath,
+            _container ?? GetDefaultContainer(),
+            _preset
+        );
 }
 
 public partial class ConversionRequestBuilder
 {
-    private static readonly Lazy<string> DefaultFFmpegCliPathLazy = new(() =>
-        // Try to find FFmpeg in the probe directory
-        Directory
-            .EnumerateFiles(AppDomain.CurrentDomain.BaseDirectory ?? Directory.GetCurrentDirectory())
-            .FirstOrDefault(f =>
-                string.Equals(
-                    Path.GetFileNameWithoutExtension(f),
-                    "ffmpeg",
-                    StringComparison.OrdinalIgnoreCase
-                )
-            ) ??
-
-        // Otherwise fallback to just "ffmpeg" and hope it's on the PATH
-        "ffmpeg"
-    );
+    private static readonly Lazy<string> DefaultFFmpegCliPathLazy =
+        new(
+            () =>
+                // Try to find FFmpeg in the probe directory
+                Directory
+                    .EnumerateFiles(
+                        AppDomain.CurrentDomain.BaseDirectory ?? Directory.GetCurrentDirectory()
+                    )
+                    .FirstOrDefault(f =>
+                        string.Equals(
+                            Path.GetFileNameWithoutExtension(f),
+                            "ffmpeg",
+                            StringComparison.OrdinalIgnoreCase
+                        )
+                    )
+                ??
+                // Otherwise fallback to just "ffmpeg" and hope it's on the PATH
+                "ffmpeg"
+        );
 }

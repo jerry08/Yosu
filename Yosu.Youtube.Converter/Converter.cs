@@ -1,15 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 using CliWrap.Builders;
 using Yosu.Youtube.Converter.Utils;
 using Yosu.Youtube.Converter.Utils.Extensions;
 using YoutubeExplode.Videos;
-using YoutubeExplode.Videos.Streams;
 using YoutubeExplode.Videos.ClosedCaptions;
+using YoutubeExplode.Videos.Streams;
+
 namespace Yosu.Youtube.Converter;
 
 internal partial class Converter
@@ -31,7 +32,8 @@ internal partial class Converter
         IReadOnlyList<StreamInput> streamInputs,
         IReadOnlyList<SubtitleInput> subtitleInputs,
         IProgress<double>? progress = null,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         var arguments = new ArgumentsBuilder();
 
@@ -56,9 +58,7 @@ internal partial class Converter
         // Avoid transcoding if possible
         if (streamInputs.All(s => s.Info.Container == container))
         {
-            arguments
-                .Add("-c:a").Add("copy")
-                .Add("-c:v").Add("copy");
+            arguments.Add("-c:a").Add("copy").Add("-c:v").Add("copy");
         }
 
         // MP4: specify subtitle codec manually, otherwise they're not injected
@@ -81,10 +81,7 @@ internal partial class Converter
         }
 
         // Misc settings
-        arguments
-            .Add("-threads").Add(Environment.ProcessorCount)
-            .Add("-nostdin")
-            .Add("-y");
+        arguments.Add("-threads").Add(Environment.ProcessorCount).Add("-nostdin").Add("-y");
 
         // Output
         arguments.Add(filePath);
@@ -104,10 +101,13 @@ internal partial class Converter
         IReadOnlyList<IStreamInfo> streamInfos,
         ICollection<StreamInput> streamInputs,
         IProgress<double>? progress = null,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         var progressMuxer = progress?.Pipe(p => new ProgressMuxer(p));
-        var progresses = streamInfos.Select(s => progressMuxer?.CreateInput(s.Size.MegaBytes)).ToArray();
+        var progresses = streamInfos
+            .Select(s => progressMuxer?.CreateInput(s.Size.MegaBytes))
+            .ToArray();
 
         var lastIndex = 0;
 
@@ -136,10 +136,13 @@ internal partial class Converter
         IReadOnlyList<ClosedCaptionTrackInfo> closedCaptionTrackInfos,
         ICollection<SubtitleInput> subtitleInputs,
         IProgress<double>? progress = null,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         var progressMuxer = progress?.Pipe(p => new ProgressMuxer(p));
-        var progresses = closedCaptionTrackInfos.Select(_ => progressMuxer?.CreateInput()).ToArray();
+        var progresses = closedCaptionTrackInfos
+            .Select(_ => progressMuxer?.CreateInput())
+            .ToArray();
 
         var lastIndex = 0;
 
@@ -169,7 +172,8 @@ internal partial class Converter
         IReadOnlyList<IStreamInfo> streamInfos,
         IReadOnlyList<ClosedCaptionTrackInfo> closedCaptionTrackInfos,
         IProgress<double>? progress = null,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         if (!streamInfos.Any())
             throw new InvalidOperationException("No streams provided.");

@@ -1,14 +1,14 @@
 ﻿using System;
 using System.IO;
-using File = System.IO.File;
-using TagLib;
-using TagFile = TagLib.File;
 using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Formats.Png;
-using TagLib.Id3v2;
-using Yosu.Youtube.Core.Utils;
 using SixLabors.ImageSharp.Formats.Jpeg;
+using SixLabors.ImageSharp.Formats.Png;
+using TagLib;
+using TagLib.Id3v2;
 using Yosu.Core.Utils;
+using Yosu.Youtube.Core.Utils;
+using File = System.IO.File;
+using TagFile = TagLib.File;
 
 namespace Yosu.Youtube.Core.Tagging;
 
@@ -51,10 +51,13 @@ internal partial class MediaFile : IDisposable
         //using var image = await Image.LoadAsync(path...);
         using var image = Image.Load(thumbnailData);
         //image.SaveAsPng(tempFilePath, new PngEncoder()
-        image.SaveAsJpeg(ms, new JpegEncoder()
-        {
-            //Method = WebpEncodingMethod.BestQuality
-        });
+        image.SaveAsJpeg(
+            ms,
+            new JpegEncoder()
+            {
+                //Method = WebpEncodingMethod.BestQuality
+            }
+        );
 
         thumbnailData = ms.ToArray();
 
@@ -67,23 +70,17 @@ internal partial class MediaFile : IDisposable
         _file.Tag.Pictures = new IPicture[] { picture };
     }
 
-    public void SetArtist(string artist) =>
-        _file.Tag.Performers = new[] { artist };
+    public void SetArtist(string artist) => _file.Tag.Performers = new[] { artist };
 
-    public void SetArtistSort(string artistSort) =>
-        _file.Tag.PerformersSort = new[] { artistSort };
+    public void SetArtistSort(string artistSort) => _file.Tag.PerformersSort = new[] { artistSort };
 
-    public void SetTitle(string title) =>
-        _file.Tag.Title = title;
+    public void SetTitle(string title) => _file.Tag.Title = title;
 
-    public void SetAlbum(string album) =>
-        _file.Tag.Album = album;
+    public void SetAlbum(string album) => _file.Tag.Album = album;
 
-    public void SetDescription(string description) =>
-        _file.Tag.Description = description;
+    public void SetDescription(string description) => _file.Tag.Description = description;
 
-    public void SetComment(string comment) =>
-        _file.Tag.Comment = comment;
+    public void SetComment(string comment) => _file.Tag.Comment = comment;
 
     public void Dispose()
     {

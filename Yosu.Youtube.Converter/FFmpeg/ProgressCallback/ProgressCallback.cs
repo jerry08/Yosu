@@ -12,10 +12,6 @@ internal partial class ProgressCallback
     public IProgress<double>? Progress { get; set; }
 
 #if !ANDROID
-    public static void Init(
-        IProgress<double>? progress,
-        IEnumerable<string> filePaths)
-    {
-    }
+    public static void Init(IProgress<double>? progress, IEnumerable<string> filePaths) { }
 #endif
 }

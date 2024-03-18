@@ -19,34 +19,35 @@ public class MediaTagInjector
             mediaFile.SetDescription(description);
 
         mediaFile.SetComment(
-            "Downloaded using Yosu (https://github.com/jerry08/Yosu)" +
-            Environment.NewLine +
-            $"Video: {video.Title}" +
-            Environment.NewLine +
-            $"Video URL: {video.Url}" +
-            Environment.NewLine +
-            $"Channel: {video.Author.ChannelTitle}" +
-            Environment.NewLine +
-            $"Channel URL: {video.Author.ChannelUrl}"
+            "Downloaded using Yosu (https://github.com/jerry08/Yosu)"
+                + Environment.NewLine
+                + $"Video: {video.Title}"
+                + Environment.NewLine
+                + $"Video URL: {video.Url}"
+                + Environment.NewLine
+                + $"Channel: {video.Author.ChannelTitle}"
+                + Environment.NewLine
+                + $"Channel URL: {video.Author.ChannelUrl}"
         );
     }
 
     private async Task InjectMusicMetadataAsync(
         MediaFile mediaFile,
         IVideo video,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         var recordings = await _musicBrainz.SearchRecordingsAsync(video.Title, cancellationToken);
 
-        var recording = recordings
-            .FirstOrDefault(r =>
-                // Recording title must be part of the video title.
-                // Recording artist must be part of the video title or channel title.
-                video.Title.Contains(r.Title, StringComparison.OrdinalIgnoreCase) && (
-                    video.Title.Contains(r.Artist, StringComparison.OrdinalIgnoreCase) ||
-                    video.Author.ChannelTitle.Contains(r.Artist, StringComparison.OrdinalIgnoreCase)
-                )
-            );
+        var recording = recordings.FirstOrDefault(r =>
+            // Recording title must be part of the video title.
+            // Recording artist must be part of the video title or channel title.
+            video.Title.Contains(r.Title, StringComparison.OrdinalIgnoreCase)
+            && (
+                video.Title.Contains(r.Artist, StringComparison.OrdinalIgnoreCase)
+                || video.Author.ChannelTitle.Contains(r.Artist, StringComparison.OrdinalIgnoreCase)
+            )
+        );
 
         if (recording is null)
             return;
@@ -64,19 +65,17 @@ public class MediaTagInjector
     private async Task InjectThumbnailAsync(
         MediaFile mediaFile,
         IVideo video,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         var thumbnailUrl =
-            video.Thumbnails
-                .Where(t => string.Equals(
-                    t.TryGetImageFormat(),
-                    "jpg",
-                    StringComparison.OrdinalIgnoreCase
-                ))
+            video
+                .Thumbnails.Where(t =>
+                    string.Equals(t.TryGetImageFormat(), "jpg", StringComparison.OrdinalIgnoreCase)
+                )
                 .OrderByDescending(t => t.Resolution.Area)
                 .Select(t => t.Url)
-                .FirstOrDefault() ??
-            $"https://i.ytimg.com/vi/{video.Id}/hqdefault.jpg";
+                .FirstOrDefault() ?? $"https://i.ytimg.com/vi/{video.Id}/hqdefault.jpg";
 
         mediaFile.SetThumbnail(
             await Http.Client.GetByteArrayAsync(thumbnailUrl, cancellationToken)
@@ -86,7 +85,8 @@ public class MediaTagInjector
     public async Task InjectTagsAsync(
         string filePath,
         IVideo video,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         using var mediaFile = MediaFile.Create(filePath);
 

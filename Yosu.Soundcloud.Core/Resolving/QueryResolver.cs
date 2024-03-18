@@ -16,7 +16,8 @@ public class QueryResolver
 
     public async Task<QueryResult> ResolveAsync(
         string query,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         // Playlist/Album
         if (await _soundcloud.Playlists.IsUrlValidAsync(query, cancellationToken))
@@ -27,7 +28,11 @@ public class QueryResolver
             foreach (var track in tracks)
                 track.ArtworkUrl ??= track.User?.AvatarUrl;
 
-            return new QueryResult(QueryResultKind.Playlist, $"Playlist: {playlist!.Title}", tracks);
+            return new QueryResult(
+                QueryResultKind.Playlist,
+                $"Playlist: {playlist!.Title}",
+                tracks
+            );
         }
 
         // Track
@@ -42,7 +47,9 @@ public class QueryResolver
 
         // Search
         {
-            var tracks = await _soundcloud.Search.GetTracksAsync(query, cancellationToken).CollectAsync(20);
+            var tracks = await _soundcloud
+                .Search.GetTracksAsync(query, cancellationToken)
+                .CollectAsync(20);
 
             foreach (var track in tracks)
                 track.ArtworkUrl ??= track.User?.AvatarUrl;
@@ -54,7 +61,8 @@ public class QueryResolver
     public async Task<QueryResult> ResolveAsync(
         IReadOnlyList<string> queries,
         IProgress<Percentage>? progress = null,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         if (queries.Count == 1)
             return await ResolveAsync(queries.Single(), cancellationToken);
@@ -73,9 +81,7 @@ public class QueryResolver
                 tracks.Add(track);
             }
 
-            progress?.Report(
-                Percentage.FromFraction(1.0 * ++completed / queries.Count)
-            );
+            progress?.Report(Percentage.FromFraction(1.0 * ++completed / queries.Count));
         }
 
         return new QueryResult(QueryResultKind.Aggregate, $"{queries.Count} queries", tracks);

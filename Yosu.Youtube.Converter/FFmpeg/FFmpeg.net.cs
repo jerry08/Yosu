@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,7 +23,8 @@ internal partial class FFmpeg
     public async ValueTask ExecuteAsync(
         string arguments,
         IProgress<double>? progress,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         var stdErrBuffer = new StringBuilder();
 
@@ -67,19 +68,22 @@ internal partial class FFmpeg
 
         public FFmpegProgressRouter(IProgress<double> output) => _output = output;
 
-        private TimeSpan? TryParseTotalDuration(string data) => data
-            .Pipe(s => Regex.Match(s, @"Duration:\s(\d\d:\d\d:\d\d.\d\d)").Groups[1].Value)
-            .NullIfWhiteSpace()?
-            .Pipe(s => TimeSpan.ParseExact(s, "c", CultureInfo.InvariantCulture));
+        private TimeSpan? TryParseTotalDuration(string data) =>
+            data.Pipe(s => Regex.Match(s, @"Duration:\s(\d\d:\d\d:\d\d.\d\d)").Groups[1].Value)
+                .NullIfWhiteSpace()
+                ?.Pipe(s => TimeSpan.ParseExact(s, "c", CultureInfo.InvariantCulture));
 
-        private TimeSpan? TryParseCurrentOffset(string data) => data
-            .Pipe(s => Regex.Matches(s, @"time=(\d\d:\d\d:\d\d.\d\d)")
-                .ToArray()
-                .LastOrDefault()?
-                .Groups[1]
-                .Value)?
-            .NullIfWhiteSpace()?
-            .Pipe(s => TimeSpan.ParseExact(s, "c", CultureInfo.InvariantCulture));
+        private TimeSpan? TryParseCurrentOffset(string data) =>
+            data.Pipe(s =>
+                Regex
+                    .Matches(s, @"time=(\d\d:\d\d:\d\d.\d\d)")
+                    .ToArray()
+                    .LastOrDefault()
+                    ?.Groups[1]
+                    .Value
+            )
+                ?.NullIfWhiteSpace()
+                ?.Pipe(s => TimeSpan.ParseExact(s, "c", CultureInfo.InvariantCulture));
 
         private void HandleBuffer()
         {
@@ -102,14 +106,20 @@ internal partial class FFmpeg
             _output.Report(progress);
         }
 
-        public override async Task CopyFromAsync(Stream source, CancellationToken cancellationToken = default)
+        public override async Task CopyFromAsync(
+            Stream source,
+            CancellationToken cancellationToken = default
+        )
         {
             using var reader = new StreamReader(source, Console.OutputEncoding, false, 1024, true);
 
             var buffer = new char[1024];
             int charsRead;
 
-            while ((charsRead = await reader.ReadAsync(buffer, 0, buffer.Length).ConfigureAwait(false)) > 0)
+            while (
+                (charsRead = await reader.ReadAsync(buffer, 0, buffer.Length).ConfigureAwait(false))
+                > 0
+            )
             {
                 cancellationToken.ThrowIfCancellationRequested();
                 _buffer.Append(buffer, 0, charsRead);

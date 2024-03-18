@@ -14,28 +14,32 @@ internal class FFmpeg
     public void Execute(
         string arguments,
         IProgress<double>? progress,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         //This allows ffmpeg to return result and continue operations in app
         //Laerdal.FFmpeg.Android.Config.IgnoreSignal(Laerdal.FFmpeg.Android.Signal.Sigxcpu);
 
         //Laerdal.FFmpeg.Android.Config.EnableStatisticsCallback(new Test2(progress));
 
-        Task.Run(async () =>
-        {
-            while (true)
+        Task.Run(
+            async () =>
             {
-                if (cancellationToken.IsCancellationRequested)
+                while (true)
                 {
-                    Laerdal.FFmpeg.Android.FFmpeg.Cancel();
-                    break;
+                    if (cancellationToken.IsCancellationRequested)
+                    {
+                        Laerdal.FFmpeg.Android.FFmpeg.Cancel();
+                        break;
+                    }
+
+                    //cancellationToken.ThrowIfCancellationRequested();
+
+                    await Task.Delay(500);
                 }
-
-                //cancellationToken.ThrowIfCancellationRequested();
-
-                await Task.Delay(500);
-            }
-        }, cancellationToken);
+            },
+            cancellationToken
+        );
 
         var exitCode = Laerdal.FFmpeg.Android.FFmpeg.Execute(arguments);
         //var exitCode = Laerdal.FFmpeg.Android.FFmpeg.ExecuteAsync(arguments, new Test1(progress));
