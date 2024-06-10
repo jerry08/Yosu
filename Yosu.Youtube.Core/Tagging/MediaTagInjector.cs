@@ -40,8 +40,8 @@ public class MediaTagInjector
         var recordings = await _musicBrainz.SearchRecordingsAsync(video.Title, cancellationToken);
 
         var recording = recordings.FirstOrDefault(r =>
-            // Recording title must be part of the video title.
-            // Recording artist must be part of the video title or channel title.
+            // Recording title must be a part of the video title.
+            // Recording artist must be a part of the video title or channel title.
             video.Title.Contains(r.Title, StringComparison.OrdinalIgnoreCase)
             && (
                 video.Title.Contains(r.Artist, StringComparison.OrdinalIgnoreCase)

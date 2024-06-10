@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Yosu.Core.Utils;
 using Yosu.Core.Utils.Extensions;
 using YoutubeExplode.Videos.Streams;
 
@@ -13,11 +12,8 @@ public partial record VideoDownloadOption(
     IReadOnlyList<IStreamInfo> StreamInfos
 )
 {
-    public VideoQuality? VideoQuality =>
-        Memo.Cache(
-            this,
-            () => StreamInfos.OfType<IVideoStreamInfo>().MaxBy(s => s.VideoQuality)?.VideoQuality
-        );
+    public VideoQuality? VideoQuality { get; } =
+        StreamInfos.OfType<IVideoStreamInfo>().MaxBy(s => s.VideoQuality)?.VideoQuality;
 }
 
 public partial record VideoDownloadOption
@@ -26,9 +22,11 @@ public partial record VideoDownloadOption
     {
         IEnumerable<VideoDownloadOption> GetVideoAndAudioOptions()
         {
-            var videoStreams = manifest.GetVideoStreams().OrderByDescending(v => v.VideoQuality);
+            var videoStreamInfos = manifest
+                .GetVideoStreams()
+                .OrderByDescending(v => v.VideoQuality);
 
-            foreach (var videoStreamInfo in videoStreams)
+            foreach (var videoStreamInfo in videoStreamInfos)
             {
                 // Muxed stream
                 if (videoStreamInfo is MuxedStreamInfo)
@@ -36,7 +34,7 @@ public partial record VideoDownloadOption
                     yield return new VideoDownloadOption(
                         videoStreamInfo.Container,
                         false,
-                        new[] { videoStreamInfo }
+                        [videoStreamInfo]
                     );
                 }
                 // Separate audio + video stream
@@ -75,22 +73,14 @@ public partial record VideoDownloadOption
 
                 if (audioStreamInfo is not null)
                 {
-                    yield return new VideoDownloadOption(
-                        Container.WebM,
-                        true,
-                        new[] { audioStreamInfo }
-                    );
+                    yield return new VideoDownloadOption(Container.WebM, true, [audioStreamInfo]);
 
-                    yield return new VideoDownloadOption(
-                        Container.Mp3,
-                        true,
-                        new[] { audioStreamInfo }
-                    );
+                    yield return new VideoDownloadOption(Container.Mp3, true, [audioStreamInfo]);
 
                     yield return new VideoDownloadOption(
                         new Container("ogg"),
                         true,
-                        new[] { audioStreamInfo }
+                        [audioStreamInfo]
                     );
                 }
             }
@@ -106,18 +96,14 @@ public partial record VideoDownloadOption
 
                 if (audioStreamInfo is not null)
                 {
-                    yield return new VideoDownloadOption(
-                        Container.Mp4,
-                        true,
-                        new[] { audioStreamInfo }
-                    );
+                    yield return new VideoDownloadOption(Container.Mp4, true, [audioStreamInfo]);
                 }
             }
         }
 
         // Deduplicate download options by video quality and container
-        var comparer = new DelegateEqualityComparer<VideoDownloadOption>(
-            (x, y) => x.VideoQuality == y.VideoQuality && x.Container == y.Container,
+        var comparer = EqualityComparer<VideoDownloadOption>.Create(
+            (x, y) => x?.VideoQuality == y?.VideoQuality && x?.Container == y?.Container,
             x => HashCode.Combine(x.VideoQuality, x.Container)
         );
 
