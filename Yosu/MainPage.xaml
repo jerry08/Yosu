@@ -71,44 +71,49 @@
                     VerticalOptions="Center"
                     WidthRequest="50" />
 
-                <cm:ContextMenuContainer
-                    x:Name="ActionsInlineMenu"
+                <Border
                     Grid.Column="1"
                     Margin="0,0,24,0"
-                    HeightRequest="40"
+                    HeightRequest="45"
                     HorizontalOptions="EndAndExpand"
-                    VerticalOptions="Center"
-                    WidthRequest="40">
-                    <cm:ContextMenuContainer.MenuItems>
-                        <cm:ContextMenuItem Command="{Binding GoToHistoryCommand}" Text="History" />
-                        <cm:ContextMenuItem Command="{Binding ShowSearchOptionsCommand}" Text="Search Options" />
-                        <cm:ContextMenuItem Command="{Binding GoToSettingsCommand}" Text="Settings" />
-                        <cm:ContextMenuItem Command="{Binding DonateCommand}" Text="Donate" />
-                    </cm:ContextMenuContainer.MenuItems>
-                    <cm:ContextMenuContainer.Content>
-                        <ImageButton
-                            Padding="2"
-                            HeightRequest="30"
-                            HorizontalOptions="EndAndExpand"
-                            VerticalOptions="Center"
-                            WidthRequest="30">
-                            <ImageButton.Behaviors>
-                                <berry:TouchBehavior
-                                    Command="{Binding BindingContext.ShowContextMenuCommand, Source={x:Reference this}}"
-                                    CommandParameter="{Binding ., Source={x:Reference ActionsInlineMenu}}"
-                                    NativeAnimation="True" />
-                            </ImageButton.Behaviors>
-                            <ImageButton.Source>
-                                <FontImageSource
-                                    FontFamily="Material"
-                                    Glyph="{x:Static materialDesign:MaterialDesignIcons.Settings}"
-                                    Size="30"
-                                    Color="{AppThemeBinding Light={StaticResource Gray400},
-                                                            Dark={StaticResource White}}" />
-                            </ImageButton.Source>
-                        </ImageButton>
-                    </cm:ContextMenuContainer.Content>
-                </cm:ContextMenuContainer>
+                    StrokeThickness="0"
+                    WidthRequest="45">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="20" />
+                    </Border.StrokeShape>
+                    <cm:ContextMenuContainer
+                        HorizontalOptions="Center"
+                        ShowOnClick="True"
+                        VerticalOptions="Center">
+                        <cm:ContextMenuContainer.MenuItems>
+                            <cm:ContextMenuItem Command="{Binding GoToHistoryCommand}" Text="History" />
+                            <cm:ContextMenuItem Command="{Binding ShowSearchOptionsCommand}" Text="Search Options" />
+                            <cm:ContextMenuItem Command="{Binding GoToSettingsCommand}" Text="Settings" />
+                            <cm:ContextMenuItem Command="{Binding DonateCommand}" Text="Donate" />
+                        </cm:ContextMenuContainer.MenuItems>
+                        <cm:ContextMenuContainer.Content>
+                            <Grid>
+                                <Grid.Behaviors>
+                                    <berry:TouchBehavior NativeAnimation="True" />
+                                </Grid.Behaviors>
+                                <ImageButton
+                                    Margin="4"
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Center">
+                                    <ImageButton.Source>
+                                        <FontImageSource
+                                            FontFamily="Material"
+                                            Glyph="{x:Static materialDesign:MaterialDesignIcons.Settings}"
+                                            Size="40"
+                                            Color="{AppThemeBinding Light={StaticResource Primary},
+                                                                    Dark={StaticResource White}}" />
+                                    </ImageButton.Source>
+                                </ImageButton>
+                            </Grid>
+
+                        </cm:ContextMenuContainer.Content>
+                    </cm:ContextMenuContainer>
+                </Border>
             </Grid>
 
             <!--  SEARCH  -->

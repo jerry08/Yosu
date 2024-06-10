@@ -2,7 +2,6 @@
 using CommunityToolkit.Maui;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Maui.Controls;
 using Microsoft.Maui.Controls.Compatibility.Hosting;
 using Microsoft.Maui.Controls.Hosting;
 using Microsoft.Maui.Hosting;
@@ -10,15 +9,12 @@ using Microsoft.Maui.LifecycleEvents;
 using Plugin.ContextMenuContainer;
 using SkiaSharp.Views.Maui.Controls.Hosting;
 using Woka;
-using Yosu.Handlers;
 using Yosu.Services;
 using Yosu.Services.AlertDialog;
 using Yosu.ViewModels;
 using Yosu.ViewModels.Settings;
 using Yosu.Views;
 using Yosu.Views.Settings;
-using IStatusBarStyleManager = Yosu.Utils.IStatusBarStyleManager;
-using StatusBarStyleManager = Yosu.Utils.StatusBarStyleManager;
 
 namespace Yosu;
 
@@ -47,18 +43,7 @@ public static class MauiProgram
             .UseSkiaSharp()
             .UseBerry()
             .UseMauiCompatibility()
-            .ConfigureMauiHandlers(handlers =>
-            {
-#if ANDROID
-                handlers.AddHandler<CheckBox, MaterialCheckBoxHandler>();
-                handlers.AddHandler<Switch, MaterialSwitchHandler>();
-#endif
-
-                handlers.AddHandler(
-                    typeof(ContextMenuContainer),
-                    typeof(ContextMenuContainerRenderer)
-                );
-            })
+            .ConfigureContextMenuContainer()
             .ConfigureWorkarounds()
             .ConfigureLifecycleEvents(events =>
             {

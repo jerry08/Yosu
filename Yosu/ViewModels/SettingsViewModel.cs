@@ -12,8 +12,6 @@ namespace Yosu.ViewModels.Settings;
 
 public partial class SettingsViewModel : BaseViewModel
 {
-    private readonly IStatusBarStyleManager _statusBarStyleManager;
-
     [ObservableProperty]
     private PreferenceService _preference = default!;
 
@@ -23,14 +21,8 @@ public partial class SettingsViewModel : BaseViewModel
     [ObservableProperty]
     private string _defaultDownloadDirectory = default!;
 
-    public SettingsViewModel(
-        PreferenceService preferenceService,
-        SettingsService settingsService,
-        IStatusBarStyleManager statusBarStyleManager
-    )
+    public SettingsViewModel(PreferenceService preferenceService, SettingsService settingsService)
     {
-        _statusBarStyleManager = statusBarStyleManager;
-
         Preference = preferenceService;
         Preference.Load();
 
@@ -38,6 +30,22 @@ public partial class SettingsViewModel : BaseViewModel
         Settings.Load();
 
         Settings.PropertyChanged += (_, _) => Settings.Save();
+
+        Preference.PropertyChanged += (s, e) =>
+        {
+            Preference.Save();
+
+            if (e.PropertyName == nameof(Preference.AppTheme))
+            {
+                App.ApplyTheme();
+
+#if ANDROID
+                Platform.CurrentActivity?.Recreate();
+#endif
+
+                App.RefreshCurrentPageBehaviors();
+            }
+        };
 
 #if ANDROID
         DefaultDownloadDirectory = Path.Combine(
@@ -60,13 +68,15 @@ public partial class SettingsViewModel : BaseViewModel
         Preference.Save();
         App.ApplyTheme();
 
-        _statusBarStyleManager.SetDefault();
+#if ANDROID
+        Platform.CurrentActivity?.Recreate();
+#endif
 
-        Application.Current.MainPage = new AppShell();
+        App.RefreshCurrentPageBehaviors();
     }
 
     [RelayCommand]
-    private async Task PickDownloadLocation()
+    private async Task PickDownloadLocationAsync()
     {
 #if ANDROID
         var result = await Shell.Current.DisplayActionSheet(

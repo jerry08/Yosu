@@ -17,7 +17,6 @@
     Padding="0">
     <Grid>
         <cm:ContextMenuContainer
-            x:Name="ActionsInlineMenu"
             Margin="0"
             Padding="0"
             BackgroundColor="Transparent"
@@ -59,10 +58,7 @@
                     </Border.StrokeShape>
                     <Grid>
                         <Grid.Behaviors>
-                            <berry:TouchBehavior
-                                Command="{Binding Tag.ShowContextMenuCommand, Source={x:Reference this}}"
-                                CommandParameter="{Binding ., Source={x:Reference ActionsInlineMenu}}"
-                                NativeAnimation="True" />
+                            <berry:TouchBehavior NativeAnimation="True" />
                         </Grid.Behaviors>
                         <Image HeightRequest="25">
                             <Image.Triggers>

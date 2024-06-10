@@ -62,7 +62,6 @@
                     VerticalOptions="Center" />
 
                 <cm:ContextMenuContainer
-                    x:Name="ActionsInlineMenu"
                     Grid.Column="2"
                     Margin="0,0,24,0"
                     HeightRequest="30"
@@ -78,10 +77,7 @@
                     <cm:ContextMenuContainer.Content>
                         <Grid>
                             <Grid.Behaviors>
-                                <berry:TouchBehavior
-                                    Command="{Binding BindingContext.ShowContextMenuCommand, Source={x:Reference this}}"
-                                    CommandParameter="{Binding ., Source={x:Reference ActionsInlineMenu}}"
-                                    NativeAnimation="True" />
+                                <berry:TouchBehavior NativeAnimation="True" />
                             </Grid.Behaviors>
                             <ImageButton
                                 HeightRequest="30"

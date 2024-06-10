@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Maui.Core;
-using CommunityToolkit.Maui.Views;
 using Microsoft.Maui.Controls;
 using Yosu.ViewModels;
 
@@ -36,6 +35,13 @@ public partial class MainPage : ContentPage
         };
 
         //Loaded += MainPage_Loaded;
+    }
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+
+        App.RefreshCurrentPageBehaviors();
     }
 
     private async void MainPage_Loaded(object? sender, System.EventArgs e)

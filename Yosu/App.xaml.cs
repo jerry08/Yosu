@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Linq;
+using Berry.Maui.Behaviors;
 using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Behaviors;
 using CommunityToolkit.Maui.Core;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Maui;
@@ -9,7 +12,7 @@ using Microsoft.Maui.Graphics;
 using Microsoft.Maui.Networking;
 using Yosu.Services;
 using Yosu.Services.AlertDialog;
-using Yosu.Utils;
+using NavigationBarStyle = Berry.Maui.Behaviors.NavigationBarStyle;
 
 namespace Yosu;
 
@@ -92,6 +95,46 @@ public partial class App : Application
 
         if (Current is not null)
             Current.UserAppTheme = preferenceService.AppTheme;
+    }
+
+    public static void RefreshCurrentPageBehaviors()
+    {
+        if (Current is null)
+            return;
+
+        var page = Current.MainPage;
+        if (page is null)
+            return;
+
+        var gray900Color = Current.Resources["Gray900"];
+
+        foreach (var behavior in page.Behaviors.OfType<StatusBarBehavior>())
+        {
+            behavior.SetAppTheme(
+                StatusBarBehavior.StatusBarColorProperty,
+                Colors.White,
+                Colors.Black
+            );
+            behavior.SetAppTheme(
+                StatusBarBehavior.StatusBarStyleProperty,
+                StatusBarStyle.DarkContent,
+                StatusBarStyle.LightContent
+            );
+        }
+
+        foreach (var behavior in page.Behaviors.OfType<NavigationBarBehavior>())
+        {
+            behavior.SetAppTheme(
+                NavigationBarBehavior.NavigationBarColorProperty,
+                Colors.White,
+                gray900Color
+            );
+            behavior.SetAppTheme(
+                NavigationBarBehavior.NavigationBarStyleProperty,
+                NavigationBarStyle.DarkContent,
+                NavigationBarStyle.LightContent
+            );
+        }
     }
 
 #if ANDROID
