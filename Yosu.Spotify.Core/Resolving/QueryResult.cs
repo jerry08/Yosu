@@ -3,8 +3,4 @@ using SpotifyExplode.Tracks;
 
 namespace Yosu.Spotify.Core.Resolving;
 
-public record QueryResult(
-    QueryResultKind Kind,
-    string Title,
-    IReadOnlyList<Track> Tracks
-);
+public record QueryResult(QueryResultKind Kind, string Title, IReadOnlyList<Track> Tracks);

@@ -18,7 +18,8 @@ public class QueryResolver
 
     public async Task<QueryResult> ResolveAsync(
         string query,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         // Only consider URLs when parsing IDs.
         // All other queries should be treated as search queries.
@@ -46,11 +47,20 @@ public class QueryResolver
         if (isUrl && ArtistId.TryParse(query) is { } artistId)
         {
             var artist = await _spotify.Artists.GetAsync(artistId, cancellationToken);
-            var albums = await _spotify.Artists.GetAllAlbumsAsync(artistId, null, cancellationToken);
-            var tracks = (await Task.WhenAll(
-                albums.Select(async album =>
-                    await _spotify.Albums.GetAllTracksAsync(album.Id, cancellationToken))
-            )).SelectMany(x => x).ToList();
+            var albums = await _spotify.Artists.GetAllAlbumsAsync(
+                artistId,
+                null,
+                cancellationToken
+            );
+            var tracks = (
+                await Task.WhenAll(
+                    albums.Select(async album =>
+                        await _spotify.Albums.GetAllTracksAsync(album.Id, cancellationToken)
+                    )
+                )
+            )
+                .SelectMany(x => x)
+                .ToList();
             return new QueryResult(QueryResultKind.Artist, $"Artist: {artist.Name}", tracks);
         }
 
@@ -71,7 +81,8 @@ public class QueryResolver
     public async Task<QueryResult> ResolveAsync(
         IReadOnlyList<string> queries,
         IProgress<Percentage>? progress = null,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         if (queries.Count == 1)
             return await ResolveAsync(queries.Single(), cancellationToken);
@@ -91,9 +102,7 @@ public class QueryResolver
                     tracks.Add(track);
             }
 
-            progress?.Report(
-                Percentage.FromFraction(1.0 * ++completed / queries.Count)
-            );
+            progress?.Report(Percentage.FromFraction(1.0 * ++completed / queries.Count));
         }
 
         return new QueryResult(QueryResultKind.Aggregate, $"{queries.Count} queries", tracks);

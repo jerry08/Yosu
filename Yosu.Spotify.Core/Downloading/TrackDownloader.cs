@@ -115,7 +115,8 @@ public class TrackDownloader
         string filePath,
         Track track,
         IProgress<Percentage>? progress = null,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         //var downloadUrl = await _spotify.Tracks.GetSpotifymateUrlAsync(track.Url, cancellationToken);
 
@@ -123,7 +124,11 @@ public class TrackDownloader
         var test1 = await y2mate.AnalyzeAsync(videoId!, cancellationToken: cancellationToken);
 
         var audio = test1.Where(x => x.FileType == FileType.Mp3).FirstOrDefault();
-        var downloadUrl = await y2mate.ConvertAsync(audio!.Id, videoId!, cancellationToken: cancellationToken);
+        var downloadUrl = await y2mate.ConvertAsync(
+            audio!.Id,
+            videoId!,
+            cancellationToken: cancellationToken
+        );
 
         //var tt = new WebClient();
         //tt.DownloadFile(downloadUrl, filePath);

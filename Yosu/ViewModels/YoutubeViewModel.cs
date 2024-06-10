@@ -35,7 +35,7 @@ public class YoutubeViewModel
 
     private BottomSheet? BottomSheet;
 
-    public static List<YoutubeDownloadViewModel> Downloads { get; set; } = new();
+    public static List<YoutubeDownloadViewModel> Downloads { get; set; } = [];
 
     //Tyrrrz single video
     public IReadOnlyList<VideoDownloadOption>? AvailableDownloadOptions { get; set; }
@@ -363,9 +363,6 @@ public class YoutubeViewModel
         if (!App.IsOnline(false))
             return;
 
-        Download(
-            new() { download },
-            (object?)download.DownloadOption ?? download.DownloadPreference
-        );
+        Download([download], (object?)download.DownloadOption ?? download.DownloadPreference);
     }
 }

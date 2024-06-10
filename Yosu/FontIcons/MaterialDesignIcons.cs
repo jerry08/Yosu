@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MaterialDesign;
+﻿namespace MaterialDesign;
 
 /// <summary>
 /// The unicode values for all Material Design icons.

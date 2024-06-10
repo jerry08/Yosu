@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Berry.Maui;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -10,7 +11,6 @@ using Microsoft.Maui.Controls;
 using SoundCloudExplode.Exceptions;
 using SpotifyExplode.Exceptions;
 using Woka.Utils.Extensions;
-using Yosu.Platforms.Services;
 using Yosu.Services;
 using Yosu.Utils;
 using Yosu.ViewModels.Components;
@@ -93,7 +93,7 @@ public partial class MainCollectionViewModel : CollectionViewModel<object>
             IntentUrl = null;
         }
 
-        KeyboardHelper.HideKeyboard();
+        KeyboardManager.HideKeyboard();
 
         if (string.IsNullOrWhiteSpace(Query))
         {
@@ -165,7 +165,7 @@ public partial class MainCollectionViewModel : CollectionViewModel<object>
             switch (entity)
             {
                 case YoutubeDownloadViewModel download:
-                    _youtubeViewModel.ShowOptions(new() { download });
+                    _youtubeViewModel.ShowOptions([download]);
                     break;
 
                 case SoundcloudDownloadViewModel download:

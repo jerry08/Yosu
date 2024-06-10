@@ -44,12 +44,6 @@ public partial class BaseViewModel : ObservableObject
 
     public virtual void OnNavigated() { }
 
-    [RelayCommand]
-    void ShowContextMenu(ContextMenuContainer menu)
-    {
-        menu.Show();
-    }
-
     public async Task<bool> IsOnline(bool showAlert = true)
     {
         var isOnline = Connectivity.Current.NetworkAccess == NetworkAccess.Internet;

@@ -1,7 +1,5 @@
 ﻿using Microsoft.Maui.Controls;
-using SoundCloudExplode.Tracks;
 using Yosu.ViewModels.Components;
-using YoutubeExplode.Videos;
 
 namespace Yosu.Views;
 

@@ -75,13 +75,13 @@ internal partial class FFmpeg
 
         private TimeSpan? TryParseCurrentOffset(string data) =>
             data.Pipe(s =>
-                Regex
-                    .Matches(s, @"time=(\d\d:\d\d:\d\d.\d\d)")
-                    .ToArray()
-                    .LastOrDefault()
-                    ?.Groups[1]
-                    .Value
-            )
+                    Regex
+                        .Matches(s, @"time=(\d\d:\d\d:\d\d.\d\d)")
+                        .ToArray()
+                        .LastOrDefault()
+                        ?.Groups[1]
+                        .Value
+                )
                 ?.NullIfWhiteSpace()
                 ?.Pipe(s => TimeSpan.ParseExact(s, "c", CultureInfo.InvariantCulture));
 

@@ -24,7 +24,7 @@ public class SoundcloudViewModel
     private readonly TrackDownloader _trackDownloader = new();
     private readonly MediaTagInjector _mediaTagInjector = new();
 
-    public static List<SoundcloudDownloadViewModel> Downloads { get; set; } = new();
+    public static List<SoundcloudDownloadViewModel> Downloads { get; set; } = [];
 
     public SoundcloudViewModel(SettingsService settingsService, PreferenceService preference)
     {

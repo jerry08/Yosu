@@ -8,8 +8,8 @@ internal class ProgressMuxer
     private readonly IProgress<double> _target;
 
     private readonly object _lock = new();
-    private readonly Dictionary<int, double> _splitWeights = new();
-    private readonly Dictionary<int, double> _splitValues = new();
+    private readonly Dictionary<int, double> _splitWeights = [];
+    private readonly Dictionary<int, double> _splitValues = [];
 
     public ProgressMuxer(IProgress<double> target) => _target = target;
 

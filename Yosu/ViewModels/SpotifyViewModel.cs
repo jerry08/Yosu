@@ -24,7 +24,7 @@ public class SpotifyViewModel
     private readonly TrackDownloader _trackDownloader = new();
     private readonly MediaTagInjector _mediaTagInjector = new();
 
-    public static List<SpotifyDownloadViewModel> Downloads { get; set; } = new();
+    public static List<SpotifyDownloadViewModel> Downloads { get; set; } = [];
 
     public SpotifyViewModel(SettingsService settingsService, PreferenceService preference)
     {
