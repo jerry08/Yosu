@@ -15,7 +15,7 @@ namespace Yosu.Extensions;
 internal static class ActivityExtensions
 {
     public static List<UriPermission> GetPersistedUriPermissions(this Context context) =>
-        context.ContentResolver?.PersistedUriPermissions.ToList() ?? new();
+        context.ContentResolver?.PersistedUriPermissions.ToList() ?? [];
 
     public static bool HasPersistedUriPermission(this Context context, string uri) =>
         GetPersistedUriPermissions(context).Any(x => x.Uri?.Path == uri);
