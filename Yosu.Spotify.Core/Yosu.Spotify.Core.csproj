@@ -9,10 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CSharpier.MsBuild" Version="0.27.3" PrivateAssets="all" />
+    <PackageReference Include="CSharpier.MsBuild" Version="0.28.2" PrivateAssets="all" />
     <PackageReference Include="Gress" Version="2.1.1" />
     <PackageReference Include="Httpz" Version="1.1.4" />
-    <PackageReference Include="SpotifyExplode" Version="1.0.7" />
+    <PackageReference Include="SpotifyExplode" Version="1.1.0" />
     <PackageReference Include="Y2mateApi" Version="1.0.0" />
   </ItemGroup>
 

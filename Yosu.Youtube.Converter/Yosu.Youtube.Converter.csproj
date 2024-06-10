@@ -20,10 +20,10 @@
 	</PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CSharpier.MsBuild" Version="0.27.3" PrivateAssets="all" />
+    <PackageReference Include="CSharpier.MsBuild" Version="0.28.2" PrivateAssets="all" />
     <PackageReference Include="Gress" Version="2.1.1" />
     <PackageReference Include="CliWrap" Version="3.6.6" />
-    <PackageReference Include="YoutubeExplode" Version="6.3.13" />
+    <PackageReference Include="YoutubeExplode" Version="6.3.16" />
     <PackageReference Include="PolySharp" Version="1.14.1" PrivateAssets="all" />
     <!--<PackageReference Include="Microsoft.Maui.Essentials" Version="8.0.6" />-->
   </ItemGroup>
@@ -34,11 +34,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Update="Microsoft.Maui.Controls" Version="8.0.10" />
+    <PackageReference Update="Microsoft.Maui.Controls" Version="8.0.40" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Update="Microsoft.Maui.Controls.Compatibility" Version="8.0.10" />
+    <PackageReference Update="Microsoft.Maui.Controls.Compatibility" Version="8.0.40" />
   </ItemGroup>
 
   <!--<ItemGroup Condition="'$(TargetFramework)' == '$(NetVersion)-maccatalyst' OR '$(TargetFramework)' == '$(NetVersion)-ios'">
