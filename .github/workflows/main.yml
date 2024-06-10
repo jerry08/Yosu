@@ -22,14 +22,14 @@ jobs:
     name: Android Build
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Cook KeyStore
         run:  echo "${{ secrets.KEYSTORE_B64 }}" | base64 -d > $GITHUB_WORKSPACE/signing-key.keystore
         shell: bash
 
       - name: Install .NET
-        uses: actions/setup-dotnet@v2
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.0.x
 
@@ -49,7 +49,7 @@ jobs:
             -p:AndroidSigningStorePass="${{ secrets.PASSWORD }}"
             -p:AndroidSigningKeyAlias="YosuAlias"
             -p:AndroidSigningKeyPass="${{ secrets.PASSWORD }}"
-            /p:CSharpier_Bypass=true
+            -p:CSharpier_Bypass=true
 
       - name: Rename file
         run: |
@@ -59,7 +59,7 @@ jobs:
         shell: bash
         
       - name: Upload Android Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Yosu
           path: Yosu.apk
@@ -75,7 +75,7 @@ jobs:
     steps:
       # Checkout required for running git commands, etc.
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set variables
         run: |
@@ -86,7 +86,7 @@ jobs:
           echo "PACKAGE_NAME=${{ github.event.repository.name }}-$TAG_NAME.apk" >> $GITHUB_ENV
 
       - name: Download artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: Yosu
           path: Yosu
@@ -124,7 +124,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set variables
         run: |
