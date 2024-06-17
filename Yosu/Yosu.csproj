@@ -17,8 +17,8 @@
     <ApplicationIdGuid>47d295d3-a6c6-4a0b-b863-abcdf653f0fc</ApplicationIdGuid>
 
     <!-- Versions -->
-    <ApplicationDisplayVersion>1.1.0</ApplicationDisplayVersion>
-    <ApplicationVersion>13</ApplicationVersion>
+    <ApplicationDisplayVersion>1.2.0</ApplicationDisplayVersion>
+    <ApplicationVersion>14</ApplicationVersion>
 
     <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">11.0</SupportedOSPlatformVersion>
     <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">13.1</SupportedOSPlatformVersion>
@@ -60,17 +60,17 @@
     <PackageReference Include="CSharpier.MsBuild" Version="0.28.2" PrivateAssets="all" />
     <PackageReference Include="Gress" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
-    <PackageReference Include="Microsoft.Maui.Controls" Version="8.0.40" />
-    <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.40" />
+    <PackageReference Include="Microsoft.Maui.Controls" Version="8.0.60" />
+    <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.60" />
     <PackageReference Include="Octokit" Version="12.0.0" />
     <PackageReference Include="Plugin.ContextMenuContainer" Version="1.0.7" />
     <PackageReference Include="PropertyChanged.Fody" Version="4.1.0" PrivateAssets="all" />
     <PackageReference Include="SkiaSharp.Views.Maui.Controls" Version="2.88.8" />
-    <PackageReference Include="Woka" Version="1.0.20" />
+    <PackageReference Include="Woka" Version="1.1.0" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == '$(NetVersion)-android'">
-    <PackageReference Include="Xamarin.AndroidX.Lifecycle.Service" Version="2.7.0.2" />
+    <PackageReference Include="Xamarin.AndroidX.Lifecycle.Service" Version="2.7.0.4" />
   </ItemGroup>
 
   <!--<ItemGroup Condition="$(TargetFramework.StartsWith('$(NetVersion)-android'))">
