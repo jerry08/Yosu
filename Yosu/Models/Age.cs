@@ -4,38 +4,36 @@ namespace Yosu.Models;
 
 public class Age
 {
-    public int Years;
-    public int Months;
-    public int TotalMonths;
-    public int Weeks;
-    public int Days;
-    public int Hours;
-    public int Minutes;
-    public int Seconds;
+    public int Years { get; private set; }
+    public int Months { get; private set; }
+    public int TotalMonths => Months + (Years * 12);
+    public int Weeks { get; private set; }
+    public int Days { get; private set; }
+    public int Hours { get; private set; }
+    public int Minutes { get; private set; }
+    public int Seconds { get; private set; }
 
-    public Age(DateTime Bday)
-    {
-        Count(Bday);
-    }
+    public Age() { }
 
-    public Age Count(DateTime bday)
+    public Age(DateTime start) => From(start);
+
+    public static Age From(DateTime start)
     {
-        var timeSpan = DateTime.Now - bday;
+        var timeSpan = DateTime.Now - start;
         var days = timeSpan.Days;
         if (timeSpan.Days <= 0)
             days = 0;
 
-        var age = DateTime.MinValue.AddDays(days);
+        var dateTime = DateTime.MinValue.AddDays(days);
 
-        Years = age.Year - 1;
-        Months = age.Month - 1;
-        Days = age.Day - 1;
-        Hours = timeSpan.Hours;
-        Minutes = timeSpan.Minutes;
-        Seconds = timeSpan.Seconds;
-
-        TotalMonths = Months + (Years * 12);
-
-        return this;
+        return new Age()
+        {
+            Years = dateTime.Year - 1,
+            Months = dateTime.Month - 1,
+            Days = dateTime.Day - 1,
+            Hours = timeSpan.Hours,
+            Minutes = timeSpan.Minutes,
+            Seconds = timeSpan.Seconds
+        };
     }
 }

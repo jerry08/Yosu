@@ -1,6 +1,6 @@
 ﻿namespace Yosu.Utils.Extensions;
 
-public static class StringExtensions
+public static class NumberExtensions
 {
     public static string ToKiloFormat(this int num, bool applyToThousand = true)
     {

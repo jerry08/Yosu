@@ -49,12 +49,12 @@ public class QueryResolver
         {
             var tracks = await _soundcloud
                 .Search.GetTracksAsync(query, cancellationToken)
-                .CollectAsync(20);
+                .CollectAsync(100);
 
             foreach (var track in tracks)
                 track.ArtworkUrl ??= track.User?.AvatarUrl;
 
-            return new QueryResult(QueryResultKind.Track, "Tracks", tracks);
+            return new QueryResult(QueryResultKind.Search, "Tracks", tracks);
         }
     }
 

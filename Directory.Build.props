@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <NetVersion>net8.0</NetVersion>
-    <Version>1.0.1</Version>
     <Company>Jerro</Company>
     <Copyright>Copyright (C) Jerry Berry</Copyright>
     <LangVersion>preview</LangVersion>
