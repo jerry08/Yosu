@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Gress;
@@ -12,9 +13,9 @@ using YoutubeExplode.Videos.ClosedCaptions;
 
 namespace Yosu.Youtube.Core.Downloading;
 
-public class VideoDownloader
+public class VideoDownloader(IReadOnlyList<Cookie>? initialCookies = null)
 {
-    private readonly YoutubeClient _youtube = new(Http.Client);
+    private readonly YoutubeClient _youtube = new(Http.Client, initialCookies ?? []);
 
     public async Task<IReadOnlyList<VideoDownloadOption>> GetDownloadOptionsAsync(
         VideoId videoId,
@@ -41,16 +42,22 @@ public class VideoDownloader
         string filePath,
         IVideo video,
         VideoDownloadOption downloadOption,
+        bool includeSubtitles = true,
         IProgress<Percentage>? progress = null,
         CancellationToken cancellationToken = default
     )
     {
-        // If the target container supports subtitles, embed them in the video too
-        var trackInfos = !downloadOption.Container.IsAudioOnly
-            ? (
-                await _youtube.Videos.ClosedCaptions.GetManifestAsync(video.Id, cancellationToken)
-            ).Tracks
-            : Array.Empty<ClosedCaptionTrackInfo>();
+        // Include subtitles in the output container
+        var trackInfos = new List<ClosedCaptionTrackInfo>();
+        if (includeSubtitles && !downloadOption.Container.IsAudioOnly)
+        {
+            var manifest = await _youtube.Videos.ClosedCaptions.GetManifestAsync(
+                video.Id,
+                cancellationToken
+            );
+
+            trackInfos.AddRange(manifest.Tracks);
+        }
 
         var dirPath = Path.GetDirectoryName(filePath);
         if (!string.IsNullOrWhiteSpace(dirPath))

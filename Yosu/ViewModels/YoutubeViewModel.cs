@@ -107,6 +107,7 @@ public class YoutubeViewModel
                     download.TempFilePath!,
                     download.Video!,
                     downloadOption,
+                    _settingsService.ShouldInjectSubtitles,
                     progress,
                     download.CancellationToken
                 );

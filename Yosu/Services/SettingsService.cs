@@ -19,6 +19,8 @@ public partial class SettingsService : SettingsBase, INotifyPropertyChanged
 
     public bool ShouldSkipExistingFiles { get; set; }
 
+    public bool ShouldInjectSubtitles { get; set; } = true;
+
     public string SoundCloudFileNameTemplate { get; set; } = "$title";
 
     public string SpotifyFileNameTemplate { get; set; } = "$title";

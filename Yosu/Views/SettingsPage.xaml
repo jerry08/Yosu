@@ -156,6 +156,25 @@
                             Text="{Binding Settings.DownloadDir}" />
                     </Grid>
 
+                    <!--  Inject subtitles  -->
+                    <Grid
+                        Margin="0,5,0,10"
+                        Padding="20,0"
+                        ColumnDefinitions="*,auto"
+                        RowDefinitions="*,*">
+                        <Label
+                            Margin="0,0,5,0"
+                            FontAttributes="Bold"
+                            FontSize="15"
+                            Text="Inject subtitles:"
+                            VerticalOptions="Center" />
+                        <Label
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Text="Inject subtitles into downloaded files" />
+                        <Switch Grid.ColumnSpan="2" IsToggled="{Binding Settings.ShouldInjectSubtitles}" />
+                    </Grid>
+
                     <!--  Inject tags  -->
                     <Grid
                         Margin="0,5,0,10"
