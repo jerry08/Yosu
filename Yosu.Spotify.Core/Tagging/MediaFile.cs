@@ -67,12 +67,12 @@ internal partial class MediaFile : IDisposable
             Data = thumbnailData
         };
 
-        _file.Tag.Pictures = new IPicture[] { picture };
+        _file.Tag.Pictures = [picture];
     }
 
-    public void SetArtist(string artist) => _file.Tag.Performers = new[] { artist };
+    public void SetArtist(string artist) => _file.Tag.Performers = [artist];
 
-    public void SetArtistSort(string artistSort) => _file.Tag.PerformersSort = new[] { artistSort };
+    public void SetArtistSort(string artistSort) => _file.Tag.PerformersSort = [artistSort];
 
     public void SetTitle(string title) => _file.Tag.Title = title;
 

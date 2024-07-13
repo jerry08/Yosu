@@ -13,20 +13,20 @@ using Yosu.ViewModels;
 namespace Yosu;
 
 [IntentFilter(
-    actions: new[] { Intent.ActionView },
+    actions: [Intent.ActionView],
     Label = "Download in Yosu",
-    Categories = new[] { Intent.CategoryDefault, Intent.CategoryBrowsable },
-    DataSchemes = new[] { "http", "https" },
-    DataHosts = new[] { "youtube.com", "youtu.be", "on.soundcloud.com" },
-    DataPathPatterns = new[] { "/.*" }
+    Categories = [Intent.CategoryDefault, Intent.CategoryBrowsable],
+    DataSchemes = ["http", "https"],
+    DataHosts = ["youtube.com", "youtu.be", "on.soundcloud.com"],
+    DataPathPatterns = ["/.*"]
 )]
 [IntentFilter(
-    actions: new[] { Intent.ActionView },
+    actions: [Intent.ActionView],
     Label = "Download in Yosu",
-    Categories = new[] { Intent.CategoryDefault, Intent.CategoryBrowsable },
-    DataSchemes = new[] { "http", "https" },
-    DataHosts = new[] { "soundcloud.com", "www.soundcloud.com", "m.soundcloud.com" },
-    DataPathPatterns = new[] { "/.*/.*" }
+    Categories = [Intent.CategoryDefault, Intent.CategoryBrowsable],
+    DataSchemes = ["http", "https"],
+    DataHosts = ["soundcloud.com", "www.soundcloud.com", "m.soundcloud.com"],
+    DataPathPatterns = ["/.*/.*"]
 )]
 //[IntentFilter(
 //    actions: new[] { Intent.ActionSend },
@@ -65,7 +65,7 @@ public class MainActivity : MauiAppCompatActivity
             {
                 ActivityCompat.RequestPermissions(
                     this,
-                    new string[] { Manifest.Permission.PostNotifications },
+                    [Manifest.Permission.PostNotifications],
                     PostNotificationsRequestCode
                 );
             }

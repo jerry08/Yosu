@@ -164,11 +164,11 @@ public partial class MainCollectionViewModel : CollectionViewModel<object>
                     break;
 
                 case SoundcloudDownloadViewModel download:
-                    _soundcloudViewModel.EnqueueDownloads(new[] { download });
+                    _soundcloudViewModel.EnqueueDownloads([download]);
                     break;
 
                 case SpotifyDownloadViewModel download:
-                    _spotifyViewModel.EnqueueDownloads(new[] { download });
+                    _spotifyViewModel.EnqueueDownloads([download]);
                     break;
             }
         }

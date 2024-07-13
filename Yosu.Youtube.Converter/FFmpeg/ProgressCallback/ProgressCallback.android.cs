@@ -22,7 +22,7 @@ internal partial class ProgressCallback
 
     public static void Init(IProgress<double>? progress, string filePath)
     {
-        Init(progress, new[] { filePath });
+        Init(progress, [filePath]);
     }
 
     public static void Init(IProgress<double>? progress, IEnumerable<string> filePaths)

@@ -56,7 +56,7 @@ public class MediaTagInjector
     private static void InjectTrackMetadataAsync(MediaFile mediaFile, Track track)
     {
         mediaFile.SetTitle(track.Title!);
-        mediaFile.SetPerformers(new[] { track.User!.Username! });
+        mediaFile.SetPerformers([track.User!.Username!]);
         mediaFile.SetAlbum(track.User.Username!);
     }
 

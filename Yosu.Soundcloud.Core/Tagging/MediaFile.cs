@@ -11,11 +11,11 @@ internal partial class MediaFile : IDisposable
     public MediaFile(TagFile file) => _file = file;
 
     public void SetThumbnail(byte[] thumbnailData) =>
-        _file.Tag.Pictures = new IPicture[] { new Picture(thumbnailData) };
+        _file.Tag.Pictures = [new Picture(thumbnailData)];
 
-    public void SetArtist(string artist) => _file.Tag.Performers = new[] { artist };
+    public void SetArtist(string artist) => _file.Tag.Performers = [artist];
 
-    public void SetArtistSort(string artistSort) => _file.Tag.PerformersSort = new[] { artistSort };
+    public void SetArtistSort(string artistSort) => _file.Tag.PerformersSort = [artistSort];
 
     public void SetTitle(string title) => _file.Tag.Title = title;
 

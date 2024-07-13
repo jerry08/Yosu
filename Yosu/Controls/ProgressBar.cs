@@ -232,8 +232,8 @@ public class ProgressBar : SKCanvasView
             progressPaint.Shader = SKShader.CreateLinearGradient(
                 new SKPoint(_drawRect.Left, _drawRect.MidY),
                 new SKPoint(_drawRect.Right, _drawRect.MidY),
-                new[] { GradientColor.ToSKColor(), ProgressColor.ToSKColor() },
-                new[] { 0.0f, 1.0f },
+                [GradientColor.ToSKColor(), ProgressColor.ToSKColor()],
+                [0.0f, 1.0f],
                 SKShaderTileMode.Clamp
             );
         }

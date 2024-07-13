@@ -80,8 +80,8 @@ internal static class ActivityExtensions
             {
                 MediaScannerConnection.ScanFile(
                     context,
-                    new[] { newFilePath },
-                    new[] { mimeType },
+                    [newFilePath],
+                    [mimeType],
                     null
                 );
             }
@@ -178,6 +178,6 @@ internal static class ActivityExtensions
         if (output is not null)
             await input.CopyToAsync(output, defaultBufferSize, cancellationToken);
 
-        MediaScannerConnection.ScanFile(context, new[] { newFilePath }, new[] { mimeType }, null);
+        MediaScannerConnection.ScanFile(context, [newFilePath], [mimeType], null);
     }
 }

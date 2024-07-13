@@ -68,7 +68,7 @@ public class QueryResolver
         if (isUrl && TrackId.TryParse(query) is { } trackId)
         {
             var track = await _spotify.Tracks.GetAsync(trackId, cancellationToken);
-            return new QueryResult(QueryResultKind.Track, track.Title, new[] { track });
+            return new QueryResult(QueryResultKind.Track, track.Title, [track]);
         }
 
         // Search

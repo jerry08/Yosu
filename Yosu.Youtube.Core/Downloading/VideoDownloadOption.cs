@@ -53,7 +53,7 @@ public partial record VideoDownloadOption
                         yield return new VideoDownloadOption(
                             videoStreamInfo.Container,
                             false,
-                            new IStreamInfo[] { videoStreamInfo, audioStreamInfo }
+                            [videoStreamInfo, audioStreamInfo]
                         );
                     }
                 }

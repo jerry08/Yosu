@@ -128,7 +128,7 @@ public class ObservableRangeCollection<T> : ObservableCollection<T>
     /// <summary>
     /// Clears the current collection and replaces it with the specified item.
     /// </summary>
-    public void Replace(T item) => ReplaceRange(new T[] { item });
+    public void Replace(T item) => ReplaceRange([item]);
 
     /// <summary>
     /// Clears the current collection and replaces it with the specified collection.

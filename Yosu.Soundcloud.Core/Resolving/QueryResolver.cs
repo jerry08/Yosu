@@ -45,7 +45,7 @@ public class QueryResolver
 
             track!.ArtworkUrl ??= track.User?.AvatarUrl;
 
-            return new QueryResult(QueryResultKind.Track, track!.Title!, new[] { track });
+            return new QueryResult(QueryResultKind.Track, track!.Title!, [track]);
         }
 
         // Search
