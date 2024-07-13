@@ -3,12 +3,10 @@
 	<PropertyGroup>
 		<TargetFrameworks>$(NetVersion);$(NetVersion)-android;$(NetVersion)-ios;$(NetVersion)-maccatalyst</TargetFrameworks>
 		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);$(NetVersion)-windows10.0.19041.0</TargetFrameworks>
-    <!--<UseMauiEssentials>true</UseMauiEssentials>-->
     <UseMaui>true</UseMaui>
+    <!--<UseMauiEssentials>true</UseMauiEssentials>-->
 		<SingleProject>true</SingleProject>
 		<ImplicitUsings>disable</ImplicitUsings>
-
-    <!--https://github.com/dotnet/maui/issues/12100-->
     <PublishReadyToRun>false</PublishReadyToRun>
 
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">14.2</SupportedOSPlatformVersion>
@@ -23,32 +21,15 @@
     <PackageReference Include="CSharpier.MsBuild" Version="0.28.2" PrivateAssets="all" />
     <PackageReference Include="Gress" Version="2.1.1" />
     <PackageReference Include="CliWrap" Version="3.6.6" />
-    <PackageReference Include="YoutubeExplode" Version="6.3.16" />
+    <PackageReference Update="Microsoft.Maui.Controls" Version="8.0.70" />
+    <PackageReference Update="Microsoft.Maui.Controls.Compatibility" Version="8.0.70" />
     <PackageReference Include="PolySharp" Version="1.14.1" PrivateAssets="all" />
-    <!--<PackageReference Include="Microsoft.Maui.Essentials" Version="8.0.6" />-->
+    <PackageReference Include="YoutubeExplode" Version="6.3.16" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == '$(NetVersion)-android'">
     <!--<PackageReference Include="Laerdal.FFmpeg.Android.Min" Version="4.4.28" />-->
     <PackageReference Include="Laerdal.FFmpeg.Android.Full" Version="4.4.28" />
   </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Update="Microsoft.Maui.Controls" Version="8.0.70" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Update="Microsoft.Maui.Controls.Compatibility" Version="8.0.70" />
-  </ItemGroup>
-
-  <!--<ItemGroup Condition="'$(TargetFramework)' == '$(NetVersion)-maccatalyst' OR '$(TargetFramework)' == '$(NetVersion)-ios'">
-    <PackageReference Include="Laerdal.FFmpeg.iOS.Min" Version="4.4.52" />
-  </ItemGroup>-->
-
-  <!--<ItemGroup>
-    <Reference Include="Laerdal.FFmpeg.Android">
-      <HintPath>D:\ffmpeg\android dll\Laerdal.FFmpeg.Android.dll</HintPath>
-    </Reference>
-  </ItemGroup>-->
 
 </Project>
