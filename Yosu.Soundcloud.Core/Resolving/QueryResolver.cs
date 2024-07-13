@@ -19,6 +19,9 @@ public class QueryResolver
         CancellationToken cancellationToken = default
     )
     {
+        if (!_soundcloud.IsInitialized)
+            await _soundcloud.InitializeAsync(cancellationToken);
+
         // Playlist/Album
         if (await _soundcloud.Playlists.IsUrlValidAsync(query, cancellationToken))
         {
