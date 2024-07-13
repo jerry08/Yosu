@@ -46,5 +46,7 @@ public partial class PreferenceService
 {
     [JsonSerializable(typeof(PreferenceService))]
     [JsonSerializable(typeof(Video))]
+    [JsonSerializable(typeof(SpotifyExplode.Tracks.Track))]
+    [JsonSerializable(typeof(SoundCloudExplode.Tracks.Track))]
     private partial class SerializerContext : JsonSerializerContext;
 }
