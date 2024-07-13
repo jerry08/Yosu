@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Berry.Maui;
+using Berry.Maui.Extensions;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -35,7 +36,7 @@ public partial class MainCollectionViewModel : CollectionViewModel<object>
     private readonly SpotifyViewModel _spotifyViewModel;
 
     [ObservableProperty]
-    private SourceType _searchSourceType;
+    SourceType _searchSourceType;
 
     private SourceType SourceType =>
         SelectedEntities.FirstOrDefault() switch
@@ -68,12 +69,6 @@ public partial class MainCollectionViewModel : CollectionViewModel<object>
         _preference.Load();
 
         SearchSourceType = _preference.SearchSourceType;
-
-        PropertyChanged += (s, e) =>
-        {
-            if (e.PropertyName == nameof(SearchSourceType))
-                SearchSourceTypeChanged();
-        };
 
         Query = IntentUrl;
     }
@@ -302,17 +297,18 @@ public partial class MainCollectionViewModel : CollectionViewModel<object>
         await SearchOptionsView.ShowAsync();
     }
 
-    private async void SearchSourceTypeChanged()
+    async partial void OnSearchSourceTypeChanged(SourceType value)
     {
         if (SearchOptionsView is not null)
             await SearchOptionsView.DismissAsync();
 
         _preference.Load();
-        _preference.SearchSourceType = SearchSourceType;
+        _preference.SearchSourceType = value;
         _preference.Save();
 
         Entities.Clear();
-        Refresh();
+
+        Refresh().FireAndForget();
     }
 
     [RelayCommand]

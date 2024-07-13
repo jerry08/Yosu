@@ -69,51 +69,7 @@ public partial class CollectionViewModel<T> : CollectionViewModelBase
     }
 
     [RelayCommand]
-    async Task Create()
-    {
-        if (!await IsOnline())
-            return;
-
-        CreateCore();
-    }
-
-    protected virtual void CreateCore() { }
-
-    [RelayCommand]
-    async void Edit(T entity)
-    {
-        if (!await IsOnline())
-            return;
-
-        EditCore(entity);
-    }
-
-    protected virtual void EditCore(T entity) { }
-
-    [RelayCommand]
-    async void View(T entity)
-    {
-        if (!await IsOnline())
-            return;
-
-        ViewCore(entity);
-    }
-
-    protected virtual void ViewCore(T entity) { }
-
-    [RelayCommand]
-    async void Delete(T entity)
-    {
-        if (!await IsOnline())
-            return;
-
-        DeleteCore(entity);
-    }
-
-    protected virtual void DeleteCore(T entity) { }
-
-    [RelayCommand]
-    async void QueryChanged()
+    async Task QueryChanged()
     {
         if (!await IsOnline())
             return;
