@@ -7,6 +7,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.Maui.ApplicationModel;
 using Microsoft.Maui.Storage;
 using Yosu.ViewModels.Components;
+using YoutubeExplode.Videos;
 
 namespace Yosu.Services;
 
@@ -44,5 +45,6 @@ public partial class PreferenceService()
 public partial class PreferenceService
 {
     [JsonSerializable(typeof(PreferenceService))]
+    [JsonSerializable(typeof(Video))]
     private partial class SerializerContext : JsonSerializerContext;
 }
