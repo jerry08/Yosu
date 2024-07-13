@@ -108,6 +108,8 @@ public partial class App : Application
 
         var gray900Color = Current.Resources["Gray900"];
 
+#if !MACCATALYST
+#pragma warning disable CA1416
         foreach (var behavior in page.Behaviors.OfType<StatusBarBehavior>())
         {
             behavior.SetAppTheme(
@@ -121,6 +123,8 @@ public partial class App : Application
                 StatusBarStyle.LightContent
             );
         }
+#pragma warning restore CA1416
+#endif
 
         foreach (var behavior in page.Behaviors.OfType<NavigationBarBehavior>())
         {

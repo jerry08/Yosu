@@ -4,9 +4,7 @@
     <TargetFrameworks>$(NetVersion)-android;$(NetVersion)-ios</TargetFrameworks>
     <OutputType>Exe</OutputType>
     <RootNamespace>Yosu</RootNamespace>
-    <!--<UseMaui>true</UseMaui>-->
-    <!-- Rollback MAUI version because of bug (https://github.com/dotnet/maui/issues/14520) -->
-    <!--<MauiVersion>7.0.59</MauiVersion>-->
+    <UseMaui>true</UseMaui>
     <SingleProject>true</SingleProject>
 
     <!-- Display name -->
