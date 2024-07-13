@@ -10,7 +10,7 @@
     <PackageReference Include="JsonExtensions" Version="1.2.0" />
     <PackageReference Include="System.Reactive" Version="6.0.1" />
     <PackageReference Include="TagLibSharp" Version="2.3.0" />
-    <PackageReference Include="SoundCloudExplode" Version="1.6.3" />
+    <PackageReference Include="SoundCloudExplode" Version="1.6.4" />
   </ItemGroup>
 
   <ItemGroup>
