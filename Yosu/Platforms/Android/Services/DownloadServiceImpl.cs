@@ -19,7 +19,7 @@ public class DownloadServiceImpl : IDownloadService
     )
     {
         var status = await StoragePermissionUtil.CheckAndRequestStoragePermission();
-        if (status == PermissionStatus.Denied)
+        if (status is PermissionStatus.Denied)
         {
             await Snackbar.Make("Storage permission not granted.").Show();
             return;

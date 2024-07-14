@@ -190,7 +190,7 @@ public partial class HistoryCollectionViewModel : CollectionViewModel<ListGroup<
             return;
 
         _preference.Downloads.Clear();
-        _preference.Load();
+        _preference.Save();
 
         Load();
     }

@@ -46,10 +46,10 @@ internal class StoragePermissionUtil
     {
         var status = await Permissions.CheckStatusAsync<Permissions.Photos>();
 
-        if (status == PermissionStatus.Granted)
+        if (status is PermissionStatus.Granted)
             return status;
 
-        if (status == PermissionStatus.Denied)
+        if (status is PermissionStatus.Denied)
         {
             // Prompt the user to turn on in settings
             // On iOS once a permission has been denied it may not be requested again from the application

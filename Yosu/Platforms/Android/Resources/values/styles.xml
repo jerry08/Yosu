@@ -9,7 +9,7 @@
     <!--<item name="colorPrimary">#d74c4c</item>-->
     <!--<item name="colorOnPrimary">#ffffff</item>-->
     <!--<item name="backgroundTint">#cd5</item>-->
-    
+
     <item name="bottomSheetDialogTheme">@style/CustomBottomSheetDialogTheme</item>
 
     <!-- To change the background of options menu -->
@@ -39,7 +39,7 @@
     <item name="popupMenuStyle">@style/PopupMenu</item>
 
     <item name="alertDialogTheme">@style/DialogStyle</item>
-    
+
     <item name="android:alertDialogTheme">@style/DialogStyle</item>
     <item name="android:timePickerDialogTheme">@style/DialogStyle</item>
     <item name="android:datePickerDialogTheme">@style/DialogStyle</item>
@@ -60,7 +60,7 @@
 
   <style name="CustomBottomSheetDialogTheme" parent="@style/ThemeOverlay.Material3.BottomSheetDialog">
     <item name="bottomSheetStyle">@style/Yosu.BottomSheetDialog</item>
-    
+
     <item name="android:windowIsFloating">false</item>
     <item name="android:navigationBarColor">@color/bottomSheetBg</item>
     <item name="android:windowLightStatusBar">false</item>

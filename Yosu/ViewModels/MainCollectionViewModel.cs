@@ -76,7 +76,7 @@ public partial class MainCollectionViewModel : CollectionViewModel<object>
     protected override void LoadCore()
     {
         base.LoadCore();
-        ProcessQuery();
+        ProcessQuery().FireAndForget();
     }
 
     [RelayCommand]
@@ -149,7 +149,7 @@ public partial class MainCollectionViewModel : CollectionViewModel<object>
             return;
 
         var status = await StoragePermissionUtil.CheckAndRequestStoragePermission();
-        if (status == PermissionStatus.Denied)
+        if (status is PermissionStatus.Denied)
         {
             await Snackbar.Make("Storage permission not granted.").Show();
             return;
@@ -185,7 +185,7 @@ public partial class MainCollectionViewModel : CollectionViewModel<object>
             return;
 
         var status = await StoragePermissionUtil.CheckAndRequestStoragePermission();
-        if (status == PermissionStatus.Denied)
+        if (status is PermissionStatus.Denied)
         {
             await Snackbar.Make("Storage permission not granted.").Show();
             return;
