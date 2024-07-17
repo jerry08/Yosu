@@ -3,15 +3,13 @@ using System.Collections.Generic;
 
 namespace Yosu.Youtube.Converter.Utils;
 
-internal class ProgressMuxer
+internal class ProgressMuxer(IProgress<double> target)
 {
-    private readonly IProgress<double> _target;
+    private readonly IProgress<double> _target = target;
 
     private readonly object _lock = new();
     private readonly Dictionary<int, double> _splitWeights = [];
     private readonly Dictionary<int, double> _splitValues = [];
-
-    public ProgressMuxer(IProgress<double> target) => _target = target;
 
     public IProgress<double> CreateInput(double weight = 1)
     {

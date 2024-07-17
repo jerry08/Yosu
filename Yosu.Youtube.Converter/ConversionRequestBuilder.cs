@@ -10,18 +10,16 @@ namespace Yosu.Youtube.Converter;
 /// <summary>
 /// Builder for <see cref="ConversionRequest" />.
 /// </summary>
-public partial class ConversionRequestBuilder
+/// <remarks>
+/// Initializes an instance of <see cref="ConversionRequestBuilder" />.
+/// </remarks>
+public partial class ConversionRequestBuilder(string outputFilePath)
 {
-    private readonly string _outputFilePath;
+    private readonly string _outputFilePath = outputFilePath;
 
     private string? _ffmpegCliFilePath;
     private Container? _container;
     private ConversionPreset _preset;
-
-    /// <summary>
-    /// Initializes an instance of <see cref="ConversionRequestBuilder" />.
-    /// </summary>
-    public ConversionRequestBuilder(string outputFilePath) => _outputFilePath = outputFilePath;
 
     private Container GetDefaultContainer() =>
         new(Path.GetExtension(_outputFilePath).TrimStart('.').NullIfWhiteSpace() ?? "mp4");

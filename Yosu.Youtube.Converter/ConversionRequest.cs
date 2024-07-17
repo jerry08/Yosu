@@ -7,22 +7,30 @@ namespace Yosu.Youtube.Converter;
 /// <summary>
 /// Conversion options.
 /// </summary>
-public class ConversionRequest
+/// <remarks>
+/// Initializes an instance of <see cref="ConversionRequest" />.
+/// </remarks>
+public class ConversionRequest(
+    string ffmpegCliFilePath,
+    string outputFilePath,
+    Container container,
+    ConversionPreset preset
+    )
 {
     /// <summary>
     /// Path to FFmpeg CLI.
     /// </summary>
-    public string FFmpegCliFilePath { get; }
+    public string FFmpegCliFilePath { get; } = ffmpegCliFilePath;
 
     /// <summary>
     /// Output file path.
     /// </summary>
-    public string OutputFilePath { get; }
+    public string OutputFilePath { get; } = outputFilePath;
 
     /// <summary>
     /// Output container.
     /// </summary>
-    public Container Container { get; }
+    public Container Container { get; } = container;
 
     /// <summary>
     /// Output format.
@@ -33,23 +41,7 @@ public class ConversionRequest
     /// <summary>
     /// Encoder preset.
     /// </summary>
-    public ConversionPreset Preset { get; }
-
-    /// <summary>
-    /// Initializes an instance of <see cref="ConversionRequest" />.
-    /// </summary>
-    public ConversionRequest(
-        string ffmpegCliFilePath,
-        string outputFilePath,
-        Container container,
-        ConversionPreset preset
-    )
-    {
-        FFmpegCliFilePath = ffmpegCliFilePath;
-        OutputFilePath = outputFilePath;
-        Container = container;
-        Preset = preset;
-    }
+    public ConversionPreset Preset { get; } = preset;
 
     /// <summary>
     /// Initializes an instance of <see cref="ConversionRequest" />.

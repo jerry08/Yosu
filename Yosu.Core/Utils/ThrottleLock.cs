@@ -4,13 +4,11 @@ using System.Threading.Tasks;
 
 namespace Yosu.Core.Utils;
 
-public class ThrottleLock : IDisposable
+public class ThrottleLock(TimeSpan interval) : IDisposable
 {
     private readonly SemaphoreSlim _semaphore = new(1, 1);
-    private readonly TimeSpan _interval;
+    private readonly TimeSpan _interval = interval;
     private DateTimeOffset _lastRequestInstant = DateTimeOffset.MinValue;
-
-    public ThrottleLock(TimeSpan interval) => _interval = interval;
 
     public async Task WaitAsync(CancellationToken cancellationToken = default)
     {

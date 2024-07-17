@@ -13,18 +13,11 @@ using YoutubeExplode.Videos.Streams;
 
 namespace Yosu.Youtube.Converter;
 
-internal partial class Converter
+internal partial class Converter(VideoClient videoClient, FFmpeg ffmpeg, ConversionPreset preset)
 {
-    private readonly VideoClient _videoClient;
-    private readonly FFmpeg _ffmpeg;
-    private readonly ConversionPreset _preset;
-
-    public Converter(VideoClient videoClient, FFmpeg ffmpeg, ConversionPreset preset)
-    {
-        _videoClient = videoClient;
-        _ffmpeg = ffmpeg;
-        _preset = preset;
-    }
+    private readonly VideoClient _videoClient = videoClient;
+    private readonly FFmpeg _ffmpeg = ffmpeg;
+    private readonly ConversionPreset _preset = preset;
 
     private async ValueTask ProcessAsync(
         string filePath,
@@ -233,17 +226,11 @@ internal partial class Converter
 
 internal partial class Converter
 {
-    private class StreamInput : IDisposable
+    private class StreamInput(IStreamInfo info, string filePath) : IDisposable
     {
-        public IStreamInfo Info { get; }
+        public IStreamInfo Info { get; } = info;
 
-        public string FilePath { get; }
-
-        public StreamInput(IStreamInfo info, string filePath)
-        {
-            Info = info;
-            FilePath = filePath;
-        }
+        public string FilePath { get; } = filePath;
 
         public void Dispose()
         {
@@ -258,17 +245,11 @@ internal partial class Converter
         }
     }
 
-    private class SubtitleInput : IDisposable
+    private class SubtitleInput(ClosedCaptionTrackInfo info, string filePath) : IDisposable
     {
-        public ClosedCaptionTrackInfo Info { get; }
+        public ClosedCaptionTrackInfo Info { get; } = info;
 
-        public string FilePath { get; }
-
-        public SubtitleInput(ClosedCaptionTrackInfo info, string filePath)
-        {
-            Info = info;
-            FilePath = filePath;
-        }
+        public string FilePath { get; } = filePath;
 
         public void Dispose()
         {

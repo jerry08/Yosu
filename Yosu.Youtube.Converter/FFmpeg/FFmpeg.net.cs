@@ -14,11 +14,9 @@ namespace Yosu.Youtube.Converter;
 // Ideally this should use named pipes and stream through stdout.
 // However, named pipes aren't well supported on non-Windows OS and
 // stdout streaming only works with some specific formats.
-internal partial class FFmpeg
+internal partial class FFmpeg(string filePath)
 {
-    private readonly string _filePath;
-
-    public FFmpeg(string filePath) => _filePath = filePath;
+    private readonly string _filePath = filePath;
 
     public async ValueTask ExecuteAsync(
         string arguments,
@@ -58,15 +56,13 @@ internal partial class FFmpeg
 
 internal partial class FFmpeg
 {
-    private class FFmpegProgressRouter : PipeTarget
+    private class FFmpegProgressRouter(IProgress<double> output) : PipeTarget
     {
         private readonly StringBuilder _buffer = new();
-        private readonly IProgress<double> _output;
+        private readonly IProgress<double> _output = output;
 
         private TimeSpan? _totalDuration;
         private TimeSpan? _lastOffset;
-
-        public FFmpegProgressRouter(IProgress<double> output) => _output = output;
 
         private TimeSpan? TryParseTotalDuration(string data) =>
             data.Pipe(s => Regex.Match(s, @"Duration:\s(\d\d:\d\d:\d\d.\d\d)").Groups[1].Value)

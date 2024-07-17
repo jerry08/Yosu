@@ -4,11 +4,9 @@ using TagFile = TagLib.File;
 
 namespace Yosu.Soundcloud.Core.Tagging;
 
-internal partial class MediaFile : IDisposable
+internal partial class MediaFile(TagFile file) : IDisposable
 {
-    private readonly TagFile _file;
-
-    public MediaFile(TagFile file) => _file = file;
+    private readonly TagFile _file = file;
 
     public void SetThumbnail(byte[] thumbnailData) =>
         _file.Tag.Pictures = [new Picture(thumbnailData)];
