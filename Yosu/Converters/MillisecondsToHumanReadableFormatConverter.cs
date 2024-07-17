@@ -6,7 +6,7 @@ namespace Yosu.Converters;
 
 public class MillisecondsToHumanReadableFormatConverter : IValueConverter
 {
-    public object? Convert(object? value, Type targetType, object parameter, CultureInfo culture)
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         if (long.TryParse(value?.ToString(), out var ms))
         {
@@ -35,7 +35,7 @@ public class MillisecondsToHumanReadableFormatConverter : IValueConverter
     public object ConvertBack(
         object? value,
         Type targetType,
-        object parameter,
+        object? parameter,
         CultureInfo culture
     ) => throw new NotSupportedException();
 }

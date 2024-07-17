@@ -7,7 +7,7 @@ namespace Yosu.Converters.Youtube;
 
 public class VideoQualityPreferenceToStringConverter : IValueConverter
 {
-    public object? Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         if (value is VideoQualityPreference preference)
             return preference.GetDisplayName();
@@ -16,9 +16,9 @@ public class VideoQualityPreferenceToStringConverter : IValueConverter
     }
 
     public object ConvertBack(
-        object value,
+        object? value,
         Type targetType,
-        object parameter,
+        object? parameter,
         CultureInfo culture
     ) => throw new NotImplementedException();
 }
