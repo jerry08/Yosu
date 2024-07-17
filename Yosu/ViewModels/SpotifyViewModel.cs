@@ -76,7 +76,7 @@ public class SpotifyViewModel
     private void EnqueueDownload(SpotifyDownloadViewModel download)
     {
         _preferenceService.Load();
-        _preferenceService.Downloads.Add(DownloadItem.FromViewModel(download));
+        _preferenceService.Downloads.Add(DownloadItem.From(download));
         _preferenceService.Save();
 
         Downloads.Add(download);

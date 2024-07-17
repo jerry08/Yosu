@@ -5,7 +5,6 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.Maui.ApplicationModel;
 using Microsoft.Maui.Controls;
 using Yosu.Services;
-using Yosu.Utils;
 using Yosu.ViewModels.Framework;
 
 namespace Yosu.ViewModels.Settings;

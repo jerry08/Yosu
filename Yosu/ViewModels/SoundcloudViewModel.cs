@@ -26,12 +26,12 @@ public class SoundcloudViewModel
 
     public static List<SoundcloudDownloadViewModel> Downloads { get; set; } = [];
 
-    public SoundcloudViewModel(SettingsService settingsService, PreferenceService preference)
+    public SoundcloudViewModel(SettingsService settingsService, PreferenceService preferenceService)
     {
         _settingsService = settingsService;
-        _preferenceService = preference;
-
         _settingsService.Load();
+
+        _preferenceService = preferenceService;
         _preferenceService.Load();
     }
 
@@ -74,10 +74,10 @@ public class SoundcloudViewModel
         }
     }
 
-    private void EnqueueDownload(SoundcloudDownloadViewModel download)
+    private async void EnqueueDownload(SoundcloudDownloadViewModel download)
     {
         _preferenceService.Load();
-        _preferenceService.Downloads.Add(DownloadItem.FromViewModel(download));
+        _preferenceService.Downloads.Add(DownloadItem.From(download));
         _preferenceService.Save();
 
         Downloads.Add(download);
@@ -86,7 +86,7 @@ public class SoundcloudViewModel
 
         _downloadSemaphore.MaxCount = _settingsService.ParallelLimit;
 
-        Task.Run(async () =>
+        await Task.Run(async () =>
         {
             try
             {
@@ -137,19 +137,6 @@ public class SoundcloudViewModel
                     );
                 }
 #endif
-
-                // Update download information
-                //await _preference.LoadAsync();
-
-                //var existingDownload = _preference.Downloads
-                //    .FirstOrDefault(x => x.SourceType == SourceType.Soundcloud &&
-                //        x.Key == download.Track?.PermalinkUrl?.ToString());
-                //
-                //if (existingDownload is not null)
-                //{
-                //    existingDownload = DownloadItem.FromViewModel(download);
-                //    await _preference.SaveAsync();
-                //}
             }
             catch (Exception ex)
             {

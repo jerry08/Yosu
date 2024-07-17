@@ -8,6 +8,10 @@ using Microsoft.Maui.ApplicationModel;
 using Microsoft.Maui.Storage;
 using Yosu.ViewModels.Components;
 using YoutubeExplode.Videos;
+using SoundCloudTrack = SoundCloudExplode.Tracks.Track;
+using SoundCloudTrackSearchResult = SoundCloudExplode.Search.TrackSearchResult;
+using SpotifyTrack = SpotifyExplode.Tracks.Track;
+using SpotifyTrackSearchResult = SpotifyExplode.Search.TrackSearchResult;
 
 namespace Yosu.Services;
 
@@ -40,13 +44,33 @@ public partial class PreferenceService()
         get => _searchSourceType;
         set => SetProperty(ref _searchSourceType, value);
     }
+
+    public override bool Load()
+    {
+        var result = base.Load();
+
+        Downloads.ForEach(download => download.SetEntity());
+
+        return result;
+    }
 }
 
+// Need to specify `TypeInfoPropertyName` when two classes share
+// the same name but different namespaces
+// https://github.com/dotnet/runtime/issues/58198
 public partial class PreferenceService
 {
     [JsonSerializable(typeof(PreferenceService))]
     [JsonSerializable(typeof(Video))]
-    [JsonSerializable(typeof(SpotifyExplode.Tracks.Track))]
-    [JsonSerializable(typeof(SoundCloudExplode.Tracks.Track))]
+    [JsonSerializable(typeof(SpotifyTrack), TypeInfoPropertyName = nameof(SpotifyTrack))]
+    [JsonSerializable(
+        typeof(SpotifyTrackSearchResult),
+        TypeInfoPropertyName = nameof(SpotifyTrackSearchResult)
+    )]
+    [JsonSerializable(typeof(SoundCloudTrack), TypeInfoPropertyName = nameof(SoundCloudTrack))]
+    [JsonSerializable(
+        typeof(SoundCloudTrackSearchResult),
+        TypeInfoPropertyName = nameof(SoundCloudTrackSearchResult)
+    )]
     private partial class SerializerContext : JsonSerializerContext;
 }

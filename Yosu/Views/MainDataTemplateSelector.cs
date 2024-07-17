@@ -13,33 +13,23 @@ public class MainDataTemplateSelector : DataTemplateSelector
 
     protected override DataTemplate? OnSelectTemplate(object item, BindableObject container)
     {
-        //if (item is IVideo)
-        //    return YoutubeVideoDataTemplate;
-        //
-        //if (item is Track)
-        //    return SoundcloudDataTemplate;
-
         if (item is DownloadItem downloadItem)
         {
-            if (downloadItem.Entity is YoutubeDownloadViewModel)
-                return YoutubeVideoDataTemplate;
-
-            if (downloadItem.Entity is SoundcloudDownloadViewModel)
-                return SoundcloudDataTemplate;
-
-            if (downloadItem.Entity is SpotifyDownloadViewModel)
-                return SpotifyDataTemplate;
+            return downloadItem.SourceType switch
+            {
+                SourceType.Youtube => YoutubeVideoDataTemplate,
+                SourceType.Soundcloud => SoundcloudDataTemplate,
+                SourceType.Spotify => SpotifyDataTemplate,
+                _ => null
+            };
         }
 
-        if (item is YoutubeDownloadViewModel)
-            return YoutubeVideoDataTemplate;
-
-        if (item is SoundcloudDownloadViewModel)
-            return SoundcloudDataTemplate;
-
-        if (item is SpotifyDownloadViewModel)
-            return SpotifyDataTemplate;
-
-        return null;
+        return item switch
+        {
+            YoutubeDownloadViewModel => YoutubeVideoDataTemplate,
+            SoundcloudDownloadViewModel => SoundcloudDataTemplate,
+            SpotifyDownloadViewModel => SpotifyDataTemplate,
+            _ => null
+        };
     }
 }

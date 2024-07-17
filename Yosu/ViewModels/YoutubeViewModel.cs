@@ -66,7 +66,7 @@ public class YoutubeViewModel
     public void EnqueueDownload(YoutubeDownloadViewModel download)
     {
         _preferenceService.Load();
-        _preferenceService.Downloads.Add(DownloadItem.FromViewModel(download));
+        _preferenceService.Downloads.Add(DownloadItem.From(download));
         _preferenceService.Save();
 
         Downloads.Add(download);

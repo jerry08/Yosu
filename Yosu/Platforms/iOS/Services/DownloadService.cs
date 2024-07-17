@@ -31,7 +31,8 @@ public class MySessionDelegate : NSObject, INSUrlSessionDownloadDelegate
         NSUrlSession session,
         NSUrlSessionDownloadTask downloadTask,
         NSUrl location
-    ) { }
+    )
+    { }
 
     public void DidWriteData(
         NSUrlSession session,

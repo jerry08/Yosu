@@ -91,16 +91,13 @@ public static class MauiProgram
         services.AddTransient<SettingsPage>();
         services.AddTransient<HistoryCollectionView>();
 
-        // Viewmodels
+        // View Models
         services.AddTransient<MainCollectionViewModel>();
         services.AddTransient<YoutubeViewModel>();
         services.AddTransient<SoundcloudViewModel>();
         services.AddTransient<SpotifyViewModel>();
         services.AddTransient<SettingsViewModel>();
         services.AddTransient<HistoryCollectionViewModel>();
-
-        // Add Popups
-        //services.AddTransientPopup<LoadingPopup, LoadingPopupViewModel>();
     }
 
     static void RegisterYosuServices(in IServiceCollection services)

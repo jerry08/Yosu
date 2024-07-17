@@ -16,9 +16,6 @@ using Yosu.Services;
 using Yosu.ViewModels.Components;
 using Yosu.ViewModels.Framework;
 using Yosu.Views;
-using YoutubeExplode.Videos;
-using SoundcloudTrack = SoundCloudExplode.Tracks.Track;
-using SpotifyTrack = SpotifyExplode.Tracks.Track;
 
 namespace Yosu.ViewModels;
 
@@ -61,102 +58,25 @@ public partial class HistoryCollectionViewModel : CollectionViewModel<ListGroup<
 
             Entities.Clear();
 
-            //var test1 = JsonConvert.SerializeObject(_preference.Downloads);
-            //var test2 = JsonConvert.DeserializeObject<List<DownloadItem>>(test1);
-
-            var newList = _preference
-                .Downloads.Where(x => x.Entity is not null)
-                .Select(x =>
-                {
-                    var entityStr = JsonSerializer.Serialize(x.Entity!);
-
-                    switch (x.SourceType)
-                    {
-                        case SourceType.Youtube:
-                            x.Entity = new YoutubeDownloadViewModel()
-                            {
-                                Video = JsonSerializer.Deserialize<Video>(entityStr)
-                            };
-                            break;
-
-                        case SourceType.Soundcloud:
-                            x.Entity = new SoundcloudDownloadViewModel()
-                            {
-                                Track = JsonSerializer.Deserialize<SoundcloudTrack>(entityStr)
-                            };
-                            break;
-
-                        case SourceType.Spotify:
-                            x.Entity = new SpotifyDownloadViewModel()
-                            {
-                                Track = JsonSerializer.Deserialize<SpotifyTrack>(entityStr)
-                            };
-                            break;
-                    }
-
-                    //x.Entity = x.SourceType switch
-                    //{
-                    //    SourceType.Youtube => JsonConvert.DeserializeObject<Video>(entityStr),
-                    //    SourceType.Soundcloud => JsonConvert.DeserializeObject<Track>(entityStr),
-                    //    SourceType.Spotify => JsonConvert.DeserializeObject<Track>(entityStr),
-                    //    _ => null,
-                    //};
-
-                    return x;
-                    //return null;
-                })
-                .Where(x =>
+            var downloads = _preference
+                .Downloads.Where(x =>
                     Query is null
-                    || (
-                        x.Entity is YoutubeDownloadViewModel ytDownload
-                        && ytDownload.Video?.Title?.Contains(
-                            Query,
-                            StringComparison.OrdinalIgnoreCase
-                        ) == true
-                    )
-                    || (
-                        x.Entity is SoundcloudDownloadViewModel scDownload
-                        && (
-                            scDownload.Track?.Title?.Contains(
-                                Query,
-                                StringComparison.OrdinalIgnoreCase
-                            ) == true
-                            || scDownload.Track?.User?.Username?.Contains(
-                                Query,
-                                StringComparison.OrdinalIgnoreCase
-                            ) == true
-                        )
-                    )
-                    || (
-                        x.Entity is SpotifyDownloadViewModel spDownload
-                        && (
-                            spDownload.Track?.Title?.Contains(
-                                Query,
-                                StringComparison.OrdinalIgnoreCase
-                            ) == true
-                            || spDownload
-                                .Track?.Artists.FirstOrDefault()
-                                ?.Name.Contains(Query, StringComparison.OrdinalIgnoreCase) == true
-                        )
-                    )
+                    || x.Title?.Contains(Query, StringComparison.OrdinalIgnoreCase) == true
+                    || x.Author?.Contains(Query, StringComparison.OrdinalIgnoreCase) == true
                 )
-                .Select(x => x!)
                 .ToList();
 
-            if (newList.Count > 0)
+            if (downloads.Count > 0)
             {
-                var list = newList
+                var list = downloads
                     .OrderByDescending(x => x.DownloadDate)
-                    //.GroupBy(x => x.DownloadDate.StartOfWeek(DayOfWeek.Sunday))
-                    //.GroupBy(x => $"{x.DownloadDate.StartOfWeek(DayOfWeek.Sunday)}-{x.SourceType}")
                     .GroupBy(x =>
                         $"{x.DownloadDate.DayOfYear + x.DownloadDate.Year}-{x.SourceType}"
                     )
                     .Select(x =>
                     {
-                        var firstItem = x.First()!;
-                        var name =
-                            $"{firstItem.SourceType} - {firstItem.DownloadDate:MMMM dd, yyyy}";
+                        var item = x.First();
+                        var name = $"{item.SourceType} - {item.DownloadDate:MMMM dd, yyyy}";
 
                         return new ListGroup<object>(name, x.Select(x => x.Entity!).ToList());
                     })
@@ -221,6 +141,7 @@ public partial class HistoryCollectionViewModel : CollectionViewModel<ListGroup<
     [RelayCommand]
     async Task Export()
     {
+#if ANDROID
         if (Platform.CurrentActivity is MainActivity activity)
         {
             var result = await activity.PickDirectoryAsync();
@@ -284,6 +205,7 @@ public partial class HistoryCollectionViewModel : CollectionViewModel<ListGroup<
                 }
             }
         }
+#endif
     }
 
     [RelayCommand]
