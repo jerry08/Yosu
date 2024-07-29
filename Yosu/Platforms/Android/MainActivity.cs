@@ -50,7 +50,7 @@ public class MainActivity : MauiAppCompatActivity
     private const int PostNotificationsRequestCode = 1006;
     private const int TakeCardUriPermissionRequestCode = 1007;
 
-    protected override async void OnCreate(Bundle? savedInstanceState)
+    protected override void OnCreate(Bundle? savedInstanceState)
     {
         //AndroidX.Core.SplashScreen.SplashScreen.InstallSplashScreen(this);
 
@@ -127,7 +127,7 @@ public class MainActivity : MauiAppCompatActivity
                     PickDirectoryPermissionResult?.TrySetResult(new());
                 }
             }
-            catch (System.Exception e)
+            catch
             {
                 PickDirectoryPermissionResult?.TrySetResult(new());
             }
@@ -138,7 +138,7 @@ public class MainActivity : MauiAppCompatActivity
 
     public Task<PickDirectoryResult> PickDirectoryAsync()
     {
-        PickDirectoryPermissionResult ??= new();
+        PickDirectoryPermissionResult = new();
 
         try
         {
