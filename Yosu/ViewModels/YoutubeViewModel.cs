@@ -10,6 +10,7 @@ using Gress;
 using Microsoft.Maui.ApplicationModel;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Storage;
+using Yosu.Data;
 using Yosu.Extensions;
 using Yosu.Services;
 using Yosu.Utils;
@@ -26,7 +27,7 @@ namespace Yosu.ViewModels;
 public class YoutubeViewModel
 {
     private readonly SettingsService _settingsService;
-    private readonly PreferenceService _preferenceService;
+    private readonly HistoryDatabase _historyDatabase;
 
     private readonly ResizableSemaphore _downloadSemaphore = new();
 
@@ -54,20 +55,17 @@ public class YoutubeViewModel
     public VideoQualityPreference SelectedVideoQualityPreference { get; set; } =
         VideoQualityPreference.Highest;
 
-    public YoutubeViewModel(SettingsService settingsService, PreferenceService preferenceService)
+    public YoutubeViewModel(SettingsService settingsService, HistoryDatabase historyDatabase)
     {
         _settingsService = settingsService;
-        _preferenceService = preferenceService;
+        _historyDatabase = historyDatabase;
 
         _settingsService.Load();
-        _preferenceService.Load();
     }
 
-    public void EnqueueDownload(YoutubeDownloadViewModel download)
+    public async void EnqueueDownload(YoutubeDownloadViewModel download)
     {
-        _preferenceService.Load();
-        _preferenceService.Downloads.Add(DownloadItem.From(download));
-        _preferenceService.Save();
+        await _historyDatabase.AddItemAsync(DownloadItem.From(download));
 
         Downloads.Add(download);
 
@@ -75,7 +73,7 @@ public class YoutubeViewModel
 
         _downloadSemaphore.MaxCount = _settingsService.ParallelLimit;
 
-        Task.Run(async () =>
+        await Task.Run(async () =>
         {
             try
             {

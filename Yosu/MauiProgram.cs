@@ -9,6 +9,7 @@ using Microsoft.Maui.LifecycleEvents;
 using Plugin.ContextMenuContainer;
 using SkiaSharp.Views.Maui.Controls.Hosting;
 using Woka;
+using Yosu.Data;
 using Yosu.Services;
 using Yosu.Services.AlertDialog;
 using Yosu.ViewModels;
@@ -77,10 +78,6 @@ public static class MauiProgram
         RegisterViewsAndViewModels(builder.Services);
         RegisterYosuServices(builder.Services);
 
-#if DEBUG
-        builder.Logging.AddDebug();
-#endif
-
         return builder.Build();
     }
 
@@ -108,5 +105,6 @@ public static class MauiProgram
         //services.AddSingleton<PreferenceService>();
         services.AddScoped<PreferenceService>();
         services.AddSingleton<SettingsService>();
+        services.AddSingleton<HistoryDatabase>();
     }
 }

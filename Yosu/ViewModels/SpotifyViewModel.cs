@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Gress;
 using Microsoft.Maui.ApplicationModel;
 using SpotifyExplode.Exceptions;
+using Yosu.Data;
 using Yosu.Extensions;
 using Yosu.Services;
 using Yosu.Spotify.Core.Downloading;
@@ -17,7 +18,7 @@ namespace Yosu.ViewModels;
 public class SpotifyViewModel
 {
     private readonly SettingsService _settingsService;
-    private readonly PreferenceService _preferenceService;
+    private readonly HistoryDatabase _historyDatabase;
 
     private readonly ResizableSemaphore _downloadSemaphore = new();
 
@@ -26,18 +27,19 @@ public class SpotifyViewModel
 
     public static List<SpotifyDownloadViewModel> Downloads { get; set; } = [];
 
-    public SpotifyViewModel(SettingsService settingsService, PreferenceService preference)
+    public SpotifyViewModel(SettingsService settingsService, HistoryDatabase historyDatabase)
     {
         _settingsService = settingsService;
-        _preferenceService = preference;
+        _historyDatabase = historyDatabase;
 
         _settingsService.Load();
-        _preferenceService.Load();
     }
 
     public void EnqueueDownloads(IEnumerable<SpotifyDownloadViewModel> downloads)
     {
+#if ANDROID
         App.StartForeground();
+#endif
 
         foreach (var download in downloads)
         {
@@ -73,11 +75,9 @@ public class SpotifyViewModel
         }
     }
 
-    private void EnqueueDownload(SpotifyDownloadViewModel download)
+    private async void EnqueueDownload(SpotifyDownloadViewModel download)
     {
-        _preferenceService.Load();
-        _preferenceService.Downloads.Add(DownloadItem.From(download));
-        _preferenceService.Save();
+        await _historyDatabase.AddItemAsync(DownloadItem.From(download));
 
         Downloads.Add(download);
 
@@ -85,7 +85,7 @@ public class SpotifyViewModel
 
         _downloadSemaphore.MaxCount = _settingsService.ParallelLimit;
 
-        Task.Run(async () =>
+        await Task.Run(async () =>
         {
             try
             {

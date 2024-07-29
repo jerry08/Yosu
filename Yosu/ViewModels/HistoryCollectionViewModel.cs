@@ -11,21 +11,23 @@ using Microsoft.Maui.ApplicationModel;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Devices;
 using Microsoft.Maui.Storage;
+using Yosu.Data;
 using Yosu.Extensions;
 using Yosu.Services;
 using Yosu.ViewModels.Components;
 using Yosu.ViewModels.Framework;
 using Yosu.Views;
+using static Android.Provider.MediaStore;
 
 namespace Yosu.ViewModels;
 
 public partial class HistoryCollectionViewModel : CollectionViewModel<ListGroup<object>>
 {
-    private readonly PreferenceService _preference;
+    private readonly HistoryDatabase _historyDatabase;
 
-    public HistoryCollectionViewModel(PreferenceService preference)
+    public HistoryCollectionViewModel(HistoryDatabase historyDatabase)
     {
-        _preference = preference;
+        _historyDatabase = historyDatabase;
 
         Title = "Download History";
         IsBusy = true;
@@ -54,12 +56,12 @@ public partial class HistoryCollectionViewModel : CollectionViewModel<ListGroup<
 
         try
         {
-            _preference.Load();
-
             Entities.Clear();
 
-            var downloads = _preference
-                .Downloads.Where(x =>
+            var downloads = await _historyDatabase.GetItemsAsync();
+
+            downloads = downloads
+                .Where(x =>
                     Query is null
                     || x.Title?.Contains(Query, StringComparison.OrdinalIgnoreCase) == true
                     || x.Author?.Contains(Query, StringComparison.OrdinalIgnoreCase) == true
@@ -68,6 +70,8 @@ public partial class HistoryCollectionViewModel : CollectionViewModel<ListGroup<
 
             if (downloads.Count > 0)
             {
+                downloads.ForEach(download => download.SetEntity());
+
                 var list = downloads
                     .OrderByDescending(x => x.DownloadDate)
                     .GroupBy(x =>
@@ -109,8 +113,7 @@ public partial class HistoryCollectionViewModel : CollectionViewModel<ListGroup<
         if (!result)
             return;
 
-        _preference.Downloads.Clear();
-        _preference.Save();
+        await _historyDatabase.DeleteAllAsync();
 
         Load();
     }
@@ -132,8 +135,7 @@ public partial class HistoryCollectionViewModel : CollectionViewModel<ListGroup<
         if (!result)
             return;
 
-        _preference.Downloads.Clear();
-        _preference.Save();
+        //await _historyDatabase.DeleteAllAsync();
 
         Load();
     }
@@ -162,9 +164,9 @@ public partial class HistoryCollectionViewModel : CollectionViewModel<ListGroup<
 
                 try
                 {
-                    _preference.Load();
+                    var downloads = await _historyDatabase.GetItemsAsync();
 
-                    var jsonData = JsonSerializer.Serialize(_preference.Downloads);
+                    var jsonData = JsonSerializer.Serialize(downloads);
 
                     using (var writer = File.CreateText(tempFilePath))
                     {
@@ -230,27 +232,25 @@ public partial class HistoryCollectionViewModel : CollectionViewModel<ListGroup<
 
         try
         {
-            _preference.Load();
-
             var stream = await result.OpenReadAsync();
             //var json = await stream.ToStringAsync();
 
             var list = await JsonSerializer.DeserializeAsync<List<DownloadItem>>(stream);
-            if (list is not null)
-            {
-                _preference.Downloads.AddRange(list);
-                _preference.Downloads = _preference
-                    .Downloads.GroupBy(x => x.Key)
-                    .Select(x => x.Last())
-                    .ToList();
-                _preference.Save();
 
-                await Toast.Make("History imported successfully").Show();
+            ArgumentNullException.ThrowIfNull(list);
 
-                Refresh();
-            }
+            var downloads = await _historyDatabase.GetItemsAsync();
+            var existingIds = list.Select(x => x.Id).ToArray();
+
+            list = list.Where(x => !existingIds.Contains(x.Id)).ToList();
+
+            await _historyDatabase.AddItemsAsync(list);
+
+            await Toast.Make("History imported successfully").Show();
+
+            Refresh();
         }
-        catch (Exception ex)
+        catch
         {
             await Toast.Make("Import failed").Show();
         }

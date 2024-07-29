@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Gress;
 using Microsoft.Maui.ApplicationModel;
 using SoundCloudExplode.Exceptions;
+using Yosu.Data;
 using Yosu.Extensions;
 using Yosu.Services;
 using Yosu.Soundcloud.Core.Downloading;
@@ -17,7 +18,7 @@ namespace Yosu.ViewModels;
 public class SoundcloudViewModel
 {
     private readonly SettingsService _settingsService;
-    private readonly PreferenceService _preferenceService;
+    private readonly HistoryDatabase _historyDatabase;
 
     private readonly ResizableSemaphore _downloadSemaphore = new();
 
@@ -26,18 +27,19 @@ public class SoundcloudViewModel
 
     public static List<SoundcloudDownloadViewModel> Downloads { get; set; } = [];
 
-    public SoundcloudViewModel(SettingsService settingsService, PreferenceService preferenceService)
+    public SoundcloudViewModel(SettingsService settingsService, HistoryDatabase historyDatabase)
     {
         _settingsService = settingsService;
         _settingsService.Load();
 
-        _preferenceService = preferenceService;
-        _preferenceService.Load();
+        _historyDatabase = historyDatabase;
     }
 
     public void EnqueueDownloads(IEnumerable<SoundcloudDownloadViewModel> downloads)
     {
+#if ANDROID
         App.StartForeground();
+#endif
 
         foreach (var download in downloads)
         {
@@ -76,9 +78,7 @@ public class SoundcloudViewModel
 
     private async void EnqueueDownload(SoundcloudDownloadViewModel download)
     {
-        _preferenceService.Load();
-        _preferenceService.Downloads.Add(DownloadItem.From(download));
-        _preferenceService.Save();
+        await _historyDatabase.AddItemAsync(DownloadItem.From(download));
 
         Downloads.Add(download);
 

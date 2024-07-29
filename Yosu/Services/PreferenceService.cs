@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.IO;
 using System.Text.Json.Serialization;
 using Cogwheel;
@@ -31,27 +30,11 @@ public partial class PreferenceService()
         set => SetProperty(ref _appTheme, value);
     }
 
-    private List<DownloadItem> _downloads = [];
-    public List<DownloadItem> Downloads
-    {
-        get => _downloads;
-        set => SetProperty(ref _downloads, value);
-    }
-
     private SourceType _searchSourceType = SourceType.Youtube;
     public SourceType SearchSourceType
     {
         get => _searchSourceType;
         set => SetProperty(ref _searchSourceType, value);
-    }
-
-    public override bool Load()
-    {
-        var result = base.Load();
-
-        Downloads.ForEach(download => download.SetEntity());
-
-        return result;
     }
 }
 
