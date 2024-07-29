@@ -5,11 +5,9 @@ namespace Yosu.Youtube.Converter.Utils;
 
 internal class ProgressMuxer(IProgress<double> target)
 {
-    private readonly IProgress<double> _target = target;
-
     private readonly object _lock = new();
-    private readonly Dictionary<int, double> _splitWeights = [];
-    private readonly Dictionary<int, double> _splitValues = [];
+    private readonly Dictionary<int, double> _splitWeights = new();
+    private readonly Dictionary<int, double> _splitValues = new();
 
     public IProgress<double> CreateInput(double weight = 1)
     {
@@ -35,7 +33,7 @@ internal class ProgressMuxer(IProgress<double> target)
                         weightedMax += _splitWeights[i];
                     }
 
-                    _target.Report(weightedSum / weightedMax);
+                    target.Report(weightedSum / weightedMax);
                 }
             });
         }

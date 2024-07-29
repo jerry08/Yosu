@@ -3,7 +3,8 @@ using System.Collections.Generic;
 
 namespace Yosu.Core.Utils;
 
-public class DelegateEqualityComparer<T>(Func<T, T, bool> equals, Func<T, int> getHashCode) : IEqualityComparer<T>
+public class DelegateEqualityComparer<T>(Func<T, T, bool> equals, Func<T, int> getHashCode)
+    : IEqualityComparer<T>
 {
     private readonly Func<T, T, bool> _equals = equals;
     private readonly Func<T, int> _getHashCode = getHashCode;

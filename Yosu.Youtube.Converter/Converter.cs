@@ -15,10 +15,6 @@ namespace Yosu.Youtube.Converter;
 
 internal partial class Converter(VideoClient videoClient, FFmpeg ffmpeg, ConversionPreset preset)
 {
-    private readonly VideoClient _videoClient = videoClient;
-    private readonly FFmpeg _ffmpeg = ffmpeg;
-    private readonly ConversionPreset _preset = preset;
-
     private async ValueTask ProcessAsync(
         string filePath,
         Container container,
@@ -32,61 +28,149 @@ internal partial class Converter(VideoClient videoClient, FFmpeg ffmpeg, Convers
 
         // Stream inputs
         foreach (var streamInput in streamInputs)
+        {
             arguments.Add("-i").Add(streamInput.FilePath);
+        }
 
         // Subtitle inputs
         foreach (var subtitleInput in subtitleInputs)
-            arguments.Add("-i").Add(subtitleInput.FilePath);
-
-        // Format
-        arguments.Add("-f").Add(container.Name);
-
-        // Preset
-        arguments.Add("-preset").Add(_preset);
-
-        // Mapping
-        for (var i = 0; i < streamInputs.Count + subtitleInputs.Count; i++)
-            arguments.Add("-map").Add(i);
-
-        // Avoid transcoding if possible
-        if (streamInputs.All(s => s.Info.Container == container))
-        {
-            arguments.Add("-c:a").Add("copy").Add("-c:v").Add("copy");
-        }
-
-        // MP4: specify subtitle codec manually, otherwise they're not injected
-        if (container == Container.Mp4 && subtitleInputs.Any())
-            arguments.Add("-c:s").Add("mov_text");
-
-        // MP3: specify bitrate manually, otherwise the metadata will contain wrong duration
-        // https://superuser.com/questions/892996/ffmpeg-is-doubling-audio-length-when-extracting-from-video
-        if (container == Container.Mp3)
-            arguments.Add("-b:a").Add("165k");
-
-        // Inject language metadata for subtitles
-        for (var i = 0; i < subtitleInputs.Count; i++)
         {
             arguments
-                .Add($"-metadata:s:s:{i}")
-                .Add($"language={subtitleInputs[i].Info.Language.Code}")
-                .Add($"-metadata:s:s:{i}")
-                .Add($"title={subtitleInputs[i].Info.Language.Name}");
+                // Fix invalid subtitle durations for each input
+                // https://github.com/Tyrrrz/YoutubeExplode/issues/756
+                .Add("-fix_sub_duration")
+                .Add("-i")
+                .Add(subtitleInput.FilePath);
         }
 
+        // Explicitly specify that all inputs should be used, because by default
+        // FFmpeg only picks one input per stream type (audio, video, subtitle).
+        for (var i = 0; i < streamInputs.Count + subtitleInputs.Count; i++)
+        {
+            arguments.Add("-map").Add(i);
+        }
+
+        // Output format and encoding preset
+        arguments.Add("-f").Add(container.Name).Add("-preset").Add(preset);
+
+        // Avoid transcoding inputs that have the same container as the output
+        {
+            var lastAudioStreamIndex = 0;
+            var lastVideoStreamIndex = 0;
+            foreach (var streamInput in streamInputs)
+            {
+                // Note: a muxed stream input will map to two separate audio and video streams
+
+                if (streamInput.Info is IAudioStreamInfo audioStreamInfo)
+                {
+                    if (audioStreamInfo.Container == container)
+                    {
+                        arguments.Add($"-c:a:{lastAudioStreamIndex}").Add("copy");
+                    }
+
+                    lastAudioStreamIndex++;
+                }
+
+                if (streamInput.Info is IVideoStreamInfo videoStreamInfo)
+                {
+                    if (videoStreamInfo.Container == container)
+                    {
+                        arguments.Add($"-c:v:{lastVideoStreamIndex}").Add("copy");
+                    }
+
+                    lastVideoStreamIndex++;
+                }
+            }
+        }
+
+        // MP4: explicitly specify the codec for subtitles, otherwise they won't get embedded
+        if (container == Container.Mp4 && subtitleInputs.Any())
+        {
+            arguments.Add("-c:s").Add("mov_text");
+        }
+
+        // MP3: explicitly specify the bitrate for audio streams, otherwise their metadata
+        // might contain invalid total duration.
+        // https://superuser.com/a/893044
+        if (container == Container.Mp3)
+        {
+            var lastAudioStreamIndex = 0;
+            foreach (var streamInput in streamInputs)
+            {
+                if (streamInput.Info is IAudioStreamInfo audioStreamInfo)
+                {
+                    arguments
+                        .Add($"-b:a:{lastAudioStreamIndex++}")
+                        .Add(Math.Round(audioStreamInfo.Bitrate.KiloBitsPerSecond) + "K");
+                }
+            }
+        }
+
+        // Metadata for stream inputs
+        {
+            var lastAudioStreamIndex = 0;
+            var lastVideoStreamIndex = 0;
+            foreach (var streamInput in streamInputs)
+            {
+                // Note: a muxed stream input will map to two separate audio and video streams
+
+                if (streamInput.Info is IAudioStreamInfo audioStreamInfo)
+                {
+                    arguments
+                        .Add($"-metadata:s:a:{lastAudioStreamIndex++}")
+                        .Add($"title={audioStreamInfo.Bitrate}");
+                }
+
+                if (streamInput.Info is IVideoStreamInfo videoStreamInfo)
+                {
+                    arguments
+                        .Add($"-metadata:s:v:{lastVideoStreamIndex++}")
+                        .Add(
+                            $"title={videoStreamInfo.VideoQuality.Label} | {videoStreamInfo.Bitrate}"
+                        );
+                }
+            }
+        }
+
+        // Metadata for subtitles
+        foreach (var (subtitleInput, i) in subtitleInputs.WithIndex())
+        {
+            // Language codes can be stored in any format, but most players expect
+            // three-letter codes, so we'll try to convert to that first.
+            var languageCode =
+                subtitleInput.Info.Language.TryGetThreeLetterCode()
+                ?? subtitleInput.Info.Language.Code;
+
+            arguments
+                .Add($"-metadata:s:s:{i}")
+                .Add($"language={languageCode}")
+                .Add($"-metadata:s:s:{i}")
+                .Add($"title={subtitleInput.Info.Language.Name}");
+        }
+
+        // Enable progress reporting
+        arguments
+            // Info log level is required to extract total stream duration
+            .Add("-loglevel")
+            .Add("info")
+            .Add("-stats");
+
         // Misc settings
-        arguments.Add("-threads").Add(Environment.ProcessorCount).Add("-nostdin").Add("-y");
+        arguments
+            .Add("-hide_banner")
+            .Add("-threads")
+            .Add(Environment.ProcessorCount)
+            .Add("-nostdin")
+            .Add("-y");
 
         // Output
         arguments.Add(filePath);
 
-        // Run FFmpeg
 #if ANDROID || IOS || MACCATALYST
         ProgressCallback.Init(progress, streamInputs.Select(x => x.FilePath));
-
-        _ffmpeg.Execute(arguments.Build(), progress, cancellationToken);
-#else
-        await _ffmpeg.ExecuteAsync(arguments.Build(), progress, cancellationToken);
 #endif
+
+        await ffmpeg.ExecuteAsync(arguments.Build(), progress, cancellationToken);
     }
 
     private async ValueTask PopulateStreamInputsAsync(
@@ -113,7 +197,7 @@ internal partial class Converter(VideoClient videoClient, FFmpeg ffmpeg, Convers
 
             streamInputs.Add(streamInput);
 
-            await _videoClient.Streams.DownloadAsync(
+            await videoClient.Streams.DownloadAsync(
                 streamInfo,
                 streamInput.FilePath,
                 streamProgress,
@@ -148,7 +232,7 @@ internal partial class Converter(VideoClient videoClient, FFmpeg ffmpeg, Convers
 
             subtitleInputs.Add(subtitleInput);
 
-            await _videoClient.ClosedCaptions.DownloadAsync(
+            await videoClient.ClosedCaptions.DownloadAsync(
                 trackInfo,
                 subtitleInput.FilePath,
                 trackProgress,
@@ -171,18 +255,18 @@ internal partial class Converter(VideoClient videoClient, FFmpeg ffmpeg, Convers
         if (!streamInfos.Any())
             throw new InvalidOperationException("No streams provided.");
 
-        if (streamInfos.Count > 2)
-            throw new InvalidOperationException("Too many streams provided.");
-
+        // Configure progress aggregation
         var progressMuxer = progress?.Pipe(p => new ProgressMuxer(p));
         var streamDownloadProgress = progressMuxer?.CreateInput();
         var subtitleDownloadProgress = progressMuxer?.CreateInput(0.01);
         var conversionProgress = progressMuxer?.CreateInput(
-            streamInfos.All(s => s.Container == container)
-                ? 0.05 // transcoding is not required
-                : 10 // transcoding is required
+            0.05
+                +
+                // Increase weight for each stream that needs to be transcoded
+                5 * streamInfos.Count(s => s.Container != container)
         );
 
+        // Populate inputs
         var streamInputs = new List<StreamInput>(streamInfos.Count);
         var subtitleInputs = new List<SubtitleInput>(closedCaptionTrackInfos.Count);
 

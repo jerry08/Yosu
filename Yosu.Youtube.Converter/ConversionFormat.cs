@@ -7,9 +7,6 @@ namespace Yosu.Youtube.Converter;
 /// <summary>
 /// Encapsulates conversion media format.
 /// </summary>
-/// <remarks>
-/// Initializes an instance of <see cref="ConversionFormat" />.
-/// </remarks>
 [Obsolete("Use YoutubeExplode.Videos.Streams.Container instead"), ExcludeFromCodeCoverage]
 public readonly struct ConversionFormat(string name)
 {

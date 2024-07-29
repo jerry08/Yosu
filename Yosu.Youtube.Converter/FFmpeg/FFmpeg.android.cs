@@ -1,15 +1,15 @@
 ﻿using System;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Yosu.Youtube.Converter.Utils.Extensions;
 
 namespace Yosu.Youtube.Converter;
 
 internal class FFmpeg(string filePath)
 {
-    private readonly string _filePath = filePath;
+    public static string GetFilePath() => string.Empty;
 
-    public void Execute(
+    public async ValueTask ExecuteAsync(
         string arguments,
         IProgress<double>? progress,
         CancellationToken cancellationToken = default
@@ -20,27 +20,32 @@ internal class FFmpeg(string filePath)
 
         //Laerdal.FFmpeg.Android.Config.EnableStatisticsCallback(new Test2(progress));
 
+        var isBusy = true;
+
         Task.Run(
-            async () =>
-            {
-                while (true)
+                async () =>
                 {
-                    if (cancellationToken.IsCancellationRequested)
+                    while (isBusy)
                     {
-                        Laerdal.FFmpeg.Android.FFmpeg.Cancel();
-                        break;
+                        if (cancellationToken.IsCancellationRequested)
+                        {
+                            Laerdal.FFmpeg.Android.FFmpeg.Cancel();
+                            break;
+                        }
+
+                        //cancellationToken.ThrowIfCancellationRequested();
+
+                        await Task.Delay(500);
                     }
-
-                    //cancellationToken.ThrowIfCancellationRequested();
-
-                    await Task.Delay(500);
-                }
-            },
-            cancellationToken
-        );
+                },
+                cancellationToken
+            )
+            .FireAndForget();
 
         var exitCode = Laerdal.FFmpeg.Android.FFmpeg.Execute(arguments);
         //var exitCode = Laerdal.FFmpeg.Android.FFmpeg.ExecuteAsync(arguments, new Test1(progress));
+
+        isBusy = false;
 
         if (exitCode == Laerdal.FFmpeg.Android.Config.ReturnCodeCancel)
         {
