@@ -3,7 +3,7 @@
 </h1>
 
 <p align="center">
-   <a href="https://discord.gg/mhxsSMy2Nf"><img src="https://img.shields.io/badge/Discord-7289DA?style=for-the-badge&logo=discord&logoColor=white"></a>
+   <a href="https://discord.gg/U7XweVubJN"><img src="https://img.shields.io/badge/Discord-7289DA?style=for-the-badge&logo=discord&logoColor=white"></a>
    <a href="https://github.com/jerry08/Yosu/releases"><img src="https://img.shields.io/github/downloads/jerry08/Yosu/total?color=%233DDC84&logo=android&logoColor=%23fff&style=for-the-badge"></a>
 </p>
 
@@ -54,7 +54,7 @@ playlist or channel and download it directly to a format of your choice. It also
 ### Official Discord Server
 
 <p align="center">
- <a href="https://discord.gg/mhxsSMy2Nf">
+ <a href="https://discord.gg/U7XweVubJN">
   <img src="https://invidget.switchblade.xyz/mhxsSMy2Nf?">
  </a>
 </p>
