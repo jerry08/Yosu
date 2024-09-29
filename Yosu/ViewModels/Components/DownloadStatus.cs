@@ -7,5 +7,5 @@ public enum DownloadStatus
     Started,
     Completed,
     Failed,
-    Canceled
+    Canceled,
 }

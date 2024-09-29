@@ -5,5 +5,5 @@ public enum SourceType
     None,
     Youtube,
     Soundcloud,
-    Spotify
+    Spotify,
 }

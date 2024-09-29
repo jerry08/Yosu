@@ -7,5 +7,5 @@ public enum QueryResultKind
     Artist,
     Playlist,
     Track,
-    Search
+    Search,
 }

@@ -62,7 +62,7 @@ internal partial class MediaFile(TagFile file) : IDisposable
         var picture = new AttachmentFrame
         {
             TextEncoding = FileEx.IsValidISO(thumbnailData) ? StringType.Latin1 : StringType.UTF8,
-            Data = thumbnailData
+            Data = thumbnailData,
         };
 
         _file.Tag.Pictures = [picture];

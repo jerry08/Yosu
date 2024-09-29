@@ -205,7 +205,7 @@ public class ProgressBar : SKCanvasView
             {
                 Style = SKPaintStyle.Fill,
                 Color = BaseColor.ToSKColor(),
-                IsAntialias = true
+                IsAntialias = true,
             }
         );
     }

@@ -5,5 +5,5 @@ public enum QueryResultKind
     Search,
     Track,
     Playlist,
-    Aggregate
+    Aggregate,
 }

@@ -47,7 +47,7 @@ public partial class App : Application
                         {
                             BackgroundColor = Colors.Red,
                             TextColor = Colors.White,
-                            ActionButtonTextColor = Colors.White
+                            ActionButtonTextColor = Colors.White,
                         }
                     )
                     .Show();
@@ -66,7 +66,7 @@ public partial class App : Application
                         {
                             BackgroundColor = Colors.Green,
                             TextColor = Colors.White,
-                            ActionButtonTextColor = Colors.White
+                            ActionButtonTextColor = Colors.White,
                         }
                     )
                     .Show();

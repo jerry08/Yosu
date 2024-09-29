@@ -73,7 +73,7 @@ internal class QueryResolver
             );
             var downloads = ytResults.Videos.Select(video => new YoutubeDownloadViewModel()
             {
-                Video = video
+                Video = video,
             });
             results.AddRange(downloads);
         }
@@ -87,7 +87,7 @@ internal class QueryResolver
             );
             var downloads = scResults.Tracks.Select(track => new SoundcloudDownloadViewModel()
             {
-                Track = track
+                Track = track,
             });
             results.AddRange(downloads);
         }
@@ -101,7 +101,7 @@ internal class QueryResolver
             );
             var downloads = spResults.Tracks.Select(track => new SpotifyDownloadViewModel()
             {
-                Track = track
+                Track = track,
             });
             results.AddRange(downloads);
         }

@@ -16,8 +16,8 @@ internal static class Http
                     new ProductInfoHeaderValue(
                         "Yosu",
                         typeof(Http).Assembly.GetName().Version?.ToString(3)
-                    )
-                }
-            }
+                    ),
+                },
+            },
         };
 }

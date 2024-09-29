@@ -9,7 +9,7 @@ public enum VideoQualityPreference
     UpTo480p,
     UpTo720p,
     UpTo1080p,
-    Highest
+    Highest,
 }
 
 public static class VideoQualityPreferenceExtensions
@@ -23,6 +23,6 @@ public static class VideoQualityPreferenceExtensions
             VideoQualityPreference.UpTo720p => "≤ 720p",
             VideoQualityPreference.UpTo1080p => "≤ 1080p",
             VideoQualityPreference.Highest => "Highest quality",
-            _ => throw new ArgumentOutOfRangeException(nameof(preference))
+            _ => throw new ArgumentOutOfRangeException(nameof(preference)),
         };
 }

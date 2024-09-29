@@ -20,7 +20,7 @@ public class MainDataTemplateSelector : DataTemplateSelector
                 SourceType.Youtube => YoutubeVideoDataTemplate,
                 SourceType.Soundcloud => SoundcloudDataTemplate,
                 SourceType.Spotify => SpotifyDataTemplate,
-                _ => null
+                _ => null,
             };
         }
 
@@ -29,7 +29,7 @@ public class MainDataTemplateSelector : DataTemplateSelector
             YoutubeDownloadViewModel => YoutubeVideoDataTemplate,
             SoundcloudDownloadViewModel => SoundcloudDataTemplate,
             SpotifyDownloadViewModel => SpotifyDataTemplate,
-            _ => null
+            _ => null,
         };
     }
 }

@@ -59,7 +59,7 @@ public class DownloadItem
             Author = viewModel.Track?.User?.Username,
             PlaybackCount = viewModel.Track?.PlaybackCount,
             Duration = TimeSpan.FromMilliseconds(viewModel.Track?.Duration ?? 0),
-            DisplayDate = viewModel.Track?.DisplayDate
+            DisplayDate = viewModel.Track?.DisplayDate,
         };
 
     public static DownloadItem From(SpotifyDownloadViewModel viewModel) =>
@@ -71,7 +71,7 @@ public class DownloadItem
             Title = viewModel.Track?.Title,
             Author = viewModel.Track?.Artists.FirstOrDefault()?.Name,
             Duration = TimeSpan.FromMilliseconds(viewModel.Track?.DurationMs ?? 0),
-            ImageUrl = viewModel.Track?.Album.Images.FirstOrDefault()?.Url
+            ImageUrl = viewModel.Track?.Album.Images.FirstOrDefault()?.Url,
         };
 
     public static DownloadItem From(YoutubeDownloadViewModel viewModel) =>
@@ -83,7 +83,7 @@ public class DownloadItem
             Title = viewModel.Video?.Title,
             Duration = viewModel.Video?.Duration,
             Author = viewModel.Video?.Author.ChannelTitle,
-            ImageUrl = viewModel.Video?.Thumbnails.TryGetWithHighestResolution()?.Url
+            ImageUrl = viewModel.Video?.Thumbnails.TryGetWithHighestResolution()?.Url,
         };
 }
 
@@ -106,7 +106,7 @@ public static class DownloadItemExtensions
                         [new(download.ImageUrl ?? string.Empty, new())],
                         default!,
                         default!
-                    )
+                    ),
                 };
                 break;
 
@@ -122,8 +122,8 @@ public static class DownloadItemExtensions
                         User = new() { Username = download.Author },
                         PlaybackCount = download.PlaybackCount,
                         Duration = (long?)download.Duration?.TotalMilliseconds,
-                        DisplayDate = download.DisplayDate ?? default
-                    }
+                        DisplayDate = download.DisplayDate ?? default,
+                    },
                 };
                 break;
 
@@ -136,11 +136,11 @@ public static class DownloadItemExtensions
                         //PreviewUrl = download.ImageUrl ?? string.Empty,
                         Album = new()
                         {
-                            Images = [new() { Url = download.ImageUrl ?? string.Empty }]
+                            Images = [new() { Url = download.ImageUrl ?? string.Empty }],
                         },
-                        Artists = [new() { Name = download.Author!, }],
-                        DurationMs = (long)download.Duration!.Value.TotalMilliseconds
-                    }
+                        Artists = [new() { Name = download.Author! }],
+                        DurationMs = (long)download.Duration!.Value.TotalMilliseconds,
+                    },
                 };
                 break;
         }

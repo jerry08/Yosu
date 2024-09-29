@@ -280,7 +280,7 @@ public partial class MainCollectionViewModel : CollectionViewModel<object>
             YoutubeDownloadViewModel download => download.Video?.Url,
             SoundcloudDownloadViewModel download => download.Track?.PermalinkUrl?.ToString(),
             SpotifyDownloadViewModel download => download.Track?.Url,
-            _ => null
+            _ => null,
         };
     }
 

@@ -33,7 +33,7 @@ public class Age
             Days = dateTime.Day - 1,
             Hours = timeSpan.Hours,
             Minutes = timeSpan.Minutes,
-            Seconds = timeSpan.Seconds
+            Seconds = timeSpan.Seconds,
         };
     }
 }
