@@ -25,7 +25,7 @@
     <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.91" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="all" />
     <PackageReference Include="PolyShim" Version="1.13.0" PrivateAssets="all" />
-    <PackageReference Include="YoutubeExplode" Version="6.4.2" />
+    <PackageReference Include="YoutubeExplode" Version="6.4.3" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == '$(NetVersion)-android'">
