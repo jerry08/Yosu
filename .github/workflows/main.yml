@@ -23,8 +23,8 @@ jobs:
     strategy:
       matrix:
         rid:
-          - android-armeabi-v7a
-          - android-arm64-v8a
+          - android-arm
+          - android-arm64
           - android-x86
           - android-x64
 
