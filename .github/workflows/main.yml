@@ -67,7 +67,7 @@ jobs:
         run: |
           set -e
 
-          mv Yosu/bin/Release/net8.0-android/com.berry.yosu-Signed.apk Yosu.apk
+          mv Yosu/bin/Release/net8.0-android-${{ matrix.rid }}/com.berry.yosu-Signed.apk Yosu.apk
         shell: bash
         
       - name: Upload Android Artifact
