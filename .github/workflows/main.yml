@@ -12,7 +12,7 @@ env:
 jobs:
   # MAUI Android Build
   build-android:
-    runs-on: windows-latest
+    #runs-on: windows-latest
 
     env:
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
@@ -20,6 +20,17 @@ jobs:
       DOTNET_CLI_TELEMETRY_OPTOUT: true
 
     name: Android Build
+    strategy:
+      matrix:
+        rid:
+          - android-armeabi-v7a
+          - android-arm64-v8a
+          - android-x86
+          - android-x64
+
+    runs-on: windows-latest
+    timeout-minutes: 10
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -50,6 +61,7 @@ jobs:
             -p:AndroidSigningKeyAlias="YosuAlias"
             -p:AndroidSigningKeyPass="${{ secrets.PASSWORD }}"
             -p:CSharpier_Bypass=true
+            --runtime ${{ matrix.rid }}
 
       - name: Rename file
         run: |
@@ -61,8 +73,8 @@ jobs:
       - name: Upload Android Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Yosu
-          path: Yosu.apk
+          name: Yosu-${{ matrix.rid }}
+          path: Yosu-${{ matrix.rid }}.apk
 
   deploy:
     if: ${{ github.event_name == 'push' && github.ref_type == 'tag' }}
