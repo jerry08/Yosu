@@ -95,7 +95,7 @@ jobs:
             -p:AndroidSigningKeyAlias="YosuAlias"
             -p:AndroidSigningKeyPass="${{ secrets.PASSWORD }}"
             -p:CSharpier_Bypass=true
-            ${{ matrix.rid == 'android' && '' || '--runtime ${{ matrix.rid }}' }}
+            ${{ matrix.rid == 'android' && '' || format('{0} {1}', '--runtime', matrix.rid) }}
 
       - name: Rename file
         run: |
