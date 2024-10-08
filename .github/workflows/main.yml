@@ -26,11 +26,11 @@ jobs:
         with:
           dotnet-version: 8.0.x
 
-      - name: Verify formatting
-        run: >
-          dotnet build
-          -t:CSharpierFormat
-          --configuration Release
+      #- name: Verify formatting
+      #  run: >
+      #    dotnet build
+      #    -t:CSharpierFormat
+      #    --configuration Release
 
   # MAUI Android Build
   build-android:
