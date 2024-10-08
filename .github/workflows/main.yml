@@ -101,7 +101,7 @@ jobs:
         run: |
           set -e
 
-          mv Yosu/bin/Release/net8.0-android${{ matrix.rid == 'android' && '' || format('{0}{1}', '/', matrix.rid) }}/*-Signed.apk Yosu-${{ matrix.rid }}.apk
+          mv Yosu/bin/Release/net8.0-android${{ startsWith(matrix.rid, 'android-') && format('{0}{1}', '/', matrix.rid) || '' }}/*-Signed.apk Yosu-${{ matrix.rid }}.apk
         shell: bash
         
       - name: Upload Android Artifact
