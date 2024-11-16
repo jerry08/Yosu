@@ -51,7 +51,7 @@ jobs:
           - android-x86
           - android-x64
 
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     timeout-minutes: 20
 
     steps:
@@ -136,7 +136,7 @@ jobs:
 
   deploy:
     #if: ${{ github.event_name == 'push' && github.ref_type == 'tag' }}
-    needs: build-android
+    needs: release
     
     strategy:
       matrix:
@@ -169,8 +169,8 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
-          name: Yosu
-          path: Yosu
+          name: Yosu-${{ matrix.rid }}
+          path: Yosu-${{ matrix.rid }}
 
       - name: Set body
         run: |
