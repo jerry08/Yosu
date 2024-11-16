@@ -15,7 +15,8 @@
     xmlns:views="clr-namespace:Yosu.Views"
     xmlns:yt="clr-namespace:YoutubeExplode.Videos;assembly=YoutubeExplode"
     x:Name="this"
-    x:DataType="viewmodels:MainCollectionViewModel">
+    x:DataType="viewmodels:MainCollectionViewModel"
+    HideSoftInputOnTapped="True">
     <!--<Page.Behaviors>
         <toolkit:StatusBarBehavior StatusBarColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}" StatusBarStyle="{AppThemeBinding Light=DarkContent, Dark=LightContent}" />
     </Page.Behaviors>-->

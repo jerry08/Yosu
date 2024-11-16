@@ -221,6 +221,7 @@
                 x:Name="AnimatedProgressBar"
                 Grid.Row="1"
                 Grid.ColumnSpan="3"
+                Margin="0,2,0,0"
                 HeightRequest="3"
                 IsIntermediate="{Binding IsProgressIndeterminate}"
                 IsVisible="{Binding Status, Converter={StaticResource DownloadStatusToIsVisibileConverter}}"

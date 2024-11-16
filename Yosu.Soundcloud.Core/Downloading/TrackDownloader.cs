@@ -12,6 +12,8 @@ public class TrackDownloader
 {
     private readonly SoundCloudClient _soundcloud = new();
 
+    private bool IsInitializing { get; set; }
+
     public async Task DownloadAsync(
         string filePath,
         Track track,
@@ -19,6 +21,18 @@ public class TrackDownloader
         CancellationToken cancellationToken = default
     )
     {
+        while (IsInitializing)
+        {
+            await Task.Delay(100, cancellationToken);
+        }
+
+        IsInitializing = true;
+
+        if (!_soundcloud.IsInitialized)
+            await _soundcloud.InitializeAsync(cancellationToken);
+
+        IsInitializing = false;
+
         var dirPath = Path.GetDirectoryName(filePath);
         if (!string.IsNullOrWhiteSpace(dirPath))
             Directory.CreateDirectory(dirPath);
