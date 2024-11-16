@@ -69,7 +69,8 @@ jobs:
 
       - name: Install MAUI Workload
         #run: dotnet workload install maui --ignore-failed-sources
-        run: dotnet workload install maui-android
+        #run: dotnet workload install maui-android
+        run: dotnet workload install maui
 
       # Setup JDK and Android SDK on Linux
       - name: Set up JDK
@@ -82,7 +83,7 @@ jobs:
         uses: android-actions/setup-android@v3
 
       - name: Restore Dependencies
-        run: dotnet restore Yosu/ -f net9.0-android
+        run: dotnet restore Yosu/
 
       - name: Publish MAUI Android
         run: >
