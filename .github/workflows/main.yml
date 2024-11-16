@@ -24,7 +24,7 @@ jobs:
       - name: Install .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 8.0.x
+          dotnet-version: 9.0.x
 
       #- name: Verify formatting
       #  run: >
@@ -65,7 +65,7 @@ jobs:
       - name: Install .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 8.0.x
+          dotnet-version: 9.0.x
 
       - name: Install MAUI Workload
         #run: dotnet workload install maui --ignore-failed-sources
@@ -88,7 +88,7 @@ jobs:
         run: >
             dotnet publish Yosu/
             -c Release
-            -f net8.0-android
+            -f net9.0-android
             -p:AndroidKeyStore=true
             -p:AndroidSigningKeyStore=${{ github.workspace }}/signing-key.keystore
             -p:AndroidSigningStorePass="${{ secrets.PASSWORD }}"
@@ -101,7 +101,7 @@ jobs:
         run: |
           set -e
 
-          mv Yosu/bin/Release/net8.0-android${{ startsWith(matrix.rid, 'android-') && format('{0}{1}', '/', matrix.rid) || '' }}/*-Signed.apk Yosu-${{ matrix.rid }}.apk
+          mv Yosu/bin/Release/net9.0-android${{ startsWith(matrix.rid, 'android-') && format('{0}{1}', '/', matrix.rid) || '' }}/*-Signed.apk Yosu-${{ matrix.rid }}.apk
         shell: bash
         
       - name: Upload Android Artifact
