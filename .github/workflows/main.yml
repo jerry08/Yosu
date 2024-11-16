@@ -82,7 +82,7 @@ jobs:
         uses: android-actions/setup-android@v3
 
       - name: Restore Dependencies
-        run: dotnet restore Yosu/
+        run: dotnet restore Yosu/ -f net9.0-android
 
       - name: Publish MAUI Android
         run: >
