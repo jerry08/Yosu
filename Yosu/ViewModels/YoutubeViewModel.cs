@@ -11,9 +11,9 @@ using Microsoft.Maui.ApplicationModel;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Storage;
 using Yosu.Data;
-using Yosu.Extensions;
 using Yosu.Services;
 using Yosu.Utils;
+using Yosu.Utils.Extensions;
 using Yosu.ViewModels.Components;
 using Yosu.Views;
 using Yosu.Views.BottomSheets;
@@ -181,6 +181,7 @@ public class YoutubeViewModel
 
                 Downloads.Remove(download);
 
+#if ANDROID
                 if (Downloads.Count == 0)
                 {
                     NotificationHelper.ShowCompletedNotification(
@@ -193,6 +194,7 @@ public class YoutubeViewModel
                     App.StopForeground();
                     //var test4 = ApplicationEx.IsRunning();
                 }
+#endif
             }
         });
     }
@@ -348,7 +350,9 @@ public class YoutubeViewModel
 
             if (!started)
             {
+#if ANDROID
                 App.StartForeground();
+#endif
                 await Toast.Make("Download started").Show();
                 started = true;
             }

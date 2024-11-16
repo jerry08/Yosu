@@ -1,4 +1,6 @@
-﻿using System.Collections.Specialized;
+﻿using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Threading.Tasks;
 using Foundation;
 using Yosu.Services;
 
@@ -22,6 +24,15 @@ public class DownloadService : IDownloadService
         var downloadURL = NSUrl.FromString(url);
         var request = NSUrlRequest.FromUrl(downloadURL);
         var downloadTask = session.CreateDownloadTask(request);
+    }
+
+    public Task EnqueueAsync(
+        string fileName,
+        string url,
+        Dictionary<string, string>? headers = null
+    )
+    {
+        throw new System.NotImplementedException();
     }
 }
 

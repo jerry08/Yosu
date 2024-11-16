@@ -1,13 +1,16 @@
 ﻿using System.IO;
+using Microsoft.Maui.ApplicationModel;
+using Yosu.Utils.Extensions;
+#if ANDROID
 using Android.OS;
 using AndroidX.DocumentFile.Provider;
-using Microsoft.Maui.ApplicationModel;
-using Yosu.Extensions;
+#endif
 
 namespace Yosu.Utils;
 
-internal static class FileEx
+public static class FileEx
 {
+#if ANDROID
     public static bool IsExternalStorageAvailable() =>
         Environment.ExternalStorageState == Environment.MediaMounted;
 
@@ -28,4 +31,7 @@ internal static class FileEx
 
         return File.Exists(filePath);
     }
+#else
+    public static bool Exists(string filePath) => File.Exists(filePath);
+#endif
 }

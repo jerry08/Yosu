@@ -12,12 +12,10 @@ using Microsoft.Maui.Controls;
 using Microsoft.Maui.Devices;
 using Microsoft.Maui.Storage;
 using Yosu.Data;
-using Yosu.Extensions;
-using Yosu.Services;
+using Yosu.Utils.Extensions;
 using Yosu.ViewModels.Components;
 using Yosu.ViewModels.Framework;
 using Yosu.Views;
-using static Android.Provider.MediaStore;
 
 namespace Yosu.ViewModels;
 

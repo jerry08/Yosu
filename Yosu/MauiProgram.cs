@@ -45,7 +45,7 @@ public static class MauiProgram
             .UseBerry()
             .UseMauiCompatibility()
             .ConfigureContextMenuContainer()
-            .ConfigureWorkarounds()
+            //.ConfigureWorkarounds()
             .ConfigureLifecycleEvents(events =>
             {
 #if ANDROID

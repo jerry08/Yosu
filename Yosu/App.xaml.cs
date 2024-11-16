@@ -26,12 +26,15 @@ public partial class App : Application
     {
         InitializeComponent();
 
-        MainPage = new AppShell();
-
         Services = provider;
         AlertSvc = Services.GetService<IAlertService>()!;
 
         ApplyTheme();
+    }
+
+    protected override Window CreateWindow(IActivationState? activationState)
+    {
+        return new(new AppShell());
     }
 
     public static bool IsOnline(bool showSnackbar = true)

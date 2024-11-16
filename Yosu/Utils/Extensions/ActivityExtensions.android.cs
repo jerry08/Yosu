@@ -10,7 +10,7 @@ using Android.Provider;
 using Android.Webkit;
 using AndroidX.DocumentFile.Provider;
 
-namespace Yosu.Extensions;
+namespace Yosu.Utils.Extensions;
 
 internal static class ActivityExtensions
 {
@@ -18,10 +18,10 @@ internal static class ActivityExtensions
         context.ContentResolver?.PersistedUriPermissions.ToList() ?? [];
 
     public static bool HasPersistedUriPermission(this Context context, string uri) =>
-        GetPersistedUriPermissions(context).Any(x => x.Uri?.Path == uri);
+        context.GetPersistedUriPermissions().Any(x => x.Uri?.Path == uri);
 
     public static Android.Net.Uri? GetPersistedUriPermissionFor(this Context context, string uri) =>
-        GetPersistedUriPermissions(context).Find(x => x.Uri?.Path == uri)?.Uri;
+        context.GetPersistedUriPermissions().Find(x => x.Uri?.Path == uri)?.Uri;
 
     public static bool FileExists(this Context context, string filePath)
     {
@@ -63,7 +63,7 @@ internal static class ActivityExtensions
     {
         if (Build.VERSION.SdkInt >= BuildVersionCodes.Q)
         {
-            await CopyFileUsingMediaStoreAsync(context, filePath, newFilePath, cancellationToken);
+            await context.CopyFileUsingMediaStoreAsync(filePath, newFilePath, cancellationToken);
         }
         else
         {

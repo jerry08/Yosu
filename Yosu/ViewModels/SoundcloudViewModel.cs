@@ -6,11 +6,11 @@ using Gress;
 using Microsoft.Maui.ApplicationModel;
 using SoundCloudExplode.Exceptions;
 using Yosu.Data;
-using Yosu.Extensions;
 using Yosu.Services;
 using Yosu.Soundcloud.Core.Downloading;
 using Yosu.Soundcloud.Core.Tagging;
 using Yosu.Utils;
+using Yosu.Utils.Extensions;
 using Yosu.ViewModels.Components;
 
 namespace Yosu.ViewModels;
@@ -179,6 +179,7 @@ public class SoundcloudViewModel
 
                 Downloads.Remove(download);
 
+#if ANDROID
                 if (Downloads.Count == 0)
                 {
                     NotificationHelper.ShowCompletedNotification(
@@ -187,6 +188,7 @@ public class SoundcloudViewModel
 
                     App.StopForeground();
                 }
+#endif
             }
         });
     }

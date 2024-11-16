@@ -4,6 +4,7 @@
     <!--<item name="android:navigationBarColor">@android:color/transparent</item>-->
     <item name="android:navigationBarColor">@color/colorPrimary</item>
     <!--<item name="android:statusBarColor">@color/colorPrimaryDark</item>-->
+    <item name="android:statusBarColor">@color/colorPrimary</item>
     <item name="android:windowLightStatusBar">false</item>
 
     <!--<item name="colorPrimary">#d74c4c</item>-->
@@ -33,7 +34,8 @@
     <item name="colorSurfaceInverse">@color/purple5</item>
     <item name="colorOnSurfaceInverse">@color/purple6</item>
     -->
-
+    <item name="colorPrimary">@color/colorPrimary</item>
+    <item name="colorSurfaceContainerLow">@color/bottomSheetBg</item>
     <item name="colorSurface">@color/colorSurface</item>
 
     <item name="popupMenuStyle">@style/PopupMenu</item>

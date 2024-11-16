@@ -6,11 +6,11 @@ using Gress;
 using Microsoft.Maui.ApplicationModel;
 using SpotifyExplode.Exceptions;
 using Yosu.Data;
-using Yosu.Extensions;
 using Yosu.Services;
 using Yosu.Spotify.Core.Downloading;
 using Yosu.Spotify.Core.Tagging;
 using Yosu.Utils;
+using Yosu.Utils.Extensions;
 using Yosu.ViewModels.Components;
 
 namespace Yosu.ViewModels;
@@ -182,6 +182,7 @@ public class SpotifyViewModel
 
                 Downloads.Remove(download);
 
+#if ANDROID
                 if (Downloads.Count == 0)
                 {
                     NotificationHelper.ShowCompletedNotification(
@@ -190,6 +191,7 @@ public class SpotifyViewModel
 
                     App.StopForeground();
                 }
+#endif
             }
         });
     }
