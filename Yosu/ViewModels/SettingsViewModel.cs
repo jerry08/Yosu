@@ -36,6 +36,7 @@ public partial class SettingsViewModel : BaseViewModel
 
             if (e.PropertyName == nameof(Preference.AppTheme))
             {
+                App.IsChangingTheme = true;
                 App.ApplyTheme();
 
 #if ANDROID
@@ -65,6 +66,8 @@ public partial class SettingsViewModel : BaseViewModel
     {
         Preference.AppTheme = (AppTheme)index;
         Preference.Save();
+
+        App.IsChangingTheme = true;
         App.ApplyTheme();
 
 #if ANDROID

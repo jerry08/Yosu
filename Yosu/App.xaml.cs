@@ -22,19 +22,30 @@ public partial class App : Application
 
     public static IAlertService AlertSvc { get; private set; } = default!;
 
+    public static bool IsChangingTheme { get; set; }
+
     public App(IServiceProvider provider)
     {
         InitializeComponent();
 
         Services = provider;
-        AlertSvc = Services.GetService<IAlertService>()!;
+        AlertSvc = Services.GetRequiredService<IAlertService>();
 
         ApplyTheme();
     }
 
+    private Window? CurrentWindow { get; set; }
     protected override Window CreateWindow(IActivationState? activationState)
     {
-        return new(new AppShell());
+        if (CurrentWindow is not null && IsChangingTheme)
+        {
+            IsChangingTheme = false;
+            return CurrentWindow;
+        }
+
+        CurrentWindow = new(new AppShell());
+
+        return CurrentWindow;
     }
 
     public static bool IsOnline(bool showSnackbar = true)
@@ -105,15 +116,11 @@ public partial class App : Application
         if (Current is null)
             return;
 
-        var page = Current.MainPage;
-        if (page is null)
-            return;
-
         var gray900Color = Current.Resources["Gray900"];
 
 #if !MACCATALYST
 #pragma warning disable CA1416
-        foreach (var behavior in page.Behaviors.OfType<StatusBarBehavior>())
+        foreach (var behavior in Shell.Current.Behaviors.OfType<StatusBarBehavior>())
         {
             behavior.SetAppTheme(
                 StatusBarBehavior.StatusBarColorProperty,
@@ -129,7 +136,7 @@ public partial class App : Application
 #pragma warning restore CA1416
 #endif
 
-        foreach (var behavior in page.Behaviors.OfType<NavigationBarBehavior>())
+        foreach (var behavior in Shell.Current.Behaviors.OfType<NavigationBarBehavior>())
         {
             behavior.SetAppTheme(
                 NavigationBarBehavior.NavigationBarColorProperty,
