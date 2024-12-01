@@ -13,7 +13,7 @@
 
   <ItemGroup>
     <PackageReference Include="CliWrap" Version="3.6.7" />
-    <PackageReference Include="CSharpier.MsBuild" Version="0.29.2" PrivateAssets="all" />
+    <PackageReference Include="CSharpier.MsBuild" Version="0.30.2" PrivateAssets="all" />
     <PackageReference Include="Gress" Version="2.1.1" />
     <PackageReference Include="Microsoft.Maui.Controls" Version="9.0.10" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="all" />
