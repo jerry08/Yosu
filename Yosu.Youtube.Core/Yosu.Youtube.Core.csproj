@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>$(NetVersion)-android</TargetFrameworks>
-    <TargetFrameworks Condition="$([System.OperatingSystem]::IsLinux()) != true">$(NetVersion)-ios;$(NetVersion)-maccatalyst</TargetFrameworks>
+    <TargetFrameworks Condition="$([System.OperatingSystem]::IsLinux()) != true">$(TargetFrameworks);$(NetVersion)-ios;$(NetVersion)-maccatalyst</TargetFrameworks>
     <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);$(NetVersion)-windows10.0.19041.0</TargetFrameworks>
 
     <!--https://github.com/dotnet/maui/issues/12100-->

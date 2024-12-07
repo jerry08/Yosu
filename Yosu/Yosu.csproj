@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>$(NetVersion)-android</TargetFrameworks>
-    <TargetFrameworks Condition="$([System.OperatingSystem]::IsLinux()) != true">$(NetVersion)-ios</TargetFrameworks>
+    <TargetFrameworks Condition="$([System.OperatingSystem]::IsLinux()) != true">$(TargetFrameworks);$(NetVersion)-ios</TargetFrameworks>
     <OutputType>Exe</OutputType>
     <RootNamespace>Yosu</RootNamespace>
     <UseMaui>true</UseMaui>
