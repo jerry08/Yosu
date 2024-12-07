@@ -13,7 +13,12 @@ using Yosu.ViewModels;
 namespace Yosu.Services;
 
 //[Service(Exported = true, Enabled = true, Name = "com.berry.yosuservice", Process = ":yosudownloader")]
-[Service(Exported = true, Enabled = true, Name = "com.berry.yosuservice")]
+[Service(
+    Exported = true,
+    Enabled = true,
+    Name = "com.berry.yosuservice",
+    ForegroundServiceType = Android.Content.PM.ForegroundService.TypeSpecialUse
+)]
 public class ForegroundService : LifecycleService
 {
     public const string Tag = "Foreground Service";
