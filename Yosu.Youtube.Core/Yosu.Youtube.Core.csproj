@@ -10,13 +10,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CSharpier.MsBuild" Version="0.29.2" PrivateAssets="all" />
+    <PackageReference Include="CSharpier.MsBuild" Version="0.30.2" PrivateAssets="all" />
     <PackageReference Include="Gress" Version="2.1.1" />
     <PackageReference Include="JsonExtensions" Version="1.2.0" />
-    <PackageReference Include="SixLabors.ImageSharp" Version="3.1.5" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="3.1.6" />
     <PackageReference Include="System.Reactive" Version="6.0.1" />
     <PackageReference Include="TagLibSharp" Version="2.3.0" />
-    <PackageReference Include="YoutubeExplode" Version="6.4.4" />
+    <PackageReference Include="YoutubeExplode" Version="6.5.0" />
   </ItemGroup>
 
   <ItemGroup>
