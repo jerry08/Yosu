@@ -6,8 +6,10 @@ namespace Yosu.Services;
 
 public class DownloadCenter
 {
-    private static readonly Lazy<IDownloadService> implementation =
-        new(CreateDownloadService, LazyThreadSafetyMode.PublicationOnly);
+    private static readonly Lazy<IDownloadService> implementation = new(
+        CreateDownloadService,
+        LazyThreadSafetyMode.PublicationOnly
+    );
 
     private static IDownloadService CreateDownloadService()
     {

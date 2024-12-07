@@ -35,6 +35,7 @@ public partial class App : Application
     }
 
     private Window? CurrentWindow { get; set; }
+
     protected override Window CreateWindow(IActivationState? activationState)
     {
         if (CurrentWindow is not null && IsChangingTheme)
