@@ -17,14 +17,4 @@
   <color name="bottomSheetBg">#fff</color>
   <color name="textColor">#000</color>
   <color name="colorSurface">@color/bottomSheetBg</color>
-
-  <color name="blue1">#0048FF</color>
-  <color name="blue2">#487CFF</color>
-
-  <color name="purple1">#9500FF</color>
-  <color name="purple2">#AD3AFF</color>
-  <color name="purple3">#C169FF</color>
-  <color name="purple4">#D8A1FF</color>
-  <color name="purple5">#E6C2FF</color>
-  <color name="purple6">#F3E1FF</color>
 </resources>
