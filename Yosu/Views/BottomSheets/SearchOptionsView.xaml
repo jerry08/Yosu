@@ -12,7 +12,7 @@
     x:DataType="viewmodels:MainCollectionViewModel"
     HasBackdrop="True"
     HasHandle="True"
-    UseNavigationBarArea="True">
+    UseNavigationBarArea="False">
     <berry:BottomSheet.Detents>
         <berry:DetentsCollection>
             <berry:RatioDetent Ratio="0.3" />

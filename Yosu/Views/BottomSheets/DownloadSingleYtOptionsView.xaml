@@ -16,7 +16,7 @@
     x:DataType="viewmodels:YoutubeViewModel"
     HasBackdrop="True"
     HasHandle="True"
-    UseNavigationBarArea="True">
+    UseNavigationBarArea="False">
     <!--  BackgroundColor="White"  -->
     <berry:BottomSheet.Detents>
         <berry:DetentsCollection>
