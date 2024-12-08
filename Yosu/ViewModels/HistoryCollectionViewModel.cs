@@ -158,7 +158,7 @@ public partial class HistoryCollectionViewModel : CollectionViewModel<ListGroup<
                 var popup = new LoadingPopup(
                     new LoadingPopupViewModel { LoadingText = "Exporting..." }
                 );
-                Application.Current?.MainPage?.ShowPopup(popup);
+                Shell.Current.ShowPopup(popup);
 
                 try
                 {

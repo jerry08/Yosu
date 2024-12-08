@@ -218,7 +218,7 @@ public class YoutubeViewModel
                         popup = new LoadingPopup(
                             new LoadingPopupViewModel { LoadingText = "Loading..." }
                         );
-                        Application.Current?.MainPage?.ShowPopup(popup);
+                        Shell.Current.ShowPopup(popup);
                     });
 
                     var video = downloads.Single().Video!;

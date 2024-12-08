@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Berry.Maui.Extensions;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using Microsoft.Maui.Controls;
@@ -31,7 +32,7 @@ public partial class AppShell : Shell
             if (CurrentPage?.BindingContext is BaseViewModel viewModel)
             {
                 if (!viewModel.IsInitialized)
-                    viewModel.Load();
+                    viewModel.Load().FireAndForget();
 
                 viewModel.OnNavigated();
             }
